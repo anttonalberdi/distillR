@@ -11,7 +11,7 @@
 #' @export
 
 #UNDER DEVELOPMENT
-distillate_definition <- function(definition, def_table, level, present){
+distill_definition <- function(definition, def_table, level, present){
 
   if(level == "L0_group"){
     def_table$clusters <- 0

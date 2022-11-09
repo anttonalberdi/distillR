@@ -13,3 +13,10 @@ library(distillR)
 
 #Run distillation
 MCIs <- distill(gene_annotations,pathway_db,genomecol=2,keggcol=9,eccol=c(10,19),pepcol=12)
+
+#Aggregate pathway-level MCIs into the compound level
+MCI_compounds <- distill_compounds(MCIs,pathway_db)
+
+#Aggregate compound-level MCIs into function level
+MCI_functions <- distill_functions(MCI_compounds,pathway_db)
+```
