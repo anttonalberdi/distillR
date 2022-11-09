@@ -1,7 +1,7 @@
 #' Generates a gene presence-based Metabolic Capacity Index (MCI) table at the pathway level from a bacterial genome annotation table
 #'
 #' @param annotation_table Table containing Genome identifiers and gene annotations
-#' @param pathway_table Table containing definitions and metadata of metabolic functions (provided by DAMMA)
+#' @param pathway_db Table containing definitions and metadata of metabolic functions (provided by DAMMA)
 #' @param genomecol Column index (number) of the annotation_table containing the genome identifiers
 #' @param keggcol Column index(es) of the annotation_table in which to search for KEGG KO annotations
 #' @param eccol Column index(es) of the annotation_table in which to search for Enzyme Commision (EC) annotations
@@ -9,15 +9,15 @@
 #' @importFrom stringr str_extract str_match_all
 #' @return A pathway-level MCI table
 #' @examples
-#' distill(annotation_table,pathway_table,genomecol,keggcol,eccol,pepcol)
-#' distill(annotation_table,pathway_table,genomecol=2,keggcol=9,eccol=c(10,19),pepcol=12)
+#' distill(annotation_table,pathway_db,genomecol,keggcol,eccol,pepcol)
+#' distill(annotation_table,pathway_db,genomecol=2,keggcol=9,eccol=c(10,19),pepcol=12)
 #' @export
 
-distill <- function(annotation_table,pathway_table,genomecol=2,keggcol=9,eccol=c(10,19),pepcol=12){
+distill <- function(annotation_table,pathway_db,genomecol=2,keggcol=9,eccol=c(10,19),pepcol=12){
 
   #Sanity check
   if(missing(annotation_table)) stop("Genome annotation table is missing")
-  if(missing(pathway_table)) stop("Pathway table is missing")
+  if(missing(pathway_db)) stop("Pathway database is missing")
   if(missing(genomecol)) stop("Specify a column containing Genome identifiers")
   if(length(genomecol)!=1) stop("The argument genomecol must be an integer indicating the number of the column containing the Genome identifiers in the annotations table")
   if(missing(keggcol) & missing(eccol) & missing(pepcol)) stop("Specify at least one column containing functional annotations")
@@ -25,8 +25,8 @@ distill <- function(annotation_table,pathway_table,genomecol=2,keggcol=9,eccol=c
   #Convert annotation table to data frame
   annotation_table <- as.data.frame(annotation_table)
 
-  #Convert pathway table to data frame
-  pathway_table <- as.data.frame(pathway_table)
+  #Convert pathway database to data frame
+  pathway_db <- as.data.frame(pathway_db)
 
   #List Genomes
   Genomes <- unique(annotation_table[,genomecol])
@@ -78,8 +78,8 @@ distill <- function(annotation_table,pathway_table,genomecol=2,keggcol=9,eccol=c
     #Calculate MCI's for each Pathway and append to vector
     MCI_vector <- c()
     suppressWarnings(
-      for(f in c(1:nrow(pathway_table))){
-        definition=pathway_table[f,"Definition"]
+      for(f in c(1:nrow(pathway_db))){
+        definition=pathway_db[f,"Definition"]
         MCI <- compute_MCI(definition,Identifier_vector)
         MCI_vector <- c(MCI_vector,MCI)
       }
@@ -90,7 +90,7 @@ distill <- function(annotation_table,pathway_table,genomecol=2,keggcol=9,eccol=c
 
   #Format output MCI table
   rownames(MCI_table) <- Genomes
-  colnames(MCI_table) <- pathway_table$Code_pathway
+  colnames(MCI_table) <- pathway_db$Code_pathway
   MCI_table[is.na(MCI_table)] <- 0
 
   #Output MCI table

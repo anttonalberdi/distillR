@@ -5,3 +5,6 @@
 
 # Package preparation
 bin
+
+# Raw data
+data/source
