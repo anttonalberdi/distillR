@@ -7,7 +7,7 @@
 #' @importFrom stringr str_sub
 #' @return A (partially) distilled definition string
 #' @examples
-#' distillate_definition(definition, def_table, level, present)
+#' distill_definition(definition, def_table, level, present)
 #' @export
 
 #UNDER DEVELOPMENT
