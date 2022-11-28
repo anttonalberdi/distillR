@@ -39,7 +39,7 @@ compute_MCI_expression <- function(definition,expression_table){
   #Iterate calculation across levels and samples
   for(level in rev(levels_list[[1]])){
     for(s in names(definition_expression_list)){
-      definition_expression_list[[s]] <- distillate_definition_expression(sample=s,definition_expression_list[[s]], def_table_list[[s]], level, expression_table)
+      definition_expression_list[[s]] <- distill_definition_expression(sample=s,definition_expression_list[[s]], def_table_list[[s]], level, expression_table)
       if(level != "L0_group"){
         def_decomp_list[[s]] <- unlist(strsplit(definition_expression_list[[s]], "(?=[ ( ),+]+)", perl=TRUE))
         def_level_list[[s]] <- set_levels(def_decomp_list[[s]])

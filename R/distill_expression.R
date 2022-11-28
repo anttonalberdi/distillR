@@ -9,6 +9,7 @@
 #' @param eccol Column index(es) of annotation_table in which to search for Enzyme Commision (EC) annotations
 #' @param pepcol Column index(es) of annotation_table in which to search for Peptidase annotations
 #' @importFrom stringr str_extract str_match_all
+#' @importFrom reshape2 colsplit
 #' @return A list of pathway-expression matrices (one table per genome)
 #' @examples
 #' distill_expression(expression_table,annotation_table,pathway_db,genecol,genomecol,keggcol,eccol,pepcol)

@@ -5,7 +5,7 @@
 #' @param def_table Decomposed hierarchy matrix produced by create_step_matrix.R
 #' @param level Hierarchical level of the pathway definition
 #' @param expression_table Table of expression values of functional units present in the genome
-#' @importFrom stringr str_sub
+#' @importFrom stringr str_sub str_detect
 #' @return A (partially) distilled definition string
 #' @examples
 #' distill_definition_expression(definition_expression, def_table, level, expression_table)
