@@ -32,7 +32,9 @@ distill_expression <- function(expression_table,annotation_table,pathway_db,gene
   cat("Starting distillR expression analysis\n(Note this may take a while)...\n")
 
   #Filter and convert to data frame
+  annotation_table <- as.data.frame(annotation_table)
   annotation_table <- as.data.frame(annotation_table[annotation_table[,genecol] %in% rownames(expression_table),])
+  expression_table <- as.data.frame(expression_table)
   expression_table <- as.data.frame(expression_table[rownames(expression_table) %in% unique(annotation_table[,genecol]),])
 
   #Merge annotations and expression information
@@ -67,38 +69,40 @@ distill_expression <- function(expression_table,annotation_table,pathway_db,gene
         kegg_detect[is.na(kegg_detect)] <- FALSE
         column_sub <- column[kegg_detect]
         kegg_codes <- unlist(str_match_all(column_sub, "K[0-9]+"))
-        annotations_expression_Genome_sub <- annotations_expression_Genome[kegg_detect,c(col,1,expression_index)]
-        annotations_expression_Genome_sub[,1] <- kegg_codes
-        colnames(annotations_expression_Genome_sub)[1] <- "ID"
+        if(length(kegg_codes)>0){
+          annotations_expression_Genome_sub <- annotations_expression_Genome[kegg_detect,c(col,1,expression_index)]
+          annotations_expression_Genome_sub[,1] <- kegg_codes
+          colnames(annotations_expression_Genome_sub)[1] <- "ID"
 
-        #Disambiguation
-        annotations_expression_Genome_sub$ambiguity <- str_count(annotations_expression_Genome_sub[,1], "\\S+")
-        if(max(annotations_expression_Genome_sub$ambiguity,na.rm=T) > 1){
-          for(a in c(2:max(annotations_expression_Genome_sub$ambiguity,na.rm=T))){
-    	        origin <- annotations_expression_Genome_sub[annotations_expression_Genome_sub$ambiguity == a,]
-              if(nrow(origin)>0){
-              	disambiguation <- origin[rep(1:nrow(origin),a-1),]
-              	identifiers <- colsplit(string=origin[,1], pattern=" ",names=c(1:a))
-              	origin[,1] <- identifiers[,1]
-              	disambiguation[,1] <- unlist(identifiers[,c(2:a)])
-      	        #Modify origin rows
-      	        annotations_expression_Genome_sub[annotations_expression_Genome_sub$ambiguity == a,] <- origin
-                #Append extra rows
-                annotations_expression_Genome_sub <- rbind(annotations_expression_Genome_sub,disambiguation)
-              }
+          #Disambiguation
+          annotations_expression_Genome_sub$ambiguity <- str_count(annotations_expression_Genome_sub[,1], "\\S+")
+          if(max(annotations_expression_Genome_sub$ambiguity,na.rm=T) > 1){
+            for(a in c(2:max(annotations_expression_Genome_sub$ambiguity,na.rm=T))){
+      	        origin <- annotations_expression_Genome_sub[annotations_expression_Genome_sub$ambiguity == a,]
+                if(nrow(origin)>0){
+                	disambiguation <- origin[rep(1:nrow(origin),a-1),]
+                	identifiers <- colsplit(string=origin[,1], pattern=" ",names=c(1:a))
+                	origin[,1] <- identifiers[,1]
+                	disambiguation[,1] <- unlist(identifiers[,c(2:a)])
+        	        #Modify origin rows
+        	        annotations_expression_Genome_sub[annotations_expression_Genome_sub$ambiguity == a,] <- origin
+                  #Append extra rows
+                  annotations_expression_Genome_sub <- rbind(annotations_expression_Genome_sub,disambiguation)
+                }
+            }
           }
-        }
 
-        #Aggregate IDs
-        if(nrow(annotations_expression_Genome_sub)>0){
-          annotations_expression_Genome_agg <- aggregate(annotations_expression_Genome_sub[,c(3:(ncol(annotations_expression_Genome_sub)-1))],by=list(annotations_expression_Genome_sub[,1]),FUN=sum)
-          colnames(annotations_expression_Genome_agg)[1] <- "ID"
-        }else{
-          annotations_expression_Genome_agg <- annotations_expression_Genome_sub
-        }
+          #Aggregate IDs
+          if(nrow(annotations_expression_Genome_sub)>0){
+            annotations_expression_Genome_agg <- aggregate(annotations_expression_Genome_sub[,c(3:(ncol(annotations_expression_Genome_sub)-1))],by=list(annotations_expression_Genome_sub[,1]),FUN=sum)
+            colnames(annotations_expression_Genome_agg)[1] <- "ID"
+          }else{
+            annotations_expression_Genome_agg <- annotations_expression_Genome_sub
+          }
 
-        if(nrow(annotations_expression_Genome_agg)>0){
-          expression_MCI_table <- rbind(expression_MCI_table,annotations_expression_Genome_agg)
+          if(nrow(annotations_expression_Genome_agg)>0){
+            expression_MCI_table <- rbind(expression_MCI_table,annotations_expression_Genome_agg)
+          }
         }
       }
     }
@@ -111,37 +115,39 @@ distill_expression <- function(expression_table,annotation_table,pathway_db,gene
         EC_detect[is.na(EC_detect)] <- FALSE
         column_sub <- column[EC_detect]
         EC_codes <- unlist(str_match_all(column_sub, "(?<=\\[EC:).+?(?=\\])"))
-        annotations_expression_Genome_sub <- annotations_expression_Genome[EC_detect,c(col,1,expression_index)]
-        annotations_expression_Genome_sub[,1] <- EC_codes
-        colnames(annotations_expression_Genome_sub)[1] <- "ID"
+        if(length(EC_codes)>0){
+          annotations_expression_Genome_sub <- annotations_expression_Genome[EC_detect,c(col,1,expression_index)]
+          annotations_expression_Genome_sub[,1] <- EC_codes
+          colnames(annotations_expression_Genome_sub)[1] <- "ID"
 
-        #Disambiguation
-        annotations_expression_Genome_sub$ambiguity <- str_count(annotations_expression_Genome_sub[,1], "\\S+")
-        if(max(annotations_expression_Genome_sub$ambiguity,na.rm=T) > 1){
-          for(a in c(2:max(annotations_expression_Genome_sub$ambiguity,na.rm=T))){
-    	        origin <- annotations_expression_Genome_sub[annotations_expression_Genome_sub$ambiguity == a,]
-              if(nrow(origin)>0){
-              	disambiguation <- origin[rep(1:nrow(origin),a-1),]
-              	identifiers <- colsplit(string=origin[,1], pattern=" ",names=c(1:a))
-              	origin[,1] <- identifiers[,1]
-              	disambiguation[,1] <- unlist(identifiers[,c(2:a)])
-      	        #Modify origin rows
-      	        annotations_expression_Genome_sub[annotations_expression_Genome_sub$ambiguity == a,] <- origin
-                #Append extra rows
-                annotations_expression_Genome_sub <- rbind(annotations_expression_Genome_sub,disambiguation)
-              }
+          #Disambiguation
+          annotations_expression_Genome_sub$ambiguity <- str_count(annotations_expression_Genome_sub[,1], "\\S+")
+          if(max(annotations_expression_Genome_sub$ambiguity,na.rm=T) > 1){
+            for(a in c(2:max(annotations_expression_Genome_sub$ambiguity,na.rm=T))){
+      	        origin <- annotations_expression_Genome_sub[annotations_expression_Genome_sub$ambiguity == a,]
+                if(nrow(origin)>0){
+                	disambiguation <- origin[rep(1:nrow(origin),a-1),]
+                	identifiers <- colsplit(string=origin[,1], pattern=" ",names=c(1:a))
+                	origin[,1] <- identifiers[,1]
+                	disambiguation[,1] <- unlist(identifiers[,c(2:a)])
+        	        #Modify origin rows
+        	        annotations_expression_Genome_sub[annotations_expression_Genome_sub$ambiguity == a,] <- origin
+                  #Append extra rows
+                  annotations_expression_Genome_sub <- rbind(annotations_expression_Genome_sub,disambiguation)
+                }
+            }
           }
-        }
-        #Aggregate IDs
-        if(nrow(annotations_expression_Genome_sub)>0){
-          annotations_expression_Genome_agg <- aggregate(annotations_expression_Genome_sub[,c(3:(ncol(annotations_expression_Genome_sub)-1))],by=list(annotations_expression_Genome_sub[,1]),FUN=sum)
-          colnames(annotations_expression_Genome_agg)[1] <- "ID"
-        }else{
-          annotations_expression_Genome_agg <- annotations_expression_Genome_sub
-        }
+          #Aggregate IDs
+          if(nrow(annotations_expression_Genome_sub)>0){
+            annotations_expression_Genome_agg <- aggregate(annotations_expression_Genome_sub[,c(3:(ncol(annotations_expression_Genome_sub)-1))],by=list(annotations_expression_Genome_sub[,1]),FUN=sum)
+            colnames(annotations_expression_Genome_agg)[1] <- "ID"
+          }else{
+            annotations_expression_Genome_agg <- annotations_expression_Genome_sub
+          }
 
-        if(nrow(annotations_expression_Genome_agg)>0){
-          expression_MCI_table <- rbind(expression_MCI_table,annotations_expression_Genome_agg)
+          if(nrow(annotations_expression_Genome_agg)>0){
+            expression_MCI_table <- rbind(expression_MCI_table,annotations_expression_Genome_agg)
+          }
         }
       }
     }
@@ -152,66 +158,71 @@ distill_expression <- function(expression_table,annotation_table,pathway_db,gene
         pep_codes <- unique(c(unlist(c(annotations_expression_Genome[,col]))))
         pep_codes <- pep_codes[!is.na(pep_codes)]
         pep_codes <- pep_codes[pep_codes != ""]
-        annotations_expression_Genome_sub <- annotations_expression_Genome[annotations_expression_Genome[,col] %in% pep_codes, c(col,1,expression_index)]
-        colnames(annotations_expression_Genome_sub)[1] <- "ID"
+        if(length(pep_codes)>0){
+          annotations_expression_Genome_sub <- annotations_expression_Genome[annotations_expression_Genome[,col] %in% pep_codes, c(col,1,expression_index)]
+          colnames(annotations_expression_Genome_sub)[1] <- "ID"
 
-        #Disambiguation
-        annotations_expression_Genome_sub$ambiguity <- str_count(annotations_expression_Genome_sub[,1], "\\S+")
-        if(max(annotations_expression_Genome_sub$ambiguity,na.rm=T) > 1){
-          for(a in c(2:max(annotations_expression_Genome_sub$ambiguity,na.rm=T))){
-    	        origin <- annotations_expression_Genome_sub[annotations_expression_Genome_sub$ambiguity == a,]
-              if(nrow(origin)>0){
-              	disambiguation <- origin[rep(1:nrow(origin),a-1),]
-              	identifiers <- colsplit(string=origin[,1], pattern=" ",names=c(1:a))
-              	origin[,1] <- identifiers[,1]
-              	disambiguation[,1] <- unlist(identifiers[,c(2:a)])
-      	        #Modify origin rows
-      	        annotations_expression_Genome_sub[annotations_expression_Genome_sub$ambiguity == a,] <- origin
-                #Append extra rows
-                annotations_expression_Genome_sub <- rbind(annotations_expression_Genome_sub,disambiguation)
-              }
+          #Disambiguation
+          annotations_expression_Genome_sub$ambiguity <- str_count(annotations_expression_Genome_sub[,1], "\\S+")
+          if(max(annotations_expression_Genome_sub$ambiguity,na.rm=T) > 1){
+            for(a in c(2:max(annotations_expression_Genome_sub$ambiguity,na.rm=T))){
+      	        origin <- annotations_expression_Genome_sub[annotations_expression_Genome_sub$ambiguity == a,]
+                if(nrow(origin)>0){
+                	disambiguation <- origin[rep(1:nrow(origin),a-1),]
+                	identifiers <- colsplit(string=origin[,1], pattern=" ",names=c(1:a))
+                	origin[,1] <- identifiers[,1]
+                	disambiguation[,1] <- unlist(identifiers[,c(2:a)])
+        	        #Modify origin rows
+        	        annotations_expression_Genome_sub[annotations_expression_Genome_sub$ambiguity == a,] <- origin
+                  #Append extra rows
+                  annotations_expression_Genome_sub <- rbind(annotations_expression_Genome_sub,disambiguation)
+                }
+            }
           }
-        }
-        #Aggregate IDs
-        if(nrow(annotations_expression_Genome_sub)>0){
-          annotations_expression_Genome_agg <- aggregate(annotations_expression_Genome_sub[,c(3:(ncol(annotations_expression_Genome_sub)-1))],by=list(annotations_expression_Genome_sub[,1]),FUN=sum)
-          colnames(annotations_expression_Genome_agg)[1] <- "ID"
-        }else{
-          annotations_expression_Genome_agg <- annotations_expression_Genome_sub
-        }
+          #Aggregate IDs
+          if(nrow(annotations_expression_Genome_sub)>0){
+            annotations_expression_Genome_agg <- aggregate(annotations_expression_Genome_sub[,c(3:(ncol(annotations_expression_Genome_sub)-1))],by=list(annotations_expression_Genome_sub[,1]),FUN=sum)
+            colnames(annotations_expression_Genome_agg)[1] <- "ID"
+          }else{
+            annotations_expression_Genome_agg <- annotations_expression_Genome_sub
+          }
 
-        if(nrow(annotations_expression_Genome_agg)>0){
-          expression_MCI_table <- rbind(expression_MCI_table,annotations_expression_Genome_agg)
+          if(nrow(annotations_expression_Genome_agg)>0){
+            expression_MCI_table <- rbind(expression_MCI_table,annotations_expression_Genome_agg)
+          }
         }
       }
     }
 
-    rownames(expression_MCI_table) <- expression_MCI_table[,1]
-    expression_MCI_table <- expression_MCI_table[,-1]
+    if(nrow(expression_MCI_table)>0){
 
-    #Compute expression scores
-    #cat("\t\tCalculating gene expression-based MCIs for\n")
-    #cat("\t\t",nrow(pathway_db),"pathways in",ncol(expression_MCI_table),"samples...\n")
-    suppressWarnings(
-      for(f in c(1:nrow(pathway_db))){
-        definition=pathway_db[f,"Definition"]
-        expression_MCI <- compute_MCI_expression(definition,expression_MCI_table)
-        if(f == 1){
-          #Create list if it is the first function
-          expression_MCI_list <- expression_MCI
-        }else{
-          #Append to list if it is not the first function
-          expression_MCI_list <- Map(c, expression_MCI_list, expression_MCI)
+      rownames(expression_MCI_table) <- expression_MCI_table[,1]
+      expression_MCI_table <- expression_MCI_table[,-1]
+
+      #Compute expression scores
+      #cat("\t\tCalculating gene expression-based MCIs for\n")
+      #cat("\t\t",nrow(pathway_db),"pathways in",ncol(expression_MCI_table),"samples...\n")
+      suppressWarnings(
+        for(f in c(1:nrow(pathway_db))){
+          definition=pathway_db[f,"Definition"]
+          expression_MCI <- compute_MCI_expression(definition,expression_MCI_table)
+          if(f == 1){
+            #Create list if it is the first function
+            expression_MCI_list <- expression_MCI
+          }else{
+            #Append to list if it is not the first function
+            expression_MCI_list <- Map(c, expression_MCI_list, expression_MCI)
+          }
         }
-      }
-    )
-    #Convert sample list to matrix
-    expression_MCI_list <- lapply(expression_MCI_list,function(x) as.numeric(x))
-    expression_MCI_table <- do.call(rbind, expression_MCI_list)
-    colnames(expression_MCI_table) <- pathway_db$Code_pathway
+      )
+      #Convert sample list to matrix
+      expression_MCI_list <- lapply(expression_MCI_list,function(x) as.numeric(x))
+      expression_MCI_table <- do.call(rbind, expression_MCI_list)
+      colnames(expression_MCI_table) <- pathway_db$Code_pathway
 
-    #Append to Genome list
-    expression_MCI_table_list[[Genome]] <- expression_MCI_table
+      #Append to Genome list
+      expression_MCI_table_list[[Genome]] <- expression_MCI_table
+    }
   }
 
   return(expression_MCI_table_list)
