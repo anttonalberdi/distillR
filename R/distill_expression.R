@@ -8,7 +8,7 @@
 #' @param keggcol Column index(es) of annotation_table in which to search for KEGG KO annotations
 #' @param eccol Column index(es) of annotation_table in which to search for Enzyme Commision (EC) annotations
 #' @param pepcol Column index(es) of annotation_table in which to search for Peptidase annotations
-#' @importFrom stringr str_extract str_match_all
+#' @importFrom stringr str_extract str_match_all str_count
 #' @importFrom reshape2 colsplit
 #' @return A list of pathway-expression matrices (one table per genome)
 #' @examples
