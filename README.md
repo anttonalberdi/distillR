@@ -19,4 +19,7 @@ MCI_compounds <- distill_compounds(MCIs,pathway_db)
 
 #Aggregate compound-level MCIs into function level
 MCI_functions <- distill_functions(MCI_compounds,pathway_db)
+
+#Aggregate function-level MCIs into Biosynthesis, Degradation and Overall MCI values
+MCI_total <- distill_total(MCI_functions,pathway_db)
 ```
