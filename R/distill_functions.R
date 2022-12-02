@@ -1,11 +1,10 @@
 #' Aggregates compound-level MCIs into function-level MCIs
 #'
-#' @param MCI_table Compound-level MCI table
+#' @param compounds_table Compound-level MCI table
 #' @param pathway_db Table containing definitions and metadata of metabolic functions (provided by GAMMA)
-#' @param transform Whether to transform to 0-1 scale. Default=TRUE
 #' @import tidyverse
 #' @import dplyr
-#' @return A MCI table aggregated at the compound level
+#' @return A MCI table aggregated at the function level
 #' @examples
 #' distill_functions(compound_table)
 #' @export
