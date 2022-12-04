@@ -86,7 +86,12 @@ distill <- function(annotation_table,pathway_db,genomecol=2,keggcol=9,eccol=c(10
     )
     #Append MCI vector of the Genome to the MCI table containing MCI values of all Genomes
     MCI_table <- rbind(MCI_table,MCI_vector)
+
   }
+
+  #Report statistics
+  #db_identifiers <- unique(unlist(strsplit(paste(pathway_db$Definition, collapse = " ")," |\\,|\\)|\\(|\\+")))
+  #db_identifiers <- db_identifiers[grepl(".", db_identifiers, fixed = TRUE)]
 
   #Format output MCI table
   rownames(MCI_table) <- Genomes
