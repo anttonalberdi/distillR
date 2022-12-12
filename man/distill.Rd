@@ -27,12 +27,12 @@ distill(
 \item{pepcol}{Column index(es) of the annotation_table in which to search for Peptidase annotations}
 }
 \value{
-A pathway-level MCI table
+A gene bundle-level GIFT table
 }
 \description{
 Generates a gene presence-based Genome-Inferred Functional Trait (GIFT) table at the gene bundle level from a bacterial genome annotation table
 }
 \examples{
-distill(annotation_table,pathway_db,genomecol,keggcol,eccol,pepcol)
-distill(annotation_table,pathway_db,genomecol=2,keggcol=9,eccol=c(10,19),pepcol=12)
+distill(annotation_table,GIFT_db,genomecol,keggcol,eccol,pepcol)
+distill(annotation_table,GIFT_db,genomecol=2,keggcol=9,eccol=c(10,19),pepcol=12)
 }
