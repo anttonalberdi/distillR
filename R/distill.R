@@ -31,9 +31,9 @@ distill <- function(annotation_table,GIFT_db,genomecol=2,keggcol=9,eccol=c(10,19
   #List Genomes
   Genomes <- unique(annotation_table[,genomecol])
 
-  #Calculate MCI's for each Genome iteratively
-  MCI_table <- c()
-  cat("Calculating MCIs for Genome:\n")
+  #Calculate GIFTs for each Genome iteratively
+  GIFT_table <- c()
+  cat("Calculating GIFTs for Genome:\n")
   m=0
   for(Genome in Genomes){
     m=m+1
@@ -75,17 +75,17 @@ distill <- function(annotation_table,GIFT_db,genomecol=2,keggcol=9,eccol=c(10,19
     }
     Identifier_vector <- c(Identifier_vector,pep)
 
-    #Calculate MCI's for each Pathway and append to vector
-    MCI_vector <- c()
+    #Calculate GIFTs for each Pathway and append to vector
+    GIFT_vector <- c()
     suppressWarnings(
       for(f in c(1:nrow(GIFT_db))){
         definition=GIFT_db[f,"Definition"]
-        MCI <- compute_GIFT(definition,Identifier_vector)
-        MCI_vector <- c(MCI_vector,MCI)
+        GIFT <- compute_GIFT(definition,Identifier_vector)
+        GIFT_vector <- c(GIFT_vector,GIFT)
       }
     )
-    #Append MCI vector of the Genome to the MCI table containing MCI values of all Genomes
-    MCI_table <- rbind(MCI_table,MCI_vector)
+    #Append GIFT vector of the Genome to the GIFT table containing GIFT values of all Genomes
+    GIFT_table <- rbind(GIFT_table,GIFT_vector)
 
   }
 
@@ -93,11 +93,11 @@ distill <- function(annotation_table,GIFT_db,genomecol=2,keggcol=9,eccol=c(10,19
   #db_identifiers <- unique(unlist(strsplit(paste(GIFT_db$Definition, collapse = " ")," |\\,|\\)|\\(|\\+")))
   #db_identifiers <- db_identifiers[grepl(".", db_identifiers, fixed = TRUE)]
 
-  #Format output MCI table
-  rownames(MCI_table) <- Genomes
-  colnames(MCI_table) <- GIFT_db$Code_bundle
-  MCI_table[is.na(MCI_table)] <- 0
+  #Format output GIFT table
+  rownames(GIFT_table) <- Genomes
+  colnames(GIFT_table) <- GIFT_db$Code_bundle
+  GIFT_table[is.na(GIFT_table)] <- 0
 
-  #Output MCI table
-  return(MCI_table)
+  #Output GIFT table
+  return(GIFT_table)
 }

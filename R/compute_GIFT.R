@@ -1,4 +1,4 @@
-#' Calculates the gene presence-based MCI of a metabolic pathway
+#' Calculates a GIFT from a gene bundle
 #'
 #' @param definition Definition string of a given metabolic pathway
 #' @param present Vector of functional units present in the genome
