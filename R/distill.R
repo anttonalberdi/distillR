@@ -26,7 +26,7 @@ distill <- function(annotation_table,GIFT_db,genomecol=2,keggcol=9,eccol=c(10,19
   annotation_table <- as.data.frame(annotation_table)
 
   #Convert pathway database to data frame
-  pathway_db <- as.data.frame(pathway_db)
+  GIFT_db <- as.data.frame(GIFT_db)
 
   #List Genomes
   Genomes <- unique(annotation_table[,genomecol])
@@ -78,8 +78,8 @@ distill <- function(annotation_table,GIFT_db,genomecol=2,keggcol=9,eccol=c(10,19
     #Calculate MCI's for each Pathway and append to vector
     MCI_vector <- c()
     suppressWarnings(
-      for(f in c(1:nrow(pathway_db))){
-        definition=pathway_db[f,"Definition"]
+      for(f in c(1:nrow(GIFT_db))){
+        definition=GIFT_db[f,"Definition"]
         MCI <- compute_GIFT(definition,Identifier_vector)
         MCI_vector <- c(MCI_vector,MCI)
       }
@@ -90,12 +90,12 @@ distill <- function(annotation_table,GIFT_db,genomecol=2,keggcol=9,eccol=c(10,19
   }
 
   #Report statistics
-  #db_identifiers <- unique(unlist(strsplit(paste(pathway_db$Definition, collapse = " ")," |\\,|\\)|\\(|\\+")))
+  #db_identifiers <- unique(unlist(strsplit(paste(GIFT_db$Definition, collapse = " ")," |\\,|\\)|\\(|\\+")))
   #db_identifiers <- db_identifiers[grepl(".", db_identifiers, fixed = TRUE)]
 
   #Format output MCI table
   rownames(MCI_table) <- Genomes
-  colnames(MCI_table) <- pathway_db$Code_pathway
+  colnames(MCI_table) <- GIFT_db$Code_pathway
   MCI_table[is.na(MCI_table)] <- 0
 
   #Output MCI table
