@@ -31,7 +31,7 @@ GIFTs_domains_community <- to.community(GIFTs_domains,genome_counts,GIFT_db)
 ```
 
 ## Chart plotting
-A number of Genome-Inferred Functional Trait (GIFT) profiles can be plotted using various R packages
+Genome-specific Genome-Inferred Functional Trait (GIFT) profiles can be plotted using ggplot2 R
 ```
 library(ggplot2)
 library(RColorBrewer)
@@ -51,3 +51,23 @@ GIFTs_elements %>%
     theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1),strip.text.x = element_text(angle = 90))
 ```
 ![GIFT heatmap](figures/GIFT_heatmap.png)
+
+Community-averaged Genome-Inferred Functional Trait (GIFT) profiles per sample can be also plotted using ggplot2 R
+```
+library(ggplot2)
+library(RColorBrewer)
+library(reshape2)
+
+GIFTs_functions_community %>%
+  reshape2::melt() %>%
+  rename(Sample = Var1, Code_function = Var2, GIFT = value) %>%
+  inner_join(GIFT_db,by="Code_function") %>%
+  ggplot(., aes(x=Code_function, y=Sample, fill=GIFT))+
+    geom_tile()+
+    scale_y_discrete(guide = guide_axis(check.overlap = TRUE))+
+    scale_x_discrete(guide = guide_axis(check.overlap = TRUE))+
+    scale_fill_gradientn(limits = c(0,1), colours=brewer.pal(7, "YlGnBu"))+
+    theme_grey(base_size=8)+
+    theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1),strip.text.x = element_text(angle = 90))
+```
+![Community-level GIFT heatmap](figures/GIFT_community_heatmap.png)
