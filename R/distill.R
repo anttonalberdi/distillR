@@ -7,17 +7,17 @@
 #' @param eccol Column index(es) of the annotation_table in which to search for Enzyme Commision (EC) annotations
 #' @param pepcol Column index(es) of the annotation_table in which to search for Peptidase annotations
 #' @importFrom stringr str_extract str_match_all
-#' @return A pathway-level MCI table
+#' @return A gene bundle-level GIFT table
 #' @examples
-#' distill(annotation_table,pathway_db,genomecol,keggcol,eccol,pepcol)
-#' distill(annotation_table,pathway_db,genomecol=2,keggcol=9,eccol=c(10,19),pepcol=12)
+#' distill(annotation_table,GIFT_db,genomecol,keggcol,eccol,pepcol)
+#' distill(annotation_table,GIFT_db,genomecol=2,keggcol=9,eccol=c(10,19),pepcol=12)
 #' @export
 
 distill <- function(annotation_table,GIFT_db,genomecol=2,keggcol=9,eccol=c(10,19),pepcol=12){
 
   #Sanity check
   if(missing(annotation_table)) stop("Genome annotation table is missing")
-  if(missing(pathway_db)) stop("Pathway database is missing")
+  if(missing(GIFT_db)) stop("Pathway database is missing")
   if(missing(genomecol)) stop("Specify a column containing Genome identifiers")
   if(length(genomecol)!=1) stop("The argument genomecol must be an integer indicating the number of the column containing the Genome identifiers in the annotations table")
   if(missing(keggcol) & missing(eccol) & missing(pepcol)) stop("Specify at least one column containing functional annotations")
