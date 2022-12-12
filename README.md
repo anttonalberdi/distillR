@@ -1,6 +1,6 @@
 # distillR
 
-distillR is an R package for distilling functional annotations of bacterial genomes and metagenomes into meaningful quantitative metrics defined as Metabolic Capacity Indices (MCIs).
+distillR is an R package for distilling functional annotations of bacterial genomes and metagenomes into meaningful quantitative metrics defined as Genome-Inferred Functional Traits (GIFT).
 
 ## Quickstart
 The package distillR contains mock data and the metabolic pathway database required to test all functions.
@@ -12,14 +12,14 @@ install_github("anttonalberdi/distillR")
 library(distillR)
 
 #Run distillation
-MCIs <- distill(gene_annotations,pathway_db,genomecol=2,keggcol=9,eccol=c(10,19),pepcol=12)
+GIFTs <- distill(gene_annotations,GIFT_db,genomecol=2,keggcol=9,eccol=c(10,19),pepcol=12)
 
-#Aggregate pathway-level MCIs into the compound level
-MCI_compounds <- distill_compounds(MCIs,pathway_db)
+#Aggregate bundle-level GIFTs into the compound level
+GIFTs_elements <- to.elements(GIFTs,GIFT_db)
 
-#Aggregate compound-level MCIs into function level
-MCI_functions <- distill_functions(MCI_compounds,pathway_db)
+#Aggregate element-level GIFTs into the function level
+GIFTs_functions <- to.functions(GIFTs_elements,GIFT_db)
 
-#Aggregate function-level MCIs into Biosynthesis, Degradation and Overall MCI values
-MCI_total <- distill_total(MCI_functions,pathway_db)
+#Aggregate function-level GIFTs into overall Biosynthesis, Degradation and Structural GIFTs
+GIFTs_domains <- to.domains(GIFTs_functions,GIFT_db)
 ```

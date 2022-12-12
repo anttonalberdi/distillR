@@ -2,11 +2,11 @@
 % Please edit documentation in R/distill.R
 \name{distill}
 \alias{distill}
-\title{Generates a gene presence-based Metabolic Capacity Index (MCI) table at the pathway level from a bacterial genome annotation table}
+\title{Generates a gene presence-based Genome-Inferred Functional Trait (GIFT) table at the gene bundle level from a bacterial genome annotation table}
 \usage{
 distill(
   annotation_table,
-  pathway_db,
+  GIFT_db,
   genomecol = 2,
   keggcol = 9,
   eccol = c(10, 19),
@@ -16,7 +16,7 @@ distill(
 \arguments{
 \item{annotation_table}{Table containing Genome identifiers and gene annotations}
 
-\item{pathway_db}{Table containing definitions and metadata of metabolic functions (provided by DAMMA)}
+\item{GIFT_db}{Table containing definitions and metadata of GIFTs (default: database provided by distillR)}
 
 \item{genomecol}{Column index (number) of the annotation_table containing the genome identifiers}
 
@@ -30,7 +30,7 @@ distill(
 A pathway-level MCI table
 }
 \description{
-Generates a gene presence-based Metabolic Capacity Index (MCI) table at the pathway level from a bacterial genome annotation table
+Generates a gene presence-based Genome-Inferred Functional Trait (GIFT) table at the gene bundle level from a bacterial genome annotation table
 }
 \examples{
 distill(annotation_table,pathway_db,genomecol,keggcol,eccol,pepcol)

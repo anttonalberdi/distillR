@@ -1,7 +1,7 @@
-#' Generates a gene presence-based Metabolic Capacity Index (MCI) table at the pathway level from a bacterial genome annotation table
+#' Generates a gene presence-based Genome-Inferred Functional Trait (GIFT) table at the gene bundle level from a bacterial genome annotation table
 #'
 #' @param annotation_table Table containing Genome identifiers and gene annotations
-#' @param pathway_db Table containing definitions and metadata of metabolic functions (provided by DAMMA)
+#' @param GIFT_db Table containing definitions and metadata of GIFTs (default: database provided by distillR)
 #' @param genomecol Column index (number) of the annotation_table containing the genome identifiers
 #' @param keggcol Column index(es) of the annotation_table in which to search for KEGG KO annotations
 #' @param eccol Column index(es) of the annotation_table in which to search for Enzyme Commision (EC) annotations
@@ -13,7 +13,7 @@
 #' distill(annotation_table,pathway_db,genomecol=2,keggcol=9,eccol=c(10,19),pepcol=12)
 #' @export
 
-distill <- function(annotation_table,pathway_db,genomecol=2,keggcol=9,eccol=c(10,19),pepcol=12){
+distill <- function(annotation_table,GIFT_db,genomecol=2,keggcol=9,eccol=c(10,19),pepcol=12){
 
   #Sanity check
   if(missing(annotation_table)) stop("Genome annotation table is missing")
@@ -80,7 +80,7 @@ distill <- function(annotation_table,pathway_db,genomecol=2,keggcol=9,eccol=c(10
     suppressWarnings(
       for(f in c(1:nrow(pathway_db))){
         definition=pathway_db[f,"Definition"]
-        MCI <- compute_MCI(definition,Identifier_vector)
+        MCI <- compute_GIFT(definition,Identifier_vector)
         MCI_vector <- c(MCI_vector,MCI)
       }
     )

@@ -8,3 +8,8 @@ bin
 
 # Raw data
 data/source
+
+# Functions in prep
+R/distill_expression.R
+R/distill_definition_expression.R
+R/compute_MCI_expression.R
