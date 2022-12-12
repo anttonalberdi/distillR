@@ -31,7 +31,7 @@ GIFTs_domains_community <- to.community(GIFTs_domains,genome_counts,GIFT_db)
 ```
 
 ## Chart plotting
-Genome-specific Genome-Inferred Functional Trait (GIFT) profiles can be plotted using ggplot2 R
+Genome-specific Genome-Inferred Functional Trait (GIFT) profiles can be plotted using ggplot2 R. The below example plots element-level genome-specific GIFTs.
 ```
 library(ggplot2)
 library(RColorBrewer)
@@ -52,7 +52,7 @@ GIFTs_elements %>%
 ```
 ![GIFT heatmap](figures/GIFT_heatmap.png)
 
-Community-averaged Genome-Inferred Functional Trait (GIFT) profiles per sample can be also plotted using ggplot2 R
+Community-averaged Genome-Inferred Functional Trait (GIFT) profiles per sample can be also plotted using ggplot2 R. The below example plots function-level community GIFTs.
 ```
 library(ggplot2)
 library(RColorBrewer)
