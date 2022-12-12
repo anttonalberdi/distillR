@@ -12,6 +12,10 @@
 
 to.domains <- function(functions_table,GIFT_db){
 
+  #Convert tables into data frames
+  if(!missing(functions_table)){functions_table <- as.data.frame(functions_table)}
+  if(!missing(GIFT_db)){GIFT_db <- as.data.frame(GIFT_db)}
+
   domain_table <- t(as.data.frame(t(functions_table)) %>%
     rownames_to_column('Code_function') %>%
     left_join(GIFT_db[,c('Code_function', 'Type')], by = 'Code_function') %>%

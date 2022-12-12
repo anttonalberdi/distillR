@@ -7,7 +7,7 @@
 #' @import dplyr
 #' @return A matirx with community-level GIFTs per sample
 #' @examples
-#' to.community(functions_table,GIFT_db)
+#' to.community(functions_table,abundance_table,GIFT_db)
 #' @export
 
 
@@ -23,8 +23,8 @@ to.community <- function(GIFT_table,abundance_table,GIFT_db){
 
   if(missing(abundance_table)){
       #If abundance table does not exist, create a mock abundance table of a single even community
-      cat("\tAs no relative abundance information was provided distillR\n")
-      cat("will generate a single community with evenly weighed genomes\n")
+      cat("\tWARNING: As no relative abundance information was provided distillR\n")
+      cat("\twill generate a single community with evenly weighed genomes\n")
       abundance_table <- rep(1/nrow(GIFT_table),nrow(GIFT_table))
       abundance_table <- t(t(abundance_table))
       rownames(abundance_table) <- rownames(GIFT_table)

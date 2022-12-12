@@ -12,6 +12,10 @@
 
 to.elements <- function(GIFT_table,GIFT_db){
 
+  #Convert tables into data frames
+  if(!missing(GIFT_table)){GIFT_table <- as.data.frame(GIFT_table)}
+  if(!missing(GIFT_db)){GIFT_db <- as.data.frame(GIFT_db)}
+
    elements_table <- t(as.data.frame(t(GIFT_table)) %>%
      rownames_to_column('Code_pathway') %>%
      left_join(GIFT_db[,c('Code_pathway', 'Code_compound')], by = 'Code_pathway') %>%
