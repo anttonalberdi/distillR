@@ -1,4 +1,4 @@
-#' Generates the scores of each hierarchical level of a metabolic pathway required to calculate gene presence-based MCIs
+#' Generates the scores of each hierarchical level of a metabolic pathway required to calculate gene presence-based GIFTs
 #'
 #' @param definition Definition string of a given metabolic pathway/module
 #' @param def_table Decomposed hierarchy matrix produced by create_step_matrix.R

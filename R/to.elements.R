@@ -17,11 +17,11 @@ to.elements <- function(GIFT_table,GIFT_db){
   if(!missing(GIFT_db)){GIFT_db <- as.data.frame(GIFT_db)}
 
    elements_table <- t(as.data.frame(t(GIFT_table)) %>%
-     rownames_to_column('Code_pathway') %>%
-     left_join(GIFT_db[,c('Code_pathway', 'Code_compound')], by = 'Code_pathway') %>%
+     rownames_to_column('Code_bundle') %>%
+     left_join(GIFT_db[,c('Code_bundle', 'Code_element')], by = 'Code_bundle') %>%
      group_by(Code_compound) %>%
      summarise(across(where(is.numeric), ~ max(.x, na.rm = TRUE))) %>%
-     arrange(factor(Code_compound, levels = unique(GIFT_db$Code_compound))) %>%
+     arrange(factor(Code_element, levels = unique(GIFT_db$Code_element))) %>%
      column_to_rownames('Code_compound'))
 
    return(elements_table)

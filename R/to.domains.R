@@ -18,15 +18,15 @@ to.domains <- function(functions_table,GIFT_db){
 
   domain_table <- t(as.data.frame(t(functions_table)) %>%
     rownames_to_column('Code_function') %>%
-    left_join(GIFT_db[,c('Code_function', 'Type')], by = 'Code_function') %>%
+    left_join(GIFT_db[,c('Code_function', 'Domain')], by = 'Code_function') %>%
     #Calculate Biosynthesis and Degradation MCIs
-    group_by(Type) %>%
+    group_by(Domain) %>%
     summarise(across(where(is.numeric), ~ mean(.x, na.rm = TRUE))) %>%
     #Calculate overall MCI
     ungroup %>%
-    summarise(Type = c(Type, 'Overall'), across(where(is.numeric), ~ c(., mean(.)))) %>%
-    arrange(factor(Type, levels = unique(GIFT_db$Type))) %>%
-    column_to_rownames('Type'))
+    summarise(Domain = c(Domain, 'Overall'), across(where(is.numeric), ~ c(., mean(.)))) %>%
+    arrange(factor(Domain, levels = unique(GIFT_db$Domain))) %>%
+    column_to_rownames('Domain'))
 
   return(domain_table)
 }

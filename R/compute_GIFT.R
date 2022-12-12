@@ -4,8 +4,8 @@
 #' @param present Vector of functional units present in the genome
 #' @return A fullness value
 #' @examples
-#' compute_MCI(definition,present)
-#' compute_MCI("K01580 (K13524,K07250,K00823,K16871) (K00135,(K00139,K17761))",c("K01580","K00823","K16871"))
+#' compute_GIFT(definition,present)
+#' compute_GIFT("K01580 (K13524,K07250,K00823,K16871) (K00135,(K00139,K17761))",c("K01580","K00823","K16871"))
 #' @export
 
 compute_GIFT <- function(definition,present){

@@ -95,7 +95,7 @@ distill <- function(annotation_table,GIFT_db,genomecol=2,keggcol=9,eccol=c(10,19
 
   #Format output MCI table
   rownames(MCI_table) <- Genomes
-  colnames(MCI_table) <- GIFT_db$Code_pathway
+  colnames(MCI_table) <- GIFT_db$Code_bundle
   MCI_table[is.na(MCI_table)] <- 0
 
   #Output MCI table

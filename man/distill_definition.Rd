@@ -2,7 +2,7 @@
 % Please edit documentation in R/distill_definition.R
 \name{distill_definition}
 \alias{distill_definition}
-\title{Generates the scores of each hierarchical level of a metabolic pathway required to calculate gene presence-based MCIs}
+\title{Generates the scores of each hierarchical level of a metabolic pathway required to calculate gene presence-based GIFTs}
 \usage{
 distill_definition(definition, def_table, level, present)
 }
@@ -19,7 +19,7 @@ distill_definition(definition, def_table, level, present)
 A (partially) distilled definition string
 }
 \description{
-Generates the scores of each hierarchical level of a metabolic pathway required to calculate gene presence-based MCIs
+Generates the scores of each hierarchical level of a metabolic pathway required to calculate gene presence-based GIFTs
 }
 \examples{
 distill_definition(definition, def_table, level, present)
