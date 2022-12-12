@@ -2,7 +2,7 @@
 % Please edit documentation in R/compute_GIFT.R
 \name{compute_GIFT}
 \alias{compute_GIFT}
-\title{Calculates the gene presence-based MCI of a metabolic pathway}
+\title{Calculates a GIFT from a gene bundle}
 \usage{
 compute_GIFT(definition, present)
 }
@@ -15,7 +15,7 @@ compute_GIFT(definition, present)
 A fullness value
 }
 \description{
-Calculates the gene presence-based MCI of a metabolic pathway
+Calculates a GIFT from a gene bundle
 }
 \examples{
 compute_GIFT(definition,present)
