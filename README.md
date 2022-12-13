@@ -73,7 +73,11 @@ GIFTs_functions_community %>%
 ![Community-level GIFT heatmap](figures/GIFT_community_heatmap.png)
 
 ## Community GIFT computation
-Using distillR community GIFTs can be calculated using two contrasting approaches. In the aggregative approach, the entire community is considered as a single genome and GIFTs are computed using all identifiers present in the community data. This can be achieved by avoiding specifying the genome identifier column in the function distill(). In the separative approach, GIFTs are calculated for each genome independently, and then community-weighed averages calculated optionally based on the relative abundances of the genomes. This approach requires running distill() and to.community() functions.
+Using distillR community GIFTs can be calculated using two contrasting approaches.
+
+In the aggregative approach, the entire community is considered as a single genome and GIFTs are computed using all identifiers present in the community data. The main caveat of this approach is that it ignores gene bundles enabling different functions are encoded in individual genomes. Assuming that the annotation file contains all the gene annotations of a community, aggregative community GIFTs are calculated by simply avoiding specifying the genome identifier column in the function distill().
+
+In the separative approach, GIFTs are calculated for each genome independently, and then community-weighed averages calculated optionally based on the relative abundances of the genomes. The caveat of this approach is that it ignores potential collaborative outputs of bacteria with complementary gene sets. This approach requires running distill() and to.community() functions.
 ```
 #Aggregative approach
 GIFTs_aggregative <- distill(gene_annotations,GIFT_db,keggcol=9,eccol=c(10,19),pepcol=12)
