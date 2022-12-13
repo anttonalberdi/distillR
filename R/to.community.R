@@ -28,10 +28,10 @@ to.community <- function(GIFT_table,abundance_table,GIFT_db){
       abundance_table <- rep(1/nrow(GIFT_table),nrow(GIFT_table))
       abundance_table <- t(t(abundance_table))
       rownames(abundance_table) <- rownames(GIFT_table)
-      colnames(abundance_table) <- "Community"
+      colnames(abundance_table) <- "GIFT"
 
       #Declare single community
-      communities <- "Community"
+      communities <- "GIFT"
     }else{
       #Declare communities from abundance table
       communities <- colnames(abundance_table)

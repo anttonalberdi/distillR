@@ -18,7 +18,6 @@ distill <- function(annotation_table,GIFT_db,genomecol=2,keggcol=9,eccol=c(10,19
   #Sanity check
   if(missing(annotation_table)) stop("Genome annotation table is missing")
   if(missing(GIFT_db)) stop("Pathway database is missing")
-  if(missing(genomecol)) stop("Specify a column containing Genome identifiers")
   if(length(genomecol)!=1) stop("The argument genomecol must be an integer indicating the number of the column containing the Genome identifiers in the annotations table")
   if(missing(keggcol) & missing(eccol) & missing(pepcol)) stop("Specify at least one column containing functional annotations")
 
@@ -29,17 +28,33 @@ distill <- function(annotation_table,GIFT_db,genomecol=2,keggcol=9,eccol=c(10,19
   GIFT_db <- as.data.frame(GIFT_db)
 
   #List Genomes
-  Genomes <- unique(annotation_table[,genomecol])
+  if(!missing(genomecol)){
+    Genomes <- unique(annotation_table[,genomecol])
+  }else{
+    Genomes <- "GIFT"
+  }
+
+  #Verbosity
+  if(length(Genomes)>1){
+    cat("Calculating GIFTs for",length(Genomes),"genomes:\n")
+  }else{
+    cat("Calculating GIFTs for a single genome.\n")
+    cat("\tNote: If you were expecting multiple genomes\n")
+    cat("\tensure the genome identifier column is correctly specified.\n")
+  }
 
   #Calculate GIFTs for each Genome iteratively
   GIFT_table <- c()
-  cat("Calculating GIFTs for Genome:\n")
   m=0
   for(Genome in Genomes){
     m=m+1
-    cat("\t",Genome," (",m,"/",length(Genomes),")\n", sep = "")
-    #Fetch Genome annotations
-    annotations_Genome <- annotation_table[annotation_table[,genomecol] == Genome,]
+    if(length(Genomes)>1){
+      cat("\t",Genome," (",m,"/",length(Genomes),")\n", sep = "")
+      #Fetch Genome annotations
+      annotations_Genome <- annotation_table[annotation_table[,genomecol] == Genome,]
+    }else{
+      annotations_Genome <- annotation_table
+    }
 
     #Declare vector of identifiers
     Identifier_vector <- c()
