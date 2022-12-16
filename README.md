@@ -12,8 +12,8 @@ library(devtools)
 install_github("anttonalberdi/distillR")
 library(distillR)
 
-#Run distillation
-GIFTs <- distill(gene_annotations,GIFT_db,genomecol=2,keggcol=9,eccol=c(10,19),pepcol=12)
+#Run distillatio
+GIFTs <- distill(gene_annotations,GIFT_db,genomecol=2,annotcol=c(9,10,19))
 
 #Aggregate bundle-level GIFTs into the compound level
 GIFTs_elements <- to.elements(GIFTs,GIFT_db)

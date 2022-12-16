@@ -3,23 +3,22 @@
 #' @param annotation_table Table containing Genome identifiers and gene annotations
 #' @param GIFT_db Table containing definitions and metadata of GIFTs (default: database provided by distillR)
 #' @param genomecol Column index (number) of the annotation_table containing the genome identifiers
-#' @param keggcol Column index(es) of the annotation_table in which to search for KEGG KO annotations
-#' @param eccol Column index(es) of the annotation_table in which to search for Enzyme Commision (EC) annotations
-#' @param pepcol Column index(es) of the annotation_table in which to search for Peptidase annotations
-#' @importFrom stringr str_extract str_match_all
+#' @param annotcol Column index(es) of the annotation_table in which to search for gene identifiers (e.g., c(3,4,5))
+#' @param stats Whether to calculate and print distillation statistics
+#' @importFrom stringr str_extract
 #' @return A gene bundle-level GIFT table
 #' @examples
-#' distill(annotation_table,GIFT_db,genomecol,keggcol,eccol,pepcol)
-#' distill(annotation_table,GIFT_db,genomecol=2,keggcol=9,eccol=c(10,19),pepcol=12)
+#' distill(annotation_table,GIFT_db,genomecol,annotcol, stats)
+#' distill(annotation_table,GIFT_db,genomecol=2,annotcol=c(9,10,19),stats=T)
 #' @export
 
-distill <- function(annotation_table,GIFT_db,genomecol=2,keggcol=9,eccol=c(10,19),pepcol=12){
+distill <- function(annotation_table,GIFT_db,genomecol=2,annotcol=c(9,10,19),stats=T){
 
   #Sanity check
   if(missing(annotation_table)) stop("Genome annotation table is missing")
   if(missing(GIFT_db)) stop("Pathway database is missing")
   if(length(genomecol)!=1) stop("The argument genomecol must be an integer indicating the number of the column containing the Genome identifiers in the annotations table")
-  if(missing(keggcol) & missing(eccol) & missing(pepcol)) stop("Specify at least one column containing functional annotations")
+  if(missing(annotcol)) stop("Specify at least one column containing functional annotations")
 
   #Convert annotation table to data frame
   annotation_table <- as.data.frame(annotation_table)
@@ -56,39 +55,12 @@ distill <- function(annotation_table,GIFT_db,genomecol=2,keggcol=9,eccol=c(10,19
       annotations_Genome <- annotation_table
     }
 
-    #Declare vector of identifiers
-    Identifier_vector <- c()
-
-    #KEGG identifiers
-    #K00000
-    if(!missing(keggcol)){
-    kegg <- str_extract(c(unlist(c(annotations_Genome[,keggcol]))), "K[0-9]+")
-    kegg <- unique(kegg[!is.na(kegg)])
-    }else{
-    kegg <- c()
-    }
-    Identifier_vector <- c(Identifier_vector,kegg)
-
-    #Enzyme Commission codes
-    #[EC:0.0.0.0]
-    if(!missing(eccol)){
-    EC <- unlist(str_match_all(c(unlist(c(annotations_Genome[,eccol]))), "(?<=\\[EC:).+?(?=\\])")) #Extract ECs
-    EC <- unique(unlist(strsplit(EC, " "))) #Dereplicate
-    EC <- EC[!grepl("-", EC, fixed = TRUE)] #Remove ambiguous codes
-    EC <- EC[grepl(".", EC, fixed = TRUE)] #Remove NAs and inproperly formatted codes
-    }else{
-    EC <- c()
-    }
-    Identifier_vector <- c(Identifier_vector,EC)
-
-    #Peptidases
-    if(!missing(pepcol)){
-    pep <- unique(c(unlist(c(annotations_Genome[,pepcol]))))
-    pep <- pep[pep != ""]
-    }else{
-    pep <- c()
-    }
-    Identifier_vector <- c(Identifier_vector,pep)
+    #Create vector of identifiers
+    Identifier_vector <- str_extract(c(unlist(c(annotations_Genome[,annotcol]))), "K[0-9][0-9][0-9][0-9][0-9]|(?<=\\[EC:).+?(?=\\])") %>% #Parse identifiers (KEGG|EC)
+          unique() %>% #Dereplicate
+          .[!is.na(.)] %>% #Remove NAs
+          strsplit(., " ") %>% unlist() %>%#Split multiple identifiers
+          .[!grepl("-", ., fixed = TRUE)] #Remove ambiguous EC codes
 
     #Calculate GIFTs for each Pathway and append to vector
     GIFT_vector <- c()
@@ -105,8 +77,17 @@ distill <- function(annotation_table,GIFT_db,genomecol=2,keggcol=9,eccol=c(10,19
   }
 
   #Report statistics
-  #db_identifiers <- unique(unlist(strsplit(paste(GIFT_db$Definition, collapse = " ")," |\\,|\\)|\\(|\\+")))
-  #db_identifiers <- db_identifiers[grepl(".", db_identifiers, fixed = TRUE)]
+  if(stats == TRUE){
+    db_identifiers <- unique(unlist(strsplit(paste(GIFT_db$Definition, collapse = " ")," |\\,|\\)|\\(|\\+")))
+    length_db <- length(db_identifiers)
+    length_data <- length(Identifier_vector)
+    length_intersect <- length(intersect(db_identifiers,Identifier_vector))
+    cat("\nIdentifiers in the annotation table:",length_data,"\n")
+    cat("Identifiers in the database:",length_db,"\n")
+    cat("Identifiers in both:",length_intersect,"\n")
+    cat(paste0("Percentage of annotation table identifiers used for distillation: ",round(length_intersect/length_data*100,2),"%\n"))
+    cat(paste0("Percentage of database identifiers used for distillation: ",round(length_intersect/length_db*100,2),"%\n"))
+  }
 
   #Format output GIFT table
   rownames(GIFT_table) <- Genomes

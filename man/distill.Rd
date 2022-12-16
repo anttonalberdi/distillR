@@ -8,9 +8,8 @@ distill(
   annotation_table,
   GIFT_db,
   genomecol = 2,
-  keggcol = 9,
-  eccol = c(10, 19),
-  pepcol = 12
+  annotcol = c(9, 10, 19),
+  stats = T
 )
 }
 \arguments{
@@ -20,11 +19,9 @@ distill(
 
 \item{genomecol}{Column index (number) of the annotation_table containing the genome identifiers}
 
-\item{keggcol}{Column index(es) of the annotation_table in which to search for KEGG KO annotations}
+\item{annotcol}{Column index(es) of the annotation_table in which to search for gene identifiers (e.g., c(3,4,5))}
 
-\item{eccol}{Column index(es) of the annotation_table in which to search for Enzyme Commision (EC) annotations}
-
-\item{pepcol}{Column index(es) of the annotation_table in which to search for Peptidase annotations}
+\item{stats}{Whether to calculate and print distillation statistics}
 }
 \value{
 A gene bundle-level GIFT table
@@ -33,6 +30,6 @@ A gene bundle-level GIFT table
 Generates a gene presence-based Genome-Inferred Functional Trait (GIFT) table at the gene bundle level from a bacterial genome annotation table
 }
 \examples{
-distill(annotation_table,GIFT_db,genomecol,keggcol,eccol,pepcol)
-distill(annotation_table,GIFT_db,genomecol=2,keggcol=9,eccol=c(10,19),pepcol=12)
+distill(annotation_table,GIFT_db,genomecol,annotcol, stats)
+distill(annotation_table,GIFT_db,genomecol=2,annotcol=c(9,10,19),stats=T)
 }
