@@ -7,12 +7,12 @@
 compute_GIFT(definition, present)
 }
 \arguments{
-\item{definition}{Definition string of a given metabolic pathway}
+\item{definition}{Definition string of a given gene bundle}
 
-\item{present}{Vector of functional units present in the genome}
+\item{present}{Vector of identifiers present in the genome}
 }
 \value{
-A fullness value
+A GIFT value
 }
 \description{
 Calculates a GIFT from a gene bundle
