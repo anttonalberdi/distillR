@@ -6,6 +6,7 @@
 #' @param genecol Column index (number) of the annotations table containing the gene identifiers
 #' @param genomecol Column index (number) of annotation_table containing the genome identifiers
 #' @param annotcol Column index(es) of the annotation_table in which to search for gene identifiers (e.g., c(3,4,5))
+#' @import tidyverse
 #' @importFrom stringr str_extract str_match_all str_count
 #' @importFrom reshape2 colsplit
 #' @return A list of quantitative GIFT tables (one table per genome)
@@ -29,107 +30,77 @@ distillq <- function(gene_count_table,annotation_table,GIFT_db,genecol=1,genomec
 
   cat("Starting distillR quantitative analysis\n(Note this may take a while)...\n")
 
-  #Filter and convert to data frame
-  annotation_table <- as.data.frame(annotation_table)
-  annotation_table <- as.data.frame(annotation_table[annotation_table[,genecol] %in% rownames(gene_count_table),])
-  gene_count_table <- as.data.frame(gene_count_table)
-  gene_count_table <- as.data.frame(gene_count_table[rownames(gene_count_table) %in% unique(annotation_table[,genecol]),])
+  #Convert to tibble, filter, simplify to a three-column tibble, and extract identifiers
 
-  #Merge annotations and expression information
-  annotation_gene_count_table <- merge(annotation_table,gene_count_table,by.x=genecol,by.y="row.names",all=FALSE)
+  intersect <- intersect(gene_count_table[[1]],annotation_table[[genecol]]) #list overlapping genes
+
+  cat("\tParsing identifiers from annotation table...\n")
+  annotation_table <- annotation_table %>%
+    as_tibble() %>%
+    filter(.[[genecol]] %in% intersect) %>% #filter overlapping genes
+    select(c(genecol,genomecol,annotcol)) %>% #select relevant columns
+    #Process annotations
+      unite("Annotation", 3:ncol(.), remove = T, sep = " ") %>% #paste annotation columns into a single column
+      mutate(Annotation=str_extract_all(Annotation, "K[0-9][0-9][0-9][0-9][0-9]|(?<=\\[EC:).+?(?=\\])")) %>% #Extract identifiers
+      rowwise() %>%
+      mutate(Annotation=list(unlist(strsplit(Annotation, " ")))) %>% #Separate multiple EC annotations (e.g. "4.3.2.5.7 4.5.2.34" into "4.3.2.5.7","4.5.2.34")
+      ungroup() %>%
+    rename(Gene = 1, Genome = 2) #rename columns
+
+  gene_count_table <- gene_count_table %>%
+    as_tibble() %>%
+    filter(.[[1]] %in% intersect) %>% #filter overlapping genes
+    rename(Gene = 1) #rename gene column
+
+  #Merge annotations and count data
+  annotation_gene_count_table <- inner_join(annotation_table,gene_count_table,by="Gene")
 
   #List Genomes
-  Genomes <- unique(annotation_gene_count_table[,genomecol])
-
-  #Declare index (column numbers) of the expression data
-  expression_index <- grep(paste(colnames(gene_count_table),collapse="|"), colnames(annotation_gene_count_table))
+  Genomes <- unique(annotation_gene_count_table$Genome)
 
   #Calculate expression values for each Genome
-  cat("Calculating gene expression-based MCIs for Genome:\n")
+  if(ncol(gene_count_table) > 2){
+    cat("\tCalculating gene count-based GIFTs for",length(Genomes),"genomes and",ncol(gene_count_table)-1,"samples...\n")
+  }else{
+    cat("\tCalculating gene count-based GIFTs for",length(Genomes),"genomes and",ncol(gene_count_table)-1,"sample...\n")
+  }
   m=0
-  GIFTq_table_list <- list()
+  qGIFT_table_list <- list()
   for(Genome in Genomes){
     m=m+1
     cat("\t",Genome," (",m,"/",length(Genomes),")\n", sep = "")
 
-    #Subset annotation data for the specific Genome
-    annotation_gene_count_Genome <- annotation_gene_count_table[annotation_gene_count_table[,genomecol] == Genome,]
+    #Subset per Genome
+    annotation_gene_count_filt <- annotation_gene_count_table %>%
+      filter(Genome == Genomes[m]) %>% #filter annotations corresponding to the genome
+      filter(!map_lgl(Annotation, is.null)) %>% #remove genes without annotations
+      select(-c(1,2)) #remove gene and genome columns
 
-    #Declare expression table
-    GIFTq_table <- data.frame()
-
-      for(col in annotcol){
-        column <- annotation_gene_count_Genome[,col]
-        identifier_detect <- str_detect(column, "K[0-9][0-9][0-9][0-9][0-9]|(?<=\\[EC:).+?(?=\\])")
-        identifier_detect[is.na(identifier_detect)] <- FALSE
-        column_sub <- column[identifier_detect]
-        identifier_codes <- unlist(str_match_all(column_sub, "K[0-9][0-9][0-9][0-9][0-9]|(?<=\\[EC:).+?(?=\\])"))
-        if(length(identifier_codes)>0){
-          annotation_gene_count_Genome_sub <- annotation_gene_count_Genome[identifier_detect,c(col,1,expression_index)]
-          annotation_gene_count_Genome_sub[,1] <- identifier_codes
-          colnames(annotation_gene_count_Genome_sub)[1] <- "ID"
-
-          #Disambiguation
-          annotation_gene_count_Genome_sub$ambiguity <- str_count(annotation_gene_count_Genome_sub[,1], "\\S+")
-          if(max(annotation_gene_count_Genome_sub$ambiguity,na.rm=T) > 1){
-            for(a in c(2:max(annotation_gene_count_Genome_sub$ambiguity,na.rm=T))){
-      	        origin <- annotation_gene_count_Genome_sub[annotation_gene_count_Genome_sub$ambiguity == a,]
-                if(nrow(origin)>0){
-                	disambiguation <- origin[rep(1:nrow(origin),a-1),]
-                	identifiers <- colsplit(string=origin[,1], pattern=" ",names=c(1:a))
-                	origin[,1] <- identifiers[,1]
-                	disambiguation[,1] <- unlist(identifiers[,c(2:a)])
-        	        #Modify origin rows
-        	        annotation_gene_count_Genome_sub[annotation_gene_count_Genome_sub$ambiguity == a,] <- origin
-                  #Append extra rows
-                  annotation_gene_count_Genome_sub <- rbind(annotation_gene_count_Genome_sub,disambiguation)
-                }
-            }
-          }
-
-          #Aggregate IDs
-          if(nrow(annotation_gene_count_Genome_sub)>0){
-            annotation_gene_count_Genome_agg <- aggregate(annotation_gene_count_Genome_sub[,c(3:(ncol(annotation_gene_count_Genome_sub)-1))],by=list(annotation_gene_count_Genome_sub[,1]),FUN=sum)
-            colnames(annotation_gene_count_Genome_agg)[1] <- "ID"
-          }else{
-            annotation_gene_count_Genome_agg <- annotation_gene_count_Genome_sub
-          }
-
-          if(nrow(annotation_gene_count_Genome_agg)>0){
-            GIFTq_table <- rbind(GIFTq_table,annotation_gene_count_Genome_agg)
-          }
-        }
-      }
-    
-
-    if(nrow(GIFTq_table)>0){
-
-      rownames(GIFTq_table) <- GIFTq_table[,1]
-      GIFTq_table <- GIFTq_table[,-1]
+    if(nrow(annotation_gene_count_filt)>0){
 
       suppressWarnings(
         for(f in c(1:nrow(GIFT_db))){
           definition=GIFT_db[f,"Definition"]
-          GIFTq <- compute_GIFTq(definition,GIFTq_table)
+          qGIFT <- compute_qGIFT(definition,annotation_gene_count_filt)
           if(f == 1){
             #Create list if it is the first function
-            GIFTq_list <- GIFTq
+            qGIFT_list <- qGIFT
           }else{
             #Append to list if it is not the first function
-            GIFTq_list <- Map(c, GIFTq_list, GIFTq)
+            qGIFT_list <- Map(c, qGIFT_list, qGIFT)
           }
         }
       )
       #Convert sample list to matrix
-      GIFTq_list <- lapply(GIFTq_list,function(x) as.numeric(x))
-      GIFTq_table <- do.call(rbind, GIFTq_list)
-      colnames(GIFTq_table) <- GIFT_db$Code_bundle
+      qGIFT_list <- lapply(qGIFT_list,function(x) as.numeric(x))
+      qGIFT_table <- do.call(rbind, qGIFT_list)
+      colnames(qGIFT_table) <- GIFT_db$Code_bundle
 
       #Append to Genome list
-      GIFTq_table_list[[Genome]] <- GIFTq_table
+      qGIFT_table_list[[Genome]] <- qGIFT_table
     }
   }
 
-  return(GIFTq_table_list)
+  return(qGIFT_table_list)
 
 }

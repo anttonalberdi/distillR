@@ -12,7 +12,7 @@ library(devtools)
 install_github("anttonalberdi/distillR")
 library(distillR)
 
-#Run distillatio
+#Run distillation
 GIFTs <- distill(gene_annotations,GIFT_db,genomecol=2,annotcol=c(9,10,19))
 
 #Aggregate bundle-level GIFTs into the compound level
@@ -29,6 +29,17 @@ GIFTs_elements_community <- to.community(GIFTs_elements,genome_counts,GIFT_db)
 GIFTs_functions_community <- to.community(GIFTs_functions,genome_counts,GIFT_db)
 GIFTs_domains_community <- to.community(GIFTs_domains,genome_counts,GIFT_db)
 ```
+
+## Input data structure
+distillR can perform operations with four types of input data
+
+### Gene annotations (mandatory)
+
+### GIFT database (mandatory)
+
+### Gene counts (requited for quantitative GIFTs)
+
+### Genome counts (requited for community GIFTs)
 
 ## Chart plotting
 Genome-specific Genome-Inferred Functional Trait (GIFT) profiles can be plotted using ggplot2. The below example plots element-level genome-specific GIFTs.
@@ -72,8 +83,19 @@ GIFTs_functions_community %>%
 ```
 ![Community-level GIFT heatmap](figures/GIFT_community_heatmap.png)
 
-## Community GIFT computation
-Using distillR community GIFTs can be calculated using two contrasting approaches.
+## Quantitative GIFTs
+Quantitative GIFTs are genome-inferred functional traits that are based on quantitative gene data rather than gene presence (as regular GIFTs). Such data can be derived from shotgun gene-expression analyses (RNAseq) or can be generated for an entire community by mapping sequencing reads to a catalogue of genes derived from a metagenomic (co)assembly. Quantitative GIFTs are calculated using function distillq(), which requires two more bits of information compared to distill(): a gene count table containing quantitative gene data per sample, and the column number of the annotation table in which gene identifiers can be found.
+
+```
+#Run distillation
+qGIFTs <- distillq(gene_expression,gene_annotations,GIFT_db,genecol=1,genomecol=2,annotcol=c(9,10,19))
+
+#Sweep list structure from genome-based to sample-based
+qGIFTs_persample <- sweep_matrix_list(qGIFTs)
+```
+
+## Community GIFTs
+Using distillR, community GIFTs can be calculated using two contrasting approaches.
 
 In the aggregative approach, the entire community is considered as a single genome and GIFTs are computed using all identifiers present in the community data. The main caveat of this approach is that it ignores gene bundles enabling different functions are encoded in individual genomes. Assuming that the annotation file contains all the gene annotations of a community, aggregative community GIFTs are calculated by simply avoiding specifying the genome identifier column in the function distill().
 

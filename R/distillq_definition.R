@@ -13,6 +13,10 @@
 
 distillq_definition <- function(sample, definition_expression, def_table, level, gene_count_table){
 
+  FindID <- function(x, idToFind) {
+        any(idToFind %in% x)
+      }
+
   if(level == "L0_group"){
     def_table$clusters <- 0
     def_table_sub <- def_table[complete.cases(def_table[,level]),]
@@ -34,7 +38,10 @@ distillq_definition <- function(sample, definition_expression, def_table, level,
         subdef2_code <- subdef2[grepl("_", subdef2, fixed = TRUE) | grepl("[A-Z]", subdef2, fixed = FALSE)]
         subdef2_number <- as.numeric(subdef2[!subdef2 %in% subdef2_code])
         if(length(subdef2_code) > 0){
-          subdef2_expression <- gene_count_table[rownames(gene_count_table) %in% subdef2_code,sample]
+          subdef2_expression <- gene_count_table %>%
+            mutate(Flag = map_lgl(Annotation, FindID, subdef2_code)) %>%
+            filter(Flag) %>%
+            pull(sample)
           if(length(subdef2_expression) == 0){
             subdef2_expression <- 0
           }
@@ -51,7 +58,10 @@ distillq_definition <- function(sample, definition_expression, def_table, level,
         subdef2_code <- subdef2[grepl("_", subdef2, fixed = TRUE) | grepl("[A-Z]", subdef2, fixed = FALSE)]
         subdef2_number <- as.numeric(subdef2[!subdef2 %in% subdef2_code])
         if(length(subdef2_code) > 0){
-          subdef2_expression <- gene_count_table[rownames(gene_count_table) %in% subdef2_code,sample]
+          subdef2_expression <- gene_count_table %>%
+            mutate(Flag = map_lgl(Annotation, FindID, subdef2_code)) %>%
+            filter(Flag) %>%
+            pull(sample)
           if(length(subdef2_expression) == 0){
             subdef2_expression <- 0
           }
@@ -68,7 +78,10 @@ distillq_definition <- function(sample, definition_expression, def_table, level,
         subdef2_code <- subdef2[grepl("_", subdef2, fixed = TRUE) | grepl("[A-Z]", subdef2, fixed = FALSE)]
         subdef2_number <- as.numeric(subdef2[!subdef2 %in% subdef2_code])
         if(length(subdef2_code) > 0){
-          subdef2_expression <- gene_count_table[rownames(gene_count_table) %in% subdef2_code,sample]
+          subdef2_expression <- gene_count_table %>%
+            mutate(Flag = map_lgl(Annotation, FindID, subdef2_code)) %>%
+            filter(Flag) %>%
+            pull(sample)
           if(length(subdef2_expression) == 0){
             subdef2_expression <- 0
           }
