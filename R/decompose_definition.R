@@ -1,3 +1,3 @@
-decompose_definition <- function(definition){
+decompose_definition <- function(definition) {
   unlist(strsplit(definition, "(?=[ ( ),+]+)", perl = TRUE))
 }

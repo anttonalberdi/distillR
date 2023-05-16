@@ -10,10 +10,10 @@ test_that("Test create_step_matrix", {
     data.frame(
       def_decomp = c(
         "K01580", " ", NA, "K13524", ",", "K07250", ",", "K00823", ",", "K16871",
-        NA, " ",  NA, "K00135", ",", NA, "K00139", ",", "K17761", NA, NA
+        NA, " ", NA, "K00135", ",", NA, "K00139", ",", "K17761", NA, NA
       ),
-      def_level = c(  # Strings, yes
-        "0", "0", NA,  "1", "1", "1", "1", "1", "1", "1", NA, "0", NA, "1", "1",
+      def_level = c( # Strings, yes
+        "0", "0", NA, "1", "1", "1", "1", "1", "1", "1", NA, "0", NA, "1", "1",
         NA, "2", "2", "2", NA, NA
       ),
       L0_group = c(

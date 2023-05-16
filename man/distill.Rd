@@ -30,6 +30,6 @@ A gene bundle-level GIFT table
 Generates a gene presence-based Genome-Inferred Functional Trait (GIFT) table at the gene bundle level from a bacterial genome annotation table
 }
 \examples{
-distill(annotation_table,GIFT_db,genomecol,annotcol, stats)
-distill(annotation_table,GIFT_db,genomecol=2,annotcol=c(9,10,19),stats=T)
+distill(annotation_table, GIFT_db, genomecol, annotcol, stats)
+distill(annotation_table, GIFT_db, genomecol = 2, annotcol = c(9, 10, 19), stats = T)
 }

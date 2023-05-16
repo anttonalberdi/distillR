@@ -18,5 +18,5 @@ A GIFT table aggregated at the function level
 Aggregates element-level GIFTs into the function level
 }
 \examples{
-to.functions(elements_table,GIFT_db)
+to.functions(elements_table, GIFT_db)
 }

@@ -18,5 +18,5 @@ A GIFT table aggregated at the element level
 Merges bundle-level GIFTs into the element level
 }
 \examples{
-to.elements(GIFT_table,GIFT_db)
+to.elements(GIFT_table, GIFT_db)
 }

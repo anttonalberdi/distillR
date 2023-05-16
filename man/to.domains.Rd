@@ -18,5 +18,5 @@ A table with Biosynthesis, Degradation and Overall MCI values
 Aggregates function-level GIFTs into the domain level
 }
 \examples{
-to.domains(functions_table,GIFT_db)
+to.domains(functions_table, GIFT_db)
 }

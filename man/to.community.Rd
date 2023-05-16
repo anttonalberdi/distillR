@@ -20,5 +20,5 @@ A matirx with community-level GIFTs per sample
 Converts genome-xpecific GIFTs into the community level
 }
 \examples{
-to.community(functions_table,abundance_table,GIFT_db)
+to.community(functions_table, abundance_table, GIFT_db)
 }

@@ -1,30 +1,38 @@
 # See https://pre-commit.com for more information
 # See https://pre-commit.com/hooks.html for more hooks
+---
 repos:
--   repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v3.2.0
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.4.0
     hooks:
-    -   id: trailing-whitespace
-    -   id: end-of-file-fixer
-    -   id: check-yaml
-    -   id: check-added-large-files
--   repo: https://github.com/lorenzwalthert/precommit
-    rev: v0.3.2
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: check-yaml
+      - id: check-added-large-files
+  - repo: https://github.com/lorenzwalthert/precommit
+    rev: v0.3.2.9007
     hooks:
-    -   id: lintr
-        args: [--warn-only, --key=value]
-        verbose: true
-    -   id: style-files
-        args: [--scope=spaces, --reindention=specify_reindention('#')]
-    -   id: readme-rmd-rendered 
-    -   id: parsable-R
-    -   id: no-browser-statement
-    -   id: no-debug-statement
-    -   id: spell-check
-    -   id: roxygenize
+      # - id: lintr
+      #   args: [--warn-only, --key=value]
+      #   verbose: true
+      # - id: style-files
+      #   args: [--scope=spaces, --reindention=specify_reindention('#')]
+      - id: readme-rmd-rendered
+      - id: parsable-R
+      # - id: no-browser-statement
+      # - id: no-debug-statement
+      # - id: spell-check
+      - id: roxygenize
         additional_dependencies:
-        - r-lib/pkgapi
-    -   id: deps-in-desc
+        - dplyr
+        - purrr
+        - readr
+        - stringr
+        - tidyr
+        - reshape2
+        - tibble
+        - tidyverse
+      - id: deps-in-desc
         args: [--allow_private_imports]
-    -   id: use-tidy-description
-    -   id:  codemeta-description-updated 
+      - id: use-tidy-description
+      # - id: codemeta-description-updated
