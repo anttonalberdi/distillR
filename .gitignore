@@ -16,3 +16,5 @@ R/compute_MCI_expression.R
 man/distill_expression.Rd
 man/distill_definition_expression.Rd
 man/compute_MCI_expression.Rd
+
+renv/
