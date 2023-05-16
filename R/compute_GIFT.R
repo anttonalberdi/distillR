@@ -15,9 +15,7 @@ compute_GIFT <- function(definition, present) {
   present <- sanitize_identifiers(present)
   definition <- sanitize_identifiers(definition)
   def_decomp <- decompose_definition(definition)
-  # Set levels
   def_level <- set_levels(def_decomp)
-  # Definition-level table
   def_table <- create_step_matrix(def_decomp, def_level)
   # List levels
   levels <- colnames(def_table)[c(3:ncol(def_table))]
