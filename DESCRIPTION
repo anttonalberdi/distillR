@@ -1,24 +1,27 @@
 Package: distillR
-Type: Package
-Title: What the Package Does (Title Case)
-Version: 0.1.0
-Author: Who wrote it
-Maintainer: The package maintainer <yourself@somewhere.net>
-Description: More about what it does (maybe more than one line)
-    Use four spaces when indenting paragraphs within the Description.
-License: What license is it under?
+Title: What the Package Does (One Line, Title Case)
+Version: 0.0.0.9000
+Authors@R: 
+    person("Jorge", "Langa", , "jorgeeliseo.langa@ehu.eus", role = c("aut", "cre"),
+           comment = c(ORCID = "0000-0001-5137-8204"))
+    person("Antton", "Alberdi", , "antton.alberdi@sund.ku.dk", role = c("aut", "cre"),
+           comment = c(ORCID = "0000-0002-2875-6446"))
+Description:
+  R package for distilling functional annotations of bacterial genomes and metagenomes.
+License: MIT + file LICENSE
 Encoding: UTF-8
-LazyData: true
+Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.2.3
-Suggests:
-    testthat (>= 3.0.0)
-Config/testthat/edition: 3
-Imports:
+Imports: 
     dplyr,
     purrr,
     readr,
-    stringr,
-    tidyr,
     reshape2,
+    stringr,
     tibble,
+    tidyr
+Depends: 
     tidyverse
+Suggests: 
+    testthat (>= 3.0.0)
+Config/testthat/edition: 3

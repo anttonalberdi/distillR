@@ -61,7 +61,7 @@ GIFTs_elements %>%
     theme_grey(base_size=8)+
     theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1),strip.text.x = element_text(angle = 90))
 ```
-![GIFT heatmap](figures/GIFT_heatmap.png)
+![GIFT heatmap](inst/figures/GIFT_heatmap.png)
 
 Community-averaged Genome-Inferred Functional Trait (GIFT) profiles per sample can be also plotted using ggplot2. The below example plots function-level community GIFTs.
 ```
@@ -81,7 +81,7 @@ GIFTs_functions_community %>%
     theme_grey(base_size=8)+
     theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1),strip.text.x = element_text(angle = 90))
 ```
-![Community-level GIFT heatmap](figures/GIFT_community_heatmap.png)
+![Community-level GIFT heatmap](inst/figures/GIFT_community_heatmap.png)
 
 ## Quantitative GIFTs
 Quantitative GIFTs are genome-inferred functional traits that are based on quantitative gene data rather than gene presence (as regular GIFTs). Such data can be derived from shotgun gene-expression analyses (RNAseq) or can be generated for an entire community by mapping sequencing reads to a catalogue of genes derived from a metagenomic (co)assembly. Quantitative GIFTs are calculated using function distillq(), which requires two more bits of information compared to distill(): a gene count table containing quantitative gene data per sample, and the column number of the annotation table in which gene identifiers can be found.
@@ -144,4 +144,4 @@ ggplot(community_comparison, aes(x=AGG, y=SER))+
   stat_smooth(method = "lm", formula = y ~ x, geom = "smooth") +
   theme_minimal()
 ```
-![Community-level GIFT regressions](figures/GIFT_community_regressions.png)
+![Community-level GIFT regressions](inst/figures/GIFT_community_regressions.png)
