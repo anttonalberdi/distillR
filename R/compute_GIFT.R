@@ -12,11 +12,8 @@
 #' @export
 
 compute_GIFT <- function(definition, present) {
-  # If using EC codes
-  if (grepl(".", definition, fixed = TRUE)) {
-    present <- gsub(".", "_", present, fixed = TRUE)
-    definition <- gsub(".", "_", definition, fixed = TRUE)
-  }
+  present <- sanitize_identifiers(present)
+  definition <- sanitize_identifiers(definition)
   # Decompose definition
   def_decomp <- unlist(strsplit(definition, "(?=[ ( ),+]+)", perl = TRUE))
   # Set levels
