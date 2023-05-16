@@ -15,7 +15,7 @@ compute_GIFT <- function(definition, present) {
   present <- sanitize_identifiers(present)
   definition <- sanitize_identifiers(definition)
   # Decompose definition
-  def_decomp <- unlist(strsplit(definition, "(?=[ ( ),+]+)", perl = TRUE))
+  def_decomp <- decompose_definition(definition)
   # Set levels
   def_level <- set_levels(def_decomp)
   # Definition-level table
