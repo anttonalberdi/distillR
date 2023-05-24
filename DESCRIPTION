@@ -1,7 +1,7 @@
 Package: distillR
 Title: What the Package Does (One Line, Title Case)
 Version: 0.0.0.9000
-Authors@R: 
+Authors@R:
     person("Jorge", "Langa", , "jorgeeliseo.langa@ehu.eus", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0001-5137-8204"))
     person("Antton", "Alberdi", , "antton.alberdi@sund.ku.dk", role = c("aut", "cre"),
@@ -12,16 +12,16 @@ License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.2.3
-Imports: 
+Imports:
     dplyr,
     purrr,
-    readr,
     reshape2,
     stringr,
-    tibble,
-    tidyr
-Depends: 
+    tibble
+Depends:
+    R (>= 2.10),
     tidyverse
-Suggests: 
+Suggests:
     testthat (>= 3.0.0)
 Config/testthat/edition: 3
+LazyData: true
