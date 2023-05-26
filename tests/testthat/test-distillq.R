@@ -1,3 +1,4 @@
+# nolint start
 # test_that("multiplication works", {
 #   actual <- distillq(
 #     gene_count_table = distillR::gene_expression,
@@ -8,3 +9,4 @@
 #     annotcol = c(9,10,19)
 #   )
 # })
+# nolint end

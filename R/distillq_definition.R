@@ -1,3 +1,4 @@
+# nolint start
 #' Generates the scores of each hierarchical level of a gene bundle required to calculate gene count-based GIFTs
 #'
 #' @param sample Code of the sample to be processed
@@ -102,3 +103,4 @@
 #
 #   return(definition_expression)
 # }
+# nolint end

@@ -1,3 +1,4 @@
+# nolint start
 #' Calculates the quantitative GIFTs from a gene bundle and a gene count table
 #'
 #' @param definition Definition string of a given gene bundle
@@ -78,3 +79,4 @@
 #   # Return value
 #   return(definition_quantitative_list)
 # }
+# nolint end
