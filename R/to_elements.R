@@ -27,7 +27,7 @@ to_elements <- function(gift_table, gift_db) {
       gift_db[, c("Code_bundle", "Code_element")],
       by = "Code_bundle"
     ) %>%
-    group_by(Code_element) %>%
+    group_by(Code_element) %>%  # nolint
     summarise(across(where(is.numeric), ~ max(.x, na.rm = TRUE))) %>%
     arrange(factor(Code_element, levels = unique(gift_db$Code_element))) %>%
     column_to_rownames("Code_element"))

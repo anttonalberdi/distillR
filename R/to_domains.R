@@ -24,7 +24,7 @@ to_domains <- function(functions_table, gift_db) {
     rownames_to_column("Code_function") %>%
     left_join(gift_db[, c("Code_function", "Domain")], by = "Code_function") %>%
     # Calculate Biosynthesis and Degradation MCIs
-    group_by(Domain) %>%
+    group_by(Domain) %>%  # nolint
     reframe(across(where(is.numeric), ~ mean(.x, na.rm = TRUE))) %>%
     # Calculate overall MCI
     ungroup() %>%

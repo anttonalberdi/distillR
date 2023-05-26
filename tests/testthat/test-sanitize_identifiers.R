@@ -6,9 +6,11 @@ test_that("Check that KEGG definitions are not modified", {
 })
 
 test_that("Check that EC definitions are sanitized", {
-  definition <- "1.4.1.2 1.1.1.399 2.8.3.12 4.2.1.167 7.2.4.5 1.3.1.109 (2.8.3.1,2.8.3.8)"
+  definition <-
+    "1.4.1.2 1.1.1.399 2.8.3.12 4.2.1.167 7.2.4.5 1.3.1.109 (2.8.3.1,2.8.3.8)"
   actual <- sanitize_identifiers(definition)
-  expected <- "1_4_1_2 1_1_1_399 2_8_3_12 4_2_1_167 7_2_4_5 1_3_1_109 (2_8_3_1,2_8_3_8)"
+  expected <-
+    "1_4_1_2 1_1_1_399 2_8_3_12 4_2_1_167 7_2_4_5 1_3_1_109 (2_8_3_1,2_8_3_8)"
   expect_equal(actual, expected)
 })
 

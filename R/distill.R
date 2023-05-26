@@ -82,7 +82,7 @@ distill <- function(
       na.exclude() %>%
       strsplit(split = " ") %>%
       unlist() %>%
-      .[!grepl(pattern = "-", x = ., fixed = TRUE)] # Remove ambiguous EC codes
+      .[!grepl(pattern = "-", x = ., fixed = TRUE)] # Remove ambiguous EC codes  # nolint
 
     # Calculate GIFTs for each Pathway and append to vector
     gift_vector <- c()
