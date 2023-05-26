@@ -3,7 +3,8 @@
 #' Genome-Inferred Functional Traits (GIFT)
 #'
 #' @format ## `GIFT_db`
-#' Data frame with 315 rows and 7 columns, representing the different hierarchies
+#' Data frame with 315 rows and 7 columns, representing the different
+#' hierarchies
 #' of pathways
 #' \describe{
 #'   \item{Code_bundle}{Bottom-level identifier of the pathway}

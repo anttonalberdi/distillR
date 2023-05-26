@@ -4,14 +4,16 @@
 \alias{to.community}
 \title{Converts genome-xpecific GIFTs into the community level}
 \usage{
-to.community(GIFT_table, abundance_table, GIFT_db)
+to.community(gift_table, abundance_table, gift_db)
 }
 \arguments{
-\item{GIFT_table}{GIFT table at any hierarchical level}
+\item{gift_table}{GIFT table at any hierarchical level}
 
-\item{abundance_table}{(Relative) abundance table with samples in columns and Genomes in rows. Required for computing sample-specific GIFT values}
+\item{abundance_table}{(Relative) abundance table with samples in columns
+and Genomes in rows. Required for computing sample-specific GIFT values}
 
-\item{GIFT_db}{Table containing definitions and metadata of GIFTs (default: database provided by distillR)}
+\item{gift_db}{Table containing definitions and metadata of GIFTs (default:
+database provided by distillR)}
 }
 \value{
 A matirx with community-level GIFTs per sample
@@ -20,5 +22,5 @@ A matirx with community-level GIFTs per sample
 Converts genome-xpecific GIFTs into the community level
 }
 \examples{
-to.community(functions_table, abundance_table, GIFT_db)
+to.community(functions_table, abundance_table, gift_db)
 }

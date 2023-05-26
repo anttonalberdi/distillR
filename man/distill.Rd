@@ -2,7 +2,7 @@
 % Please edit documentation in R/distill.R
 \name{distill}
 \alias{distill}
-\title{Generates a gene presence-based Genome-Inferred Functional Trait (GIFT) table
+\title{Generates a gene presence-based genome-Inferred Functional Trait (GIFT) table
 at the gene bundle level from a bacterial genome annotation table}
 \usage{
 distill(
@@ -14,7 +14,7 @@ distill(
 )
 }
 \arguments{
-\item{annotation_table}{Table containing Genome identifiers and gene
+\item{annotation_table}{Table containing genome identifiers and gene
 annotations}
 
 \item{giftdb}{Table containing definitions and metadata of GIFTs (default:
@@ -32,7 +32,7 @@ for gene identifiers (e.g., c(3,4,5))}
 A gene bundle-level GIFT table
 }
 \description{
-Generates a gene presence-based Genome-Inferred Functional Trait (GIFT) table
+Generates a gene presence-based genome-Inferred Functional Trait (GIFT) table
 at the gene bundle level from a bacterial genome annotation table
 }
 \examples{
