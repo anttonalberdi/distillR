@@ -1,4 +1,5 @@
-#' Generates the scores of each hierarchical level of a gene bundle required to calculate gene presence-based GIFTs
+#' Generates the scores of each hierarchical level of a gene bundle required to
+#' calculate gene presence-based GIFTs
 #'
 #' @param definition Definition string of a given metabolic pathway/module
 #' @param def_table Decomposed hierarchy matrix produced by create_step_matrix.R
@@ -21,28 +22,38 @@ distill_definition <- function(definition, def_table, level, present) {
     def_table_sub <- def_table[complete.cases(def_table[, level]), ]
     clusters <- unique(def_table_sub$clusters)
   } else {
-    def_table$clusters <- do.call(paste, c(def_table[, c(3:(ncol(def_table) - 1))], sep = "-"))
+    def_table$clusters <-
+      do.call(paste, c(def_table[, c(3:(ncol(def_table) - 1))], sep = "-"))
     def_table_sub <- def_table[complete.cases(def_table[, level]), ]
     clusters <- unique(def_table_sub$clusters)
   }
 
-  for (c in clusters) {
-    subdef <- def_table_sub[def_table_sub$clusters == c, "def_decomp"]
-    if (" " %in% subdef | "+" %in% subdef) {
+  for (cluster in clusters) {
+    subdef <- def_table_sub[def_table_sub$clusters == cluster, "def_decomp"]
+    if (" " %in% subdef || "+" %in% subdef) {
       subdef2 <- subdef[(subdef != " ") & (subdef != "+")]
-      subdef2[grepl("_", subdef2, fixed = TRUE) | grepl("[A-Z]", subdef2, fixed = FALSE)] <- subdef2[grepl("_", subdef2, fixed = TRUE) | grepl("[A-Z]", subdef2, fixed = FALSE)] %in% c(present)
+      indexes <-
+        grepl("_", subdef2, fixed = TRUE) |
+        grepl("[A-Z]", subdef2, fixed = FALSE)
+      subdef2[indexes] <- subdef2[indexes] %in% c(present)
       subdef2[subdef2 == "FALSE"] <- 0
       subdef2[subdef2 == "TRUE"] <- 1
       value <- round(mean(as.numeric(subdef2)), 2)
     } else if ("," %in% subdef) {
       subdef2 <- subdef[subdef != ","]
-      subdef2[grepl("_", subdef2, fixed = TRUE) | grepl("[A-Z]", subdef2, fixed = FALSE)] <- subdef2[grepl("_", subdef2, fixed = TRUE) | grepl("[A-Z]", subdef2, fixed = FALSE)] %in% c(present)
+      indexes <-
+        grepl("_", subdef2, fixed = TRUE) |
+        grepl("[A-Z]", subdef2, fixed = FALSE)
+      subdef2[indexes] <- subdef2[indexes] %in% c(present)
       subdef2[subdef2 == "FALSE"] <- 0
       subdef2[subdef2 == "TRUE"] <- 1
       value <- round(max(as.numeric(subdef2)), 2)
     } else {
       subdef2 <- subdef
-      subdef2[grepl("_", subdef2, fixed = TRUE) | grepl("[A-Z]", subdef2, fixed = FALSE)] <- subdef2[grepl("_", subdef2, fixed = TRUE) | grepl("[A-Z]", subdef2, fixed = FALSE)] %in% c(present)
+      indexes <-
+        grepl("_", subdef2, fixed = TRUE) |
+        grepl("[A-Z]", subdef2, fixed = FALSE)
+      subdef2[indexes] <- subdef2[indexes] %in% c(present)
       subdef2[subdef2 == "FALSE"] <- 0
       subdef2[subdef2 == "TRUE"] <- 1
       value <- round(max(as.numeric(subdef2)), 2)
