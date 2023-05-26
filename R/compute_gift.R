@@ -17,15 +17,18 @@ compute_gift <- function(definition, present) {
   definition <- sanitize_identifiers(definition)
   definition_decomposed <- decompose_definition(definition)
   definition_level <- set_levels(definition_decomposed)
-  definition_table <- create_step_matrix(definition_decomposed, definition_level)
+  definition_table <-
+    create_step_matrix(definition_decomposed, definition_level)
   levels <- colnames(definition_table)[c(3:ncol(definition_table))]
 
   for (level in rev(levels)) {
-    definition <- distill_definition(definition, definition_table, level, present)
+    definition <-
+      distill_definition(definition, definition_table, level, present)
     if (level != "L0_group") {
       definition_decomposed <- decompose_definition(definition)
       definition_level <- set_levels(definition_decomposed)
-      definition_table <- create_step_matrix(definition_decomposed, definition_level)
+      definition_table <-
+        create_step_matrix(definition_decomposed, definition_level)
     }
   }
 
