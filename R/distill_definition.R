@@ -59,9 +59,19 @@ distill_definition <- function(definition, def_table, level, present) {
       value <- round(max(as.numeric(subdef2)), 2)
     }
     if (level == "L0_group") {
-      definition <- gsub(paste(subdef, collapse = ""), value, definition, fixed = TRUE)
+      definition <- gsub(
+        pattern = paste(subdef, collapse = ""),
+        replacement = value,
+        x = definition,
+        fixed = TRUE
+      )
     } else {
-      definition <- gsub(paste(c("(", subdef, ")"), collapse = ""), value, definition, fixed = TRUE)
+      definition <- gsub(
+        pattern = paste(c("(", subdef, ")"), collapse = ""),
+        replacement = value,
+        x = definition,
+        fixed = TRUE
+      )
     }
   }
 
