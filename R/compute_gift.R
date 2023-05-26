@@ -12,22 +12,22 @@
 #' @export
 
 compute_gift <- function(definition, present) {
+
   present <- sanitize_identifiers(present)
   definition <- sanitize_identifiers(definition)
-  def_decomp <- decompose_definition(definition)
-  def_level <- set_levels(def_decomp)
-  def_table <- create_step_matrix(def_decomp, def_level)
-  # List levels
-  levels <- colnames(def_table)[c(3:ncol(def_table))]
-  # Iterate calculation across levels
+  definition_decomposed <- decompose_definition(definition)
+  definition_level <- set_levels(definition_decomposed)
+  definition_table <- create_step_matrix(definition_decomposed, definition_level)
+  levels <- colnames(definition_table)[c(3:ncol(definition_table))]
+
   for (level in rev(levels)) {
-    definition <- distill_definition(definition, def_table, level, present)
+    definition <- distill_definition(definition, definition_table, level, present)
     if (level != "L0_group") {
-      def_decomp <- decompose_definition(definition)
-      def_level <- set_levels(def_decomp)
-      def_table <- create_step_matrix(def_decomp, def_level)
+      definition_decomposed <- decompose_definition(definition)
+      definition_level <- set_levels(definition_decomposed)
+      definition_table <- create_step_matrix(definition_decomposed, definition_level)
     }
   }
-  # Return value
+
   return(as.numeric(definition))
 }
