@@ -48,7 +48,7 @@ to.community <- function(GIFT_table, abundance_table, GIFT_db) {
   m <- 0
   for (community in communities) {
     m <- m + 1
-    community_GIFT <- colSums(sweep(GIFT_table, 1, abundance_table[, m], FUN = "*"))
+    community_GIFT <- colSums(sweep(GIFT_table, 1, abundance_table[, m], FUN = "*", check.margin = FALSE))
     GIFT_community_table <- rbind(GIFT_community_table, community_GIFT)
   }
   rownames(GIFT_community_table) <- communities
