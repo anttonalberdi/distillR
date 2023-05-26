@@ -1,6 +1,7 @@
 #' #' Sweeps list names and row names in a list of matrices
 #' #'
-#' #' @param matrix_list A list of matrices (e.g. qGIFT_table yielded by distillq())
+#' #' @param matrix_list A list of matrices (e.g. qGIFT_table yielded by
+#' distillq())
 #' #' @return A list of matrices with sweeped list names and row names
 #' #' @examples
 #' #' sweep_matrix_list(matrix_list)
