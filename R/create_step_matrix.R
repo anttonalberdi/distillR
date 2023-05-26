@@ -39,8 +39,7 @@ create_step_matrix <- function(def_decomp, def_level) {
     for (level in levels) {
       splits <-
         rownames(def_table[
-          ((def_decomp == " ") | (def_decomp == "+") | (def_decomp == ",")) &
-          (def_level <= level),
+          (def_decomp %in% c(" ", "+", ",")) & (def_level <= level),
         ])
       level_group <- c()
       group <- 1
