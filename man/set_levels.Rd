@@ -5,11 +5,11 @@
 \title{Calculates the hierarchical levels of the definition of a metabolic
 pathway/module}
 \usage{
-set_levels(def_decomp)
+set_levels(definition_decomposed)
 }
 \arguments{
-\item{def_decomp}{A decomposed definition string of a given metabolic
-function (produced by decompose_definition())}
+\item{definition_decomposed}{A decomposed definition string of a given
+metabolic function (produced by decompose_definition())}
 }
 \value{
 A vector of hierarchical levels per character in string
