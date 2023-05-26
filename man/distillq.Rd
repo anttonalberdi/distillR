@@ -2,7 +2,22 @@
 % Please edit documentation in R/distillq.R
 \name{distillq}
 \alias{distillq}
-\title{Generates a list of gene count-based Genome-Inferred Functional Trait (GIFT) tables at the gene bundle level from bacterial genome annotation and gene count tables}
+\title{#' Generates a list of gene count-based Genome-Inferred Functional Trait (GIFT) tables at the gene bundle level from bacterial genome annotation and gene count tables
+#'
+#' @param gene_count_table Table containing normalised gene expression data with gene identifiers in rows and sample identifiers in columns
+#' @param annotation_table Table containing gene and genome identifiers, and gene annotations
+#' @param GIFT_db Table containing definitions and metadata of metabolic functions (provided by DAMMA)
+#' @param genecol Column index (number) of the annotations table containing the gene identifiers
+#' @param genomecol Column index (number) of annotation_table containing the genome identifiers
+#' @param annotcol Column index(es) of the annotation_table in which to search for gene identifiers (e.g., c(3,4,5))
+#' @import tidyverse
+#' @importFrom stringr str_extract str_match_all str_count
+#' @importFrom reshape2 colsplit
+#' @return A list of quantitative GIFT tables (one table per genome)
+#' @examples
+#' distillq(gene_count_table, annotation_table, GIFT_db, genecol, genomecol, keggcol, eccol, pepcol)
+#' distillq(gene_count_table, annotation_table, GIFT_db, genecol = 1, genomecol = 2, keggcol = 9, eccol = c(10, 19), pepcol = 12)
+#' @export}
 \usage{
 distillq(
   gene_count_table,
@@ -13,26 +28,21 @@ distillq(
   annotcol = c(9, 10, 19)
 )
 }
-\arguments{
-\item{gene_count_table}{Table containing normalised gene expression data with gene identifiers in rows and sample identifiers in columns}
-
-\item{annotation_table}{Table containing gene and genome identifiers, and gene annotations}
-
-\item{GIFT_db}{Table containing definitions and metadata of metabolic functions (provided by DAMMA)}
-
-\item{genecol}{Column index (number) of the annotations table containing the gene identifiers}
-
-\item{genomecol}{Column index (number) of annotation_table containing the genome identifiers}
-
-\item{annotcol}{Column index(es) of the annotation_table in which to search for gene identifiers (e.g., c(3,4,5))}
-}
-\value{
-A list of quantitative GIFT tables (one table per genome)
-}
 \description{
-Generates a list of gene count-based Genome-Inferred Functional Trait (GIFT) tables at the gene bundle level from bacterial genome annotation and gene count tables
-}
-\examples{
-distillq(gene_count_table, annotation_table, GIFT_db, genecol, genomecol, keggcol, eccol, pepcol)
-distillq(gene_count_table, annotation_table, GIFT_db, genecol = 1, genomecol = 2, keggcol = 9, eccol = c(10, 19), pepcol = 12)
+#' Generates a list of gene count-based Genome-Inferred Functional Trait (GIFT) tables at the gene bundle level from bacterial genome annotation and gene count tables
+#'
+#' @param gene_count_table Table containing normalised gene expression data with gene identifiers in rows and sample identifiers in columns
+#' @param annotation_table Table containing gene and genome identifiers, and gene annotations
+#' @param GIFT_db Table containing definitions and metadata of metabolic functions (provided by DAMMA)
+#' @param genecol Column index (number) of the annotations table containing the gene identifiers
+#' @param genomecol Column index (number) of annotation_table containing the genome identifiers
+#' @param annotcol Column index(es) of the annotation_table in which to search for gene identifiers (e.g., c(3,4,5))
+#' @import tidyverse
+#' @importFrom stringr str_extract str_match_all str_count
+#' @importFrom reshape2 colsplit
+#' @return A list of quantitative GIFT tables (one table per genome)
+#' @examples
+#' distillq(gene_count_table, annotation_table, GIFT_db, genecol, genomecol, keggcol, eccol, pepcol)
+#' distillq(gene_count_table, annotation_table, GIFT_db, genecol = 1, genomecol = 2, keggcol = 9, eccol = c(10, 19), pepcol = 12)
+#' @export
 }

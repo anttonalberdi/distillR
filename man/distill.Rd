@@ -2,24 +2,29 @@
 % Please edit documentation in R/distill.R
 \name{distill}
 \alias{distill}
-\title{Generates a gene presence-based Genome-Inferred Functional Trait (GIFT) table at the gene bundle level from a bacterial genome annotation table}
+\title{Generates a gene presence-based Genome-Inferred Functional Trait (GIFT) table
+at the gene bundle level from a bacterial genome annotation table}
 \usage{
 distill(
   annotation_table,
-  GIFT_db,
+  giftdb,
   genomecol = 2,
   annotcol = c(9, 10, 19),
-  stats = T
+  stats = TRUE
 )
 }
 \arguments{
-\item{annotation_table}{Table containing Genome identifiers and gene annotations}
+\item{annotation_table}{Table containing Genome identifiers and gene
+annotations}
 
-\item{GIFT_db}{Table containing definitions and metadata of GIFTs (default: database provided by distillR)}
+\item{giftdb}{Table containing definitions and metadata of GIFTs (default:
+database provided by distillR)}
 
-\item{genomecol}{Column index (number) of the annotation_table containing the genome identifiers}
+\item{genomecol}{Column index (number) of the annotation_table containing the
+genome identifiers}
 
-\item{annotcol}{Column index(es) of the annotation_table in which to search for gene identifiers (e.g., c(3,4,5))}
+\item{annotcol}{Column index(es) of the annotation_table in which to search
+for gene identifiers (e.g., c(3,4,5))}
 
 \item{stats}{Whether to calculate and print distillation statistics}
 }
@@ -27,9 +32,11 @@ distill(
 A gene bundle-level GIFT table
 }
 \description{
-Generates a gene presence-based Genome-Inferred Functional Trait (GIFT) table at the gene bundle level from a bacterial genome annotation table
+Generates a gene presence-based Genome-Inferred Functional Trait (GIFT) table
+at the gene bundle level from a bacterial genome annotation table
 }
 \examples{
-distill(annotation_table, GIFT_db, genomecol, annotcol, stats)
-distill(annotation_table, GIFT_db, genomecol = 2, annotcol = c(9, 10, 19), stats = T)
+distill(annotation_table, giftdb, genomecol, annotcol, stats)
+distill(annotation_table, giftdb, genomecol = 2, annotcol = c(9, 10, 19),
+stats = TRUE)
 }

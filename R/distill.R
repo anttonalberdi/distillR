@@ -1,29 +1,45 @@
-#' Generates a gene presence-based Genome-Inferred Functional Trait (GIFT) table at the gene bundle level from a bacterial genome annotation table
+#' Generates a gene presence-based Genome-Inferred Functional Trait (GIFT) table
+#'  at the gene bundle level from a bacterial genome annotation table
 #'
-#' @param annotation_table Table containing Genome identifiers and gene annotations
-#' @param GIFT_db Table containing definitions and metadata of GIFTs (default: database provided by distillR)
-#' @param genomecol Column index (number) of the annotation_table containing the genome identifiers
-#' @param annotcol Column index(es) of the annotation_table in which to search for gene identifiers (e.g., c(3,4,5))
+#' @param annotation_table Table containing Genome identifiers and gene
+#' annotations
+#' @param giftdb Table containing definitions and metadata of GIFTs (default:
+#' database provided by distillR)
+#' @param genomecol Column index (number) of the annotation_table containing the
+#' genome identifiers
+#' @param annotcol Column index(es) of the annotation_table in which to search
+#' for gene identifiers (e.g., c(3,4,5))
 #' @param stats Whether to calculate and print distillation statistics
 #' @importFrom stringr str_extract
 #' @return A gene bundle-level GIFT table
 #' @examples
-#' distill(annotation_table, GIFT_db, genomecol, annotcol, stats)
-#' distill(annotation_table, GIFT_db, genomecol = 2, annotcol = c(9, 10, 19), stats = T)
+#' distill(annotation_table, giftdb, genomecol, annotcol, stats)
+#' distill(annotation_table, giftdb, genomecol = 2, annotcol = c(9, 10, 19),
+#' stats = TRUE)
 #' @export
 
-distill <- function(annotation_table, GIFT_db, genomecol = 2, annotcol = c(9, 10, 19), stats = T) {
+distill <- function(
+    annotation_table, giftdb,
+    genomecol = 2, annotcol = c(9, 10, 19), stats = TRUE
+  ) {
   # Sanity check
-  if (missing(annotation_table)) stop("Genome annotation table is missing")
-  if (missing(GIFT_db)) stop("Pathway database is missing")
-  if (length(genomecol) != 1) stop("The argument genomecol must be an integer indicating the number of the column containing the Genome identifiers in the annotations table")
-  if (missing(annotcol)) stop("Specify at least one column containing functional annotations")
+  if (missing(annotation_table))
+    stop("Genome annotation table is missing")
+  if (missing(giftdb))
+    stop("Pathway database is missing")
+  if (length(genomecol) != 1)
+    stop(
+      "The argument genomecol must be an integer indicating the number of the ",
+      "column containing the Genome identifiers in the annotations table"
+    )
+  if (missing(annotcol))
+    stop("Specify at least one column containing functional annotations")
 
   # Convert annotation table to data frame
   annotation_table <- as.data.frame(annotation_table)
 
   # Convert pathway database to data frame
-  GIFT_db <- as.data.frame(GIFT_db)
+  giftdb <- as.data.frame(giftdb)
 
   # List Genomes
   if (!missing(genomecol)) {
@@ -64,8 +80,8 @@ distill <- function(annotation_table, GIFT_db, genomecol = 2, annotcol = c(9, 10
     # Calculate GIFTs for each Pathway and append to vector
     GIFT_vector <- c()
     suppressWarnings(
-      for (f in c(1:nrow(GIFT_db))) {
-        definition <- GIFT_db[f, "Definition"]
+      for (f in c(1:nrow(giftdb))) {
+        definition <- giftdb[f, "Definition"]
         GIFT <- compute_gift(definition, Identifier_vector)
         GIFT_vector <- c(GIFT_vector, GIFT)
       }
@@ -76,7 +92,7 @@ distill <- function(annotation_table, GIFT_db, genomecol = 2, annotcol = c(9, 10
 
   # Report statistics
   if (stats == TRUE) {
-    db_identifiers <- unique(unlist(strsplit(paste(GIFT_db$Definition, collapse = " "), " |\\,|\\)|\\(|\\+")))
+    db_identifiers <- unique(unlist(strsplit(paste(giftdb$Definition, collapse = " "), " |\\,|\\)|\\(|\\+")))
     length_db <- length(db_identifiers)
     length_data <- length(Identifier_vector)
     length_intersect <- length(intersect(db_identifiers, Identifier_vector))
@@ -89,7 +105,7 @@ distill <- function(annotation_table, GIFT_db, genomecol = 2, annotcol = c(9, 10
 
   # Format output GIFT table
   rownames(GIFT_table) <- Genomes
-  colnames(GIFT_table) <- GIFT_db$Code_bundle
+  colnames(GIFT_table) <- giftdb$Code_bundle
   GIFT_table[is.na(GIFT_table)] <- 0
 
   # Output GIFT table
