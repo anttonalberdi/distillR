@@ -7,16 +7,16 @@
 #' @export
 
 sweep_matrix_list <- function(matrix_list) {
-# Declare vectors
+  # Declare vectors
   rows <- rownames(matrix_list[[1]])
   columns <- colnames(matrix_list[[1]])
   tables <- names(matrix_list)
 
-# Create new empty list of matrices
+  # Create new empty list of matrices
   newlist <- replicate(length(rows), matrix(NA, length(tables), length(columns)), simplify = F)
   names(newlist) <- rows
 
-# Populate empty list of matrices
+  # Populate empty list of matrices
   for (row in rows) {
     for (table in tables) {
       colnames(newlist[[row]]) <- columns
@@ -25,6 +25,6 @@ sweep_matrix_list <- function(matrix_list) {
     }
   }
 
-# Return object
+  # Return object
   return(newlist)
 }

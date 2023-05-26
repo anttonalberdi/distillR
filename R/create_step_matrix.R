@@ -8,10 +8,10 @@
 #' @export
 
 create_step_matrix <- function(def_decomp, def_level) {
-# Create table structure
+  # Create table structure
   def_table <- as.data.frame(cbind(def_decomp, def_level))
 
-# Create level 0 structure
+  # Create level 0 structure
   L0_splits <- rownames(def_table[((def_decomp == " ") | (def_decomp == "+") | (def_decomp == ",")) & (def_level == 0), ])
   L0_group <- c()
   group <- 1
@@ -23,11 +23,11 @@ create_step_matrix <- function(def_decomp, def_level) {
   }
   def_table[, "L0_group"] <- L0_group
 
-# If more hierarchical levels exist, iterate across levels.
+  # If more hierarchical levels exist, iterate across levels.
   max_level <- max(def_level)
   if (max_level > 0) {
     levels <- c(1:max_level)
-# Next levels
+    # Next levels
     for (level in levels) {
       splits <- rownames(def_table[((def_decomp == " ") | (def_decomp == "+") | (def_decomp == ",")) & (def_level <= level), ])
       level_group <- c()
@@ -47,9 +47,9 @@ create_step_matrix <- function(def_decomp, def_level) {
     }
   }
 
-# Polish matrix
+  # Polish matrix
   def_table[(def_table$def_decomp == "(") | (def_table$def_decomp == ")"), ] <- NA
 
-# Print matrix
+  # Print matrix
   return(def_table)
 }

@@ -12,12 +12,12 @@
 
 
 to.community <- function(GIFT_table, abundance_table, GIFT_db) {
-# Declare TSS function
+  # Declare TSS function
   tss <- function(abund) {
     sweep(abund, 2, colSums(abund), FUN = "/")
   }
 
-# Convert tables into data frames
+  # Convert tables into data frames
   if (!missing(GIFT_table)) {
     GIFT_table <- as.data.frame(GIFT_table)
   }
@@ -29,7 +29,7 @@ to.community <- function(GIFT_table, abundance_table, GIFT_db) {
   }
 
   if (missing(abundance_table)) {
-# If abundance table does not exist, create a mock abundance table of a single even community
+    # If abundance table does not exist, create a mock abundance table of a single even community
     cat("\tWARNING: As no relative abundance information was provided distillR\n")
     cat("\twill generate a single community with evenly weighed genomes\n")
     abundance_table <- rep(1 / nrow(GIFT_table), nrow(GIFT_table))
@@ -37,10 +37,10 @@ to.community <- function(GIFT_table, abundance_table, GIFT_db) {
     rownames(abundance_table) <- rownames(GIFT_table)
     colnames(abundance_table) <- "GIFT"
 
-# Declare single community
+    # Declare single community
     communities <- "GIFT"
   } else {
-# Declare communities from abundance table
+    # Declare communities from abundance table
     communities <- colnames(abundance_table)
   }
 

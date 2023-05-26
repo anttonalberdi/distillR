@@ -11,7 +11,7 @@
 
 
 to.functions <- function(elements_table, GIFT_db) {
-# Convert tables into data frames
+  # Convert tables into data frames
   if (!missing(elements_table)) {
     elements_table <- as.data.frame(elements_table)
   }

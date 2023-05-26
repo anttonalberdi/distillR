@@ -17,9 +17,9 @@ compute_GIFT <- function(definition, present) {
   def_decomp <- decompose_definition(definition)
   def_level <- set_levels(def_decomp)
   def_table <- create_step_matrix(def_decomp, def_level)
-# List levels
+  # List levels
   levels <- colnames(def_table)[c(3:ncol(def_table))]
-# Iterate calculation across levels
+  # Iterate calculation across levels
   for (level in rev(levels)) {
     definition <- distill_definition(definition, def_table, level, present)
     if (level != "L0_group") {
@@ -28,6 +28,6 @@ compute_GIFT <- function(definition, present) {
       def_table <- create_step_matrix(def_decomp, def_level)
     }
   }
-# Return value
+  # Return value
   return(as.numeric(definition))
 }
