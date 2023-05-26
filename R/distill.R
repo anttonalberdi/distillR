@@ -66,7 +66,7 @@ distill <- function(annotation_table, GIFT_db, genomecol = 2, annotcol = c(9, 10
     suppressWarnings(
       for (f in c(1:nrow(GIFT_db))) {
         definition <- GIFT_db[f, "Definition"]
-        GIFT <- compute_GIFT(definition, Identifier_vector)
+        GIFT <- compute_gift(definition, Identifier_vector)
         GIFT_vector <- c(GIFT_vector, GIFT)
       }
     )

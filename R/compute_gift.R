@@ -11,7 +11,7 @@
 #' )
 #' @export
 
-compute_GIFT <- function(definition, present) {
+compute_gift <- function(definition, present) {
   present <- sanitize_identifiers(present)
   definition <- sanitize_identifiers(definition)
   def_decomp <- decompose_definition(definition)

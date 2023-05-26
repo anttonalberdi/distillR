@@ -29,7 +29,9 @@ distill_definition <- function(definition, def_table, level, present) {
   }
 
   for (cluster in clusters) {
+
     subdef <- def_table_sub[def_table_sub$clusters == cluster, "def_decomp"]
+
     if (" " %in% subdef || "+" %in% subdef) {
       subdef2 <- subdef[(subdef != " ") & (subdef != "+")]
       indexes <-
@@ -58,6 +60,7 @@ distill_definition <- function(definition, def_table, level, present) {
       subdef2[subdef2 == "TRUE"] <- 1
       value <- round(max(as.numeric(subdef2)), 2)
     }
+
     if (level == "L0_group") {
       definition <- gsub(
         pattern = paste(subdef, collapse = ""),
