@@ -12,15 +12,11 @@
 
 
 to_functions <- function(elements_table, gift_db) {
-  # Convert tables into data frames
-  if (!missing(elements_table)) {
-    elements_table <- as.data.frame(elements_table)
-  }
-  if (!missing(gift_db)) {
-    gift_db <- as.data.frame(gift_db)
-  }
 
-  functions_table <- t(as.data.frame(t(elements_table)) %>%
+  functions_table <-
+    elements_table %>%
+    t() %>%
+    as.data.frame() %>%
     rownames_to_column("Code_element") %>%
     left_join(
       gift_db[, c("Code_element", "Code_function")],
@@ -29,7 +25,8 @@ to_functions <- function(elements_table, gift_db) {
     group_by(Code_function) %>%  # nolint
     summarise(across(where(is.numeric), ~ mean(.x, na.rm = TRUE))) %>%
     arrange(factor(Code_function, levels = unique(gift_db$Code_function))) %>%
-    column_to_rownames("Code_function"))
+    column_to_rownames("Code_function") %>%
+    t()
 
   return(functions_table)
 }
