@@ -31,32 +31,23 @@ distill_definition <- function(definition, def_table, level, present) {
     subdef <- def_table_sub[def_table_sub$clusters == cluster, "def_decomp"]
 
     if (" " %in% subdef || "+" %in% subdef) {
-      subdef2 <- subdef[(subdef != " ") & (subdef != "+")]
-      indexes <-
-        grepl("_", subdef2, fixed = TRUE) |
-        grepl("[A-Z]", subdef2, fixed = FALSE)
-      subdef2[indexes] <- subdef2[indexes] %in% c(present)
-      subdef2[subdef2 == "FALSE"] <- 0
-      subdef2[subdef2 == "TRUE"] <- 1
-      value <- round(mean(as.numeric(subdef2)), 2)
+      value <-
+        subdef[(subdef != " ") & (subdef != "+")] %>%
+        process_subdef2(present) %>%
+        mean() %>%
+        round(2)
     } else if ("," %in% subdef) {
-      subdef2 <- subdef[subdef != ","]
-      indexes <-
-        grepl("_", subdef2, fixed = TRUE) |
-        grepl("[A-Z]", subdef2, fixed = FALSE)
-      subdef2[indexes] <- subdef2[indexes] %in% c(present)
-      subdef2[subdef2 == "FALSE"] <- 0
-      subdef2[subdef2 == "TRUE"] <- 1
-      value <- round(max(as.numeric(subdef2), na.rm = TRUE), 2)
+      value <-
+        subdef[subdef != ","] %>%
+        process_subdef2(present) %>%
+        max() %>%
+        round(2)
     } else {
-      subdef2 <- subdef
-      indexes <-
-        grepl("_", subdef2, fixed = TRUE) |
-        grepl("[A-Z]", subdef2, fixed = FALSE)
-      subdef2[indexes] <- subdef2[indexes] %in% c(present)
-      subdef2[subdef2 == "FALSE"] <- 0
-      subdef2[subdef2 == "TRUE"] <- 1
-      value <- round(max(as.numeric(subdef2), na.rm = TRUE), 2)
+      value <-
+        subdef %>%
+        process_subdef2(present) %>%
+        max() %>%
+        round(2)
     }
 
     if (level == "L0_group") {
@@ -77,4 +68,15 @@ distill_definition <- function(definition, def_table, level, present) {
   }
 
   return(definition)
+}
+
+
+process_subdef2 <- function(subdef2, present) {
+  indexes <-
+    grepl("_", subdef2, fixed = TRUE) |
+    grepl("[A-Z]", subdef2, fixed = FALSE)
+  subdef2[indexes] <- subdef2[indexes] %in% c(present)
+  subdef2[subdef2 == "FALSE"] <- 0
+  subdef2[subdef2 == "TRUE"] <- 1
+  return(subdef2 %>% as.numeric())
 }
