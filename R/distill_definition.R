@@ -11,22 +11,20 @@
 #' distill_definition(definition, def_table, level, present)
 #' @export
 
+
 # UNDER DEVELOPMENT
 distill_definition <- function(definition, def_table, level, present) {
+
   if (level == "L0_group") {
     def_table$clusters <- 0
-    def_table_sub <- def_table[complete.cases(def_table[, level]), ]
-    clusters <- unique(def_table_sub$clusters)
   } else if (level == "L1_group") {
     def_table$clusters <- def_table[, "L0_group"]
-    def_table_sub <- def_table[complete.cases(def_table[, level]), ]
-    clusters <- unique(def_table_sub$clusters)
   } else {
     def_table$clusters <-
       do.call(paste, c(def_table[, c(3:(ncol(def_table) - 1))], sep = "-"))
-    def_table_sub <- def_table[complete.cases(def_table[, level]), ]
-    clusters <- unique(def_table_sub$clusters)
   }
+  def_table_sub <- def_table[complete.cases(def_table[, level]), ]
+  clusters <- unique(def_table_sub$clusters)
 
   for (cluster in clusters) {
 
@@ -49,7 +47,7 @@ distill_definition <- function(definition, def_table, level, present) {
       subdef2[indexes] <- subdef2[indexes] %in% c(present)
       subdef2[subdef2 == "FALSE"] <- 0
       subdef2[subdef2 == "TRUE"] <- 1
-      value <- round(max(as.numeric(subdef2)), 2)
+      value <- round(max(as.numeric(subdef2), na.rm = TRUE), 2)
     } else {
       subdef2 <- subdef
       indexes <-
@@ -58,7 +56,7 @@ distill_definition <- function(definition, def_table, level, present) {
       subdef2[indexes] <- subdef2[indexes] %in% c(present)
       subdef2[subdef2 == "FALSE"] <- 0
       subdef2[subdef2 == "TRUE"] <- 1
-      value <- round(max(as.numeric(subdef2)), 2)
+      value <- round(max(as.numeric(subdef2), na.rm = TRUE), 2)
     }
 
     if (level == "L0_group") {
