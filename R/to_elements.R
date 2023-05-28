@@ -12,13 +12,6 @@
 #' @export
 
 to_elements <- function(gift_table, gift_db) {
-  # Convert tables into data frames
-  # if (!missing(gift_table)) {
-  #   gift_table <- as.data.frame(gift_table)
-  # }
-  # if (!missing(gift_db)) {
-  #   gift_db <- as.data.frame(gift_db)
-  # }
 
   elements_table <-
     gift_table %>%
