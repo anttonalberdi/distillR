@@ -9,18 +9,12 @@
 #' @export
 
 set_levels <- function(definition_decomposed) {
-  definition_levels <- list()
+  definition_levels <- integer(length(definition_decomposed))
   level <- 0
   for (i in seq_along(definition_decomposed)) {
     chr <- definition_decomposed[i]
-    if (chr == "(") {
-      level <- level + 1
-    }
-    if (chr == ")") {
-      level <- level - 1
-    }
-    definition_levels[[i]] <- level
+    level <- level + (chr == "(") - (chr == ")")
+    definition_levels[i] <- level
   }
-
-  return(definition_levels %>% as.integer())
+  return(definition_levels)
 }
