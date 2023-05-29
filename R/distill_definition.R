@@ -34,37 +34,31 @@ distill_definition <- function(definition, def_table, level, present) {
       value <-
         subdef[(subdef != " ") & (subdef != "+")] %>%
         process_subdef2(present) %>%
-        mean() %>%
-        round(2)
+        mean()
     } else if ("," %in% subdef) {
       value <-
         subdef[subdef != ","] %>%
         process_subdef2(present) %>%
-        max() %>%
-        round(2)
+        max()
     } else {
       value <-
         subdef %>%
-        process_subdef2(present) %>%
-        max() %>%
-        round(2)
+        process_subdef2(present)
+      value <- max(0, value)
     }
 
     if (level == "L0_group") {
-      definition <- gsub(
-        pattern = paste(subdef, collapse = ""),
-        replacement = value,
-        x = definition,
-        fixed = TRUE
-      )
+      pattern <- paste(subdef, collapse = "")
     } else {
-      definition <- gsub(
-        pattern = paste(c("(", subdef, ")"), collapse = ""),
-        replacement = value,
-        x = definition,
-        fixed = TRUE
-      )
+      pattern <- paste(c("(", subdef, ")"), collapse = "")
     }
+
+    definition <- gsub(
+      pattern = pattern,
+      replacement = value %>% round(2),
+      x = definition,
+      fixed = TRUE
+    )
   }
 
   return(definition)
