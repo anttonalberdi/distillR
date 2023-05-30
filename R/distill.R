@@ -18,9 +18,12 @@
 #' stats = TRUE)
 #' @export
 
+annotation_table <- distillR::gene_annotations
+
 distill <- function(
     annotation_table, giftdb,
-    genomecol = 2, annotcol = c(9, 10, 19)
+    genomecol = 2,
+    annotcol = c(9, 10, 19)
   ) {
   annotation_table <- as.data.frame(annotation_table)
   giftdb <- as.data.frame(giftdb)
@@ -49,20 +52,20 @@ distill <- function(
 
     # Create vector of identifiers
     identifier_vector <-
-      str_extract(  # Parse identifiers (KEGG|EC)
+      stringr::str_extract(  # Parse identifiers (KEGG|EC)
         string = c(unlist(c(annotations_genome[, annotcol]))),
         pattern = "K[0-9][0-9][0-9][0-9][0-9]|(?<=\\[EC:).+?(?=\\])"
       ) %>%
       unique() %>% # Dereplicate
       na.exclude() %>%
-      strsplit(split = " ") %>%
+      stringr::str_split(pattern = " ") %>%
       unlist() %>%
       .[!grepl(pattern = "-", x = ., fixed = TRUE)] # Remove ambiguous EC codes  # nolint
 
     # Calculate GIFTs for each Pathway and append to vector
     gift_vector <- c()
-    for (f in seq_len(nrow(giftdb))) {
-      definition <- giftdb[f, "Definition"]
+    for (row_id in seq_len(nrow(giftdb))) {
+      definition <- giftdb[row_id, "Definition"]
       gift <- compute_gift(definition, identifier_vector)
       gift_vector <- c(gift_vector, gift)
     }
