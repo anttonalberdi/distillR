@@ -5,13 +5,7 @@
 \title{Generates a gene presence-based genome-Inferred Functional Trait (GIFT) table
 at the gene bundle level from a bacterial genome annotation table}
 \usage{
-distill(
-  annotation_table,
-  giftdb,
-  genomecol = 2,
-  annotcol = c(9, 10, 19),
-  stats = TRUE
-)
+distill(annotation_table, giftdb, genomecol = 2, annotcol = c(9, 10, 19))
 }
 \arguments{
 \item{annotation_table}{Table containing genome identifiers and gene

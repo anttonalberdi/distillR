@@ -20,7 +20,7 @@
 
 distill <- function(
     annotation_table, giftdb,
-    genomecol = 2, annotcol = c(9, 10, 19), stats = TRUE
+    genomecol = 2, annotcol = c(9, 10, 19)
   ) {
   # Sanity check
   if (missing(annotation_table))
@@ -96,30 +96,6 @@ distill <- function(
     # Append GIFT vector of the genome to the GIFT table containing GIFT values
     # of all genomes
     gift_table <- rbind(gift_table, gift_vector)
-  }
-
-  # Report statistics
-  if (stats == TRUE) {
-    db_identifiers <- unique(unlist(
-      strsplit(
-        x = paste(giftdb$Definition, collapse = " "),
-        split = " |\\,|\\)|\\(|\\+")
-      )
-    )
-    length_db <- length(db_identifiers)
-    length_data <- length(identifier_vector)
-    length_intersect <- length(intersect(db_identifiers, identifier_vector))
-    cat("\nIdentifiers in the annotation table:", length_data, "\n")
-    cat("Identifiers in the database:", length_db, "\n")
-    cat("Identifiers in both:", length_intersect, "\n")
-    cat(paste0(
-      "Percentage of annotation table identifiers used for distillation: ",
-      round(length_intersect / length_data * 100, 2), "%\n"
-    ))
-    cat(paste0(
-      "Percentage of database identifiers used for distillation: ",
-      round(length_intersect / length_db * 100, 2), "%\n"
-    ))
   }
 
   # Format output GIFT table
