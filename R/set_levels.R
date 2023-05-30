@@ -3,18 +3,18 @@
 #'
 #' @param definition_decomposed A decomposed definition string of a given
 #' metabolic function (produced by decompose_definition())
-#' @return A vector of hierarchical levels per character in string
+#' @return A vector of hierarchical levels per symbol in definition_decomposed
 #' @examples
 #' set_levels(definition_decomposed)
 #' @export
 
 set_levels <- function(definition_decomposed) {
-  definition_levels <- integer(length(definition_decomposed))
+  definition_levels <- definition_decomposed %>% length() %>% length()
   level <- 0
-  for (i in seq_along(definition_decomposed)) {
-    chr <- definition_decomposed[i]
+  for (position in seq_along(definition_decomposed)) {
+    chr <- definition_decomposed[position]
     level <- level + (chr == "(") - (chr == ")")
-    definition_levels[i] <- level
+    definition_levels[position] <- level
   }
   return(definition_levels)
 }

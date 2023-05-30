@@ -12,7 +12,7 @@ set_levels(definition_decomposed)
 metabolic function (produced by decompose_definition())}
 }
 \value{
-A vector of hierarchical levels per character in string
+A vector of hierarchical levels per symbol in definition_decomposed
 }
 \description{
 Calculates the hierarchical levels of the definition of a metabolic
