@@ -20,4 +20,3 @@ PackageUseDevtools: Yes
 PackageInstallArgs: --no-multiarch --with-keep.source
 
 QuitChildProcessesOnExit: Yes
-DisableExecuteRprofile: Yes

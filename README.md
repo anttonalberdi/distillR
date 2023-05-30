@@ -1,3 +1,5 @@
+[![R-CMD-check](https://github.com/anttonalberdi/distillR/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/anttonalberdi/distillR/actions/workflows/R-CMD-check.yaml)
+
 # distillR
 
 distillR is an R package for distilling functional annotations of bacterial genomes and metagenomes into meaningful quantitative metrics defined as Genome-Inferred Functional Traits (GIFT).
