@@ -22,23 +22,7 @@ distill <- function(
     annotation_table, giftdb,
     genomecol = 2, annotcol = c(9, 10, 19)
   ) {
-  # Sanity check
-  if (missing(annotation_table))
-    stop("genome annotation table is missing")
-  if (missing(giftdb))
-    stop("Pathway database is missing")
-  if (length(genomecol) != 1)
-    stop(
-      "The argument genomecol must be an integer indicating the number of the ",
-      "column containing the genome identifiers in the annotations table"
-    )
-  if (missing(annotcol))
-    stop("Specify at least one column containing functional annotations")
-
-  # Convert annotation table to data frame
   annotation_table <- as.data.frame(annotation_table)
-
-  # Convert pathway database to data frame
   giftdb <- as.data.frame(giftdb)
 
   # List genomes
@@ -46,15 +30,6 @@ distill <- function(
     genomes <- unique(annotation_table[, genomecol])
   } else {
     genomes <- "GIFT"
-  }
-
-  # Verbosity
-  if (length(genomes) > 1) {
-    cat("Calculating GIFTs for", length(genomes), "genomes:\n")
-  } else {
-    cat("Calculating GIFTs for a single genome.\n")
-    cat("\tNote: If you were expecting multiple genomes\n")
-    cat("\tensure the genome identifier column is correctly specified.\n")
   }
 
   # Calculate GIFTs for each genome iteratively
