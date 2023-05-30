@@ -86,13 +86,11 @@ distill <- function(
 
     # Calculate GIFTs for each Pathway and append to vector
     gift_vector <- c()
-    suppressWarnings(
-      for (f in seq_len(nrow(giftdb))) {
-        definition <- giftdb[f, "Definition"]
-        gift <- compute_gift(definition, identifier_vector)
-        gift_vector <- c(gift_vector, gift)
-      }
-    )
+    for (f in seq_len(nrow(giftdb))) {
+      definition <- giftdb[f, "Definition"]
+      gift <- compute_gift(definition, identifier_vector)
+      gift_vector <- c(gift_vector, gift)
+    }
     # Append GIFT vector of the genome to the GIFT table containing GIFT values
     # of all genomes
     gift_table <- rbind(gift_table, gift_vector)
