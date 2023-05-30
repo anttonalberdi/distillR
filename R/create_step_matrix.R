@@ -17,8 +17,7 @@ create_step_matrix <- function(def_decomp, def_level) {
   # Create level 0 structure
   level0_splits <- rownames(
     def_table[
-      ((def_decomp == " ") | (def_decomp == "+") | (def_decomp == ",")) &
-      (def_level == 0),
+      (def_decomp %in% c(" ", "+", ",")) & (def_level == 0),
     ]
   )
   level0_group <- c()
@@ -60,7 +59,7 @@ create_step_matrix <- function(def_decomp, def_level) {
 
   # Polish matrix
   def_table[
-    (def_table$def_decomp == "(") | (def_table$def_decomp == ")"),
+    def_table$def_decomp %in% c("(", ")"),
   ] <- NA
 
   # Print matrix
