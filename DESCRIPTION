@@ -20,8 +20,12 @@ Imports:
     tibble
 Depends:
     R (>= 2.10),
-    tidyverse
 Suggests:
-    testthat (>= 3.0.0)
+    covr,
+    knitr,
+    rmarkdown,
+    testthat (>= 3.0.0),
+    tidyverse
 Config/testthat/edition: 3
 LazyData: true
+VignetteBuilder: knitr
