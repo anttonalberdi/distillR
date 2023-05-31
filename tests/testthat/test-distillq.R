@@ -1,5 +1,5 @@
 # nolint start
-# test_that("multiplication works", {
+# test_that("Test distillq", {
 #   actual <- distillq(
 #     gene_count_table = distillR::gene_expression,
 #     annotation_table = distillR::gene_annotations,
