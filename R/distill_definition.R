@@ -74,5 +74,6 @@ process_subdef2 <- function(subdef2, present) {
   subdef2[indexes] <- subdef2[indexes] %in% c(present)
   subdef2[subdef2 == "FALSE"] <- 0
   subdef2[subdef2 == "TRUE"] <- 1
+  subdef2[is.numeric(subdef2)] <- NA
   return(subdef2 %>% as.numeric())
 }
