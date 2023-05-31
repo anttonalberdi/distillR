@@ -12,7 +12,12 @@
 #' @importFrom stringr str_extract
 #' @return A gene bundle-level GIFT table
 #' @examples
-#' distill(distillR::gene_annotations, distillR::GIFT_db, genomecol = 2, annotcol = c(9, 10, 19))
+#' distill(
+#'     distillR::gene_annotations,
+#'     distillR::GIFT_db,
+#'     genomecol = 2,
+#'     annotcol = c(9, 10, 19)
+#' )
 #' @export
 
 distill <- function(
