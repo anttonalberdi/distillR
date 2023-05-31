@@ -4,11 +4,12 @@
 #' @param gift_db Table containing definitions and metadata of GIFTs (default:
 #' database provided by distillR)
 #' @return A GIFT table aggregated at the element level
-#' @import tidyverse
 #' @import dplyr
 #' @import tibble
 #' @examples
+#' \dontrun{
 #' to.elements(gift_table, gift_db)
+#' }
 #' @export
 
 to_elements <- function(gift_table, gift_db) {

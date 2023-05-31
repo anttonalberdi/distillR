@@ -19,5 +19,7 @@ Calculates the hierarchical levels of the definition of a metabolic
 pathway/module
 }
 \examples{
+\dontrun{
 set_levels(definition_decomposed)
+}
 }

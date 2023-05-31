@@ -3,11 +3,12 @@
 #' @param functions_table Function-level GIFT table
 #' @param gift_db Table containing definitions and metadata of GIFTs (default:
 #' database provided by distillR)
-#' @import tidyverse
 #' @import dplyr
 #' @return A table with Biosynthesis, Degradation and Overall MCI values
 #' @examples
+#' \dontrun{
 #' to.domains(functions_table, gift_db)
+#' }
 #' @export
 
 

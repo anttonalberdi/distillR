@@ -24,5 +24,7 @@ Generates the scores of each hierarchical level of a gene bundle required to
 calculate gene presence-based GIFTs
 }
 \examples{
+\dontrun{
 distill_definition(definition, def_table, level, present)
+}
 }

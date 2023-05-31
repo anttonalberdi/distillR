@@ -5,7 +5,9 @@
 #' metabolic function (produced by decompose_definition())
 #' @return A vector of hierarchical levels per symbol in definition_decomposed
 #' @examples
+#' \dontrun{
 #' set_levels(definition_decomposed)
+#' }
 #' @export
 
 set_levels <- function(definition_decomposed) {

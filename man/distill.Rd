@@ -19,8 +19,6 @@ genome identifiers}
 
 \item{annotcol}{Column index(es) of the annotation_table in which to search
 for gene identifiers (e.g., c(3,4,5))}
-
-\item{stats}{Whether to calculate and print distillation statistics}
 }
 \value{
 A gene bundle-level GIFT table
@@ -30,7 +28,5 @@ Generates a gene presence-based genome-Inferred Functional Trait (GIFT) table
 at the gene bundle level from a bacterial genome annotation table
 }
 \examples{
-distill(annotation_table, giftdb, genomecol, annotcol, stats)
-distill(annotation_table, giftdb, genomecol = 2, annotcol = c(9, 10, 19),
-stats = TRUE)
+distill(distillR::gene_annotations, distillR::GIFT_db, genomecol = 2, annotcol = c(9, 10, 19))
 }

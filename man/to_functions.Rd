@@ -19,5 +19,7 @@ A GIFT table aggregated at the function level
 Aggregates element-level GIFTs into the function level
 }
 \examples{
+\dontrun{
 to.functions(elements_table, gift_db)
+}
 }

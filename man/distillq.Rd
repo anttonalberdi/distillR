@@ -43,8 +43,12 @@ tables at the gene bundle level from bacterial genome annotation and gene
 count tables
 }
 \examples{
+\dontrun{
 distillq(gene_count_table, annotation_table, GIFT_db, genecol, genomecol,
 keggcol, eccol, pepcol)
+}
+\dontrun{
 distillq(gene_count_table, annotation_table, GIFT_db, genecol = 1,
 genomecol = 2, keggcol = 9, eccol = c(10, 19), pepcol = 12)
+}
 }

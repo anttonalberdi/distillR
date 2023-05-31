@@ -9,22 +9,18 @@
 #' genome identifiers
 #' @param annotcol Column index(es) of the annotation_table in which to search
 #' for gene identifiers (e.g., c(3,4,5))
-#' @param stats Whether to calculate and print distillation statistics
 #' @importFrom stringr str_extract
 #' @return A gene bundle-level GIFT table
 #' @examples
-#' distill(annotation_table, giftdb, genomecol, annotcol, stats)
-#' distill(annotation_table, giftdb, genomecol = 2, annotcol = c(9, 10, 19),
-#' stats = TRUE)
+#' distill(distillR::gene_annotations, distillR::GIFT_db, genomecol = 2, annotcol = c(9, 10, 19))
 #' @export
-
-annotation_table <- distillR::gene_annotations
 
 distill <- function(
     annotation_table, giftdb,
     genomecol = 2,
     annotcol = c(9, 10, 19)
   ) {
+
   annotation_table <- as.data.frame(annotation_table)
   giftdb <- as.data.frame(giftdb)
 
@@ -52,12 +48,12 @@ distill <- function(
 
     # Create vector of identifiers
     identifier_vector <-
+      c(unlist(c(annotations_genome[, annotcol]))) %>%
       stringr::str_extract(  # Parse identifiers (KEGG|EC)
-        string = c(unlist(c(annotations_genome[, annotcol]))),
         pattern = "K[0-9][0-9][0-9][0-9][0-9]|(?<=\\[EC:).+?(?=\\])"
       ) %>%
       unique() %>% # Dereplicate
-      na.exclude() %>%
+      stats::na.exclude() %>%
       stringr::str_split(pattern = " ") %>%
       unlist() %>%
       .[!grepl(pattern = "-", x = ., fixed = TRUE)] # Remove ambiguous EC codes  # nolint

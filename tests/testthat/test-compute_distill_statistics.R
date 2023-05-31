@@ -5,6 +5,6 @@ test_that("Compute distill statistics", {
     giftdb = distillR::GIFT_db
   )
   # write_rds(actual, test_path("fixtures", "distill_statistics.rds"))  # nolint
-  expected <- read_rds(test_path("fixtures", "distill_statistics.rds"))
+  expected <- readr::read_rds(test_path("fixtures", "distill_statistics.rds"))
   expect_equal(actual, expected)
 })

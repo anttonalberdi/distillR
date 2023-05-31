@@ -14,15 +14,18 @@
 #' genome identifiers
 #' @param annotcol Column index(es) of the annotation_table in which to search
 #' for gene identifiers (e.g., c(3,4,5))
-#' @import tidyverse
 #' @importFrom stringr str_extract str_match_all str_count
 #' @importFrom reshape2 colsplit
 #' @return A list of quantitative GIFT tables (one table per genome)
 #' @examples
+#' \dontrun{
 #' distillq(gene_count_table, annotation_table, GIFT_db, genecol, genomecol,
 #' keggcol, eccol, pepcol)
+#' }
+#' \dontrun{
 #' distillq(gene_count_table, annotation_table, GIFT_db, genecol = 1,
 #' genomecol = 2, keggcol = 9, eccol = c(10, 19), pepcol = 12)
+#' }
 #' @export
 
 # UNDER DEVELOPMENT
@@ -51,8 +54,8 @@ distillq <- function(gene_count_table, annotation_table, GIFT_db, genecol = 1, g
     filter(.[[genecol]] %in% intersect) %>% # filter overlapping genes
     select(c(genecol, genomecol, annotcol)) %>% # select relevant columns
     # Process annotations
-    unite("Annotation", 3:ncol(.), remove = T, sep = " ") %>% # paste annotation columns into a single column
-    mutate(Annotation = str_extract_all(Annotation, "K[0-9][0-9][0-9][0-9][0-9]|(?<=\\[EC:).+?(?=\\])")) %>% # Extract identifiers
+    tidyr::unite("Annotation", 3:ncol(.), remove = T, sep = " ") %>% # paste annotation columns into a single column
+    mutate(Annotation = stringr::str_extract_all(Annotation, "K[0-9][0-9][0-9][0-9][0-9]|(?<=\\[EC:).+?(?=\\])")) %>% # Extract identifiers
     rowwise() %>%
     mutate(Annotation = list(unlist(strsplit(Annotation, " ")))) %>% # Separate multiple EC annotations (e.g. "4.3.2.5.7 4.5.2.34" into "4.3.2.5.7","4.5.2.34")
     ungroup() %>%
@@ -84,7 +87,7 @@ distillq <- function(gene_count_table, annotation_table, GIFT_db, genecol = 1, g
     # Subset per Genome
     annotation_gene_count_filt <- annotation_gene_count_table %>%
       filter(Genome == Genomes[m]) %>% # filter annotations corresponding to the genome
-      filter(!map_lgl(Annotation, is.null)) %>% # remove genes without annotations
+      filter(!purrr::map_lgl(Annotation, is.null)) %>% # remove genes without annotations
       select(-c(1, 2)) # remove gene and genome columns
 
     if (nrow(annotation_gene_count_filt) > 0) {

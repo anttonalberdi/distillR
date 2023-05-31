@@ -19,5 +19,7 @@ A GIFT table aggregated at the element level
 Merges bundle-level GIFTs into the element level
 }
 \examples{
+\dontrun{
 to.elements(gift_table, gift_db)
+}
 }

@@ -3,11 +3,12 @@
 #' @param elements_table Element-level GIFT table
 #' @param gift_db Table containing definitions and metadata of GIFTs (default:
 #' database provided by distillR)
-#' @import tidyverse
 #' @import dplyr
 #' @return A GIFT table aggregated at the function level
 #' @examples
+#' \dontrun{
 #' to.functions(elements_table, gift_db)
+#' }
 #' @export
 
 

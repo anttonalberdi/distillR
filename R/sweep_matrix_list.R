@@ -1,11 +1,15 @@
-#' #' Sweeps list names and row names in a list of matrices
-#' #'
-#' #' @param matrix_list A list of matrices (e.g. qGIFT_table yielded by
+#' Sweeps list names and row names in a list of matrices
+#'
+#' @param matrix_list A list of matrices (e.g. qGIFT_table yielded by
 #' distillq())
-#' #' @return A list of matrices with sweeped list names and row names
-#' #' @examples
-#' #' sweep_matrix_list(matrix_list)
-#' #' @export
+#'
+#' @return  A list of matrices with sweeped list names and row names
+#'
+#' @examples
+#' \dontrun{
+#' sweep_matrix_list(matrix_list)
+#' }
+#' @export
 
 sweep_matrix_list <- function(matrix_list) {
   # Declare vectors

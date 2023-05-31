@@ -5,11 +5,12 @@
 #' and Genomes in rows. Required for computing sample-specific GIFT values
 #' @param gift_db Table containing definitions and metadata of GIFTs (default:
 #' database provided by distillR)
-#' @import tidyverse
 #' @import dplyr
 #' @return A matirx with community-level GIFTs per sample
 #' @examples
+#' \dontrun{
 #' to.community(functions_table, abundance_table, gift_db)
+#' }
 #' @export
 
 

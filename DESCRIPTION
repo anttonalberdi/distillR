@@ -14,10 +14,12 @@ Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.2.3
 Imports:
     dplyr,
-    purrr,
     reshape2,
     stringr,
-    tibble
+    tibble,
+    purrr,
+    stats,
+    tidyr
 Depends:
     R (>= 2.10),
 Suggests:
@@ -25,7 +27,9 @@ Suggests:
     knitr,
     rmarkdown,
     testthat (>= 3.0.0),
-    tidyverse
+    tidyverse,
+    qpdf,
+    readr
 Config/testthat/edition: 3
 LazyData: true
 VignetteBuilder: knitr

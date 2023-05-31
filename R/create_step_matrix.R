@@ -6,8 +6,6 @@
 #' @param def_level Vector of the hierarchical level of decomposed units of a
 #' definition string of a metabolic pathway/module (produced by set_levels())
 #' @return A decomposed hierarchy matrix
-#' @examples
-#' create_step_matrix(definition_decomposed, definition_levels)
 #' @export
 
 create_step_matrix <- function(def_decomp, def_level) {

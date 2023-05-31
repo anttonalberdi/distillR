@@ -4,8 +4,7 @@
 #' @param present Vector of identifiers present in the genome
 #' @return A GIFT value
 #' @examples
-#' compute_GIFT(definition, present)
-#' compute_GIFT(
+#' compute_gift(
 #'   "K01580 (K13524,K07250,K00823,K16871) (K00135,(K00139,K17761))",
 #'   c("K01580", "K00823", "K16871")
 #' )

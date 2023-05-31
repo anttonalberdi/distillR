@@ -21,6 +21,3 @@ A decomposed hierarchy matrix
 Creates a matrix that specifies the hierarchical structure of the definition
 of a metabolic pathway/module
 }
-\examples{
-create_step_matrix(definition_decomposed, definition_levels)
-}

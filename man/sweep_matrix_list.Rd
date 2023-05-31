@@ -2,24 +2,22 @@
 % Please edit documentation in R/sweep_matrix_list.R
 \name{sweep_matrix_list}
 \alias{sweep_matrix_list}
-\title{#' Sweeps list names and row names in a list of matrices
-#'
-#' @param matrix_list A list of matrices (e.g. qGIFT_table yielded by
-distillq())
-#' @return A list of matrices with sweeped list names and row names
-#' @examples
-#' sweep_matrix_list(matrix_list)
-#' @export}
+\title{Sweeps list names and row names in a list of matrices}
 \usage{
 sweep_matrix_list(matrix_list)
 }
+\arguments{
+\item{matrix_list}{A list of matrices (e.g. qGIFT_table yielded by
+distillq())}
+}
+\value{
+A list of matrices with sweeped list names and row names
+}
 \description{
-#' Sweeps list names and row names in a list of matrices
-#'
-#' @param matrix_list A list of matrices (e.g. qGIFT_table yielded by
-distillq())
-#' @return A list of matrices with sweeped list names and row names
-#' @examples
-#' sweep_matrix_list(matrix_list)
-#' @export
+Sweeps list names and row names in a list of matrices
+}
+\examples{
+\dontrun{
+sweep_matrix_list(matrix_list)
+}
 }
