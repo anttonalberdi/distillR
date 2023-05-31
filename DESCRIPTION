@@ -28,7 +28,6 @@ Suggests:
     rmarkdown,
     testthat (>= 3.0.0),
     tidyverse,
-    qpdf,
     readr
 Config/testthat/edition: 3
 LazyData: true
