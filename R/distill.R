@@ -42,7 +42,7 @@ distill <- function(
   for (genome in genomes) {
     m <- m + 1
     if (length(genomes) > 1) {
-      cat("\t", genome, " (", m, "/", length(genomes), ")\n", sep = "")
+      # cat("\t", genome, " (", m, "/", length(genomes), ")\n", sep = "")
       # Fetch genome annotations
       annotations_genome <-
         annotation_table[annotation_table[, genomecol] == genome, ]
