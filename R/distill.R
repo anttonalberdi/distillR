@@ -53,9 +53,12 @@ distill <- function(
 
     # Create vector of identifiers
     identifier_vector <-
-      c(unlist(c(annotations_genome[, annotcol]))) %>%
+      annotations_genome[, annotcol] %>%
+      c() %>%
+      unlist() %>%
+      c() %>%
       stringr::str_extract(  # Parse identifiers (KEGG|EC)
-        pattern = "K[0-9][0-9][0-9][0-9][0-9]|(?<=\\[EC:).+?(?=\\])"
+        pattern = "K[0-9]{5}|(?<=\\[EC:).+?(?=\\])"
       ) %>%
       unique() %>% # Dereplicate
       stats::na.exclude() %>%
