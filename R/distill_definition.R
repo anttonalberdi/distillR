@@ -62,6 +62,14 @@ distill_definition <- function(definition, def_table, level, present) {
 }
 
 
+#' Process subdef2 by checking which elements in present are in subdef2
+#'
+#' @param subdef2 subdefinition from distill_definition
+#' @param present vector of present enzymes (KOs, ECs, peptidases)
+#'
+#' @return numeric vector of presences, absences and NAs
+#' @noRd
+
 process_subdef2 <- function(subdef2, present) {
   indexes <-
     grepl("_", subdef2, fixed = TRUE) |
