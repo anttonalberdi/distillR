@@ -37,16 +37,11 @@ distill_definition <- function(definition, def_table, level, present) {
         subdef[(subdef != " ") & (subdef != "+")] %>%
         process_subdef2(present) %>%
         mean()
-    } else if ("," %in% subdef) {
+    } else {
       value <-
         subdef[subdef != ","] %>%
         process_subdef2(present) %>%
-        max()
-    } else {
-      value <-
-        subdef %>%
-        process_subdef2(present)
-      value <- max(0, value)
+        max(0, .)
     }
 
     if (level == "L0_group") {
