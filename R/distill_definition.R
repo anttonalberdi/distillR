@@ -51,8 +51,8 @@ distill_definition <- function(definition, definition_table, level, present) {
 
 #' Fill the defintion_table with cluster information depending on the level
 #' we are analyzing
-#' @param definition_table
-#' @param level
+#' @param definition_table defintion table
+#' @param level level being analyzed
 #'
 #' @return definition_table with the column clusters attached/overwritten
 #' @noRd
