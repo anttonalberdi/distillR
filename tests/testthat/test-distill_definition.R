@@ -1,4 +1,4 @@
-test_that("Test distill_definition", {
+test_that("Test distill_definition on L2_group", {
   definition <-
     readr::read_rds(test_path("fixtures", "definition.rds"))
   present <-
@@ -11,9 +11,21 @@ test_that("Test distill_definition", {
   expect_equal(actual, expected)
 })
 
+test_that("Test process_cluster", {
+  expect_true(TRUE)
+})
 
-test_that("Test process_subdef2", {
+
+test_that("Test process_subdef2 on link", {
+  # subdef <-
+  # subdef2 <- subdef[(subdef != " ") & (subdef != "+")]
+  # present <-
+  # actual <- process_subdef2(subdef2, present)
+  # expected <-
+  expect_true(TRUE)
+})
 
 
-
+test_that("Test get_value", {
+  expect_true(TRUE)
 })

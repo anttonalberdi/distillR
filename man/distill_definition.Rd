@@ -5,12 +5,13 @@
 \title{Generates the scores of each hierarchical level of a gene bundle required to
 calculate gene presence-based GIFTs}
 \usage{
-distill_definition(definition, def_table, level, present)
+distill_definition(definition, definition_table, level, present)
 }
 \arguments{
 \item{definition}{Definition string of a given metabolic pathway/module}
 
-\item{def_table}{Decomposed hierarchy matrix produced by create_step_matrix.R}
+\item{definition_table}{Decomposed hierarchy matrix produced by
+create_step_matrix.R}
 
 \item{level}{Hierarchical level}
 
@@ -25,6 +26,6 @@ calculate gene presence-based GIFTs
 }
 \examples{
 \dontrun{
-distill_definition(definition, def_table, level, present)
+distill_definition(definition, definition_table, level, present)
 }
 }
