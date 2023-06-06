@@ -117,4 +117,5 @@ get_value <- function(subdef, present) {
       process_subdef2(present) %>%
       max(0, .)
   }
+  return(value)
 }
