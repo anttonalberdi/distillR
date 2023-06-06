@@ -36,7 +36,11 @@ distill <- function(
     genomes <- "GIFT"
   }
 
-  gift_table <- compose_gift_table(genomes, annotation_table, genomecol, annotcol, giftdb)
+  gift_table <- compose_gift_table(
+    genomes,
+    annotation_table, genomecol, annotcol,
+    giftdb
+  )
 
   rownames(gift_table) <- genomes
   colnames(gift_table) <- giftdb$Code_bundle
@@ -60,11 +64,13 @@ compose_identifier_vector <- function(annotations_genome, annotcol) {
     stringr::str_split(pattern = " ") %>%
     unlist() %>%
     .[!grepl(pattern = "-", x = ., fixed = TRUE)] # Remove ambiguous EC codes  # nolint
+
   return(identifier_vector)
+
 }
 
 
-compose_gift_vector <- function(identifier_vector, giftdb=distillR::GIFT_db) {
+compose_gift_vector <- function(identifier_vector, giftdb = distillR::GIFT_db) {
   gift_list <- list()
   for (row_id in seq_len(nrow(giftdb))) {
     definition <- giftdb[row_id, "Definition"]
@@ -76,7 +82,11 @@ compose_gift_vector <- function(identifier_vector, giftdb=distillR::GIFT_db) {
 }
 
 
-compose_gift_table <- function(genomes, annotation_table, genomecol, annotcol, giftdb) {
+compose_gift_table <- function(
+    genomes,
+    annotation_table, genomecol, annotcol,
+    giftdb
+  ) {
   gift_table <- c()
   m <- 0
   for (genome in genomes) {
