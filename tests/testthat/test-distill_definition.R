@@ -11,10 +11,17 @@ test_that("Test distill_definition on L2_group", {
   expect_equal(actual, expected)
 })
 
-test_that("Test process_cluster", {
+test_that("Test process_cluster L0", {
   expect_true(TRUE)
 })
 
+test_that("Test process_cluster L1", {
+  expect_true(TRUE)
+})
+
+test_that("Test process_cluster other levels", {
+  expect_true(TRUE)
+})
 
 test_that("Test process_subdef2 on link", {
   # subdef <-
@@ -26,6 +33,18 @@ test_that("Test process_subdef2 on link", {
 })
 
 
-test_that("Test get_value", {
-  expect_true(TRUE)
+test_that("Test get_value space or plus", {
+  # subdef <-
+  # present <-
+  # actual <-
+  # expected <-
+  # expect_equal(actual, expected)
+})
+
+test_that("Test get_value comma", {
+  # subdef <-
+  # present <-
+  # actual <-
+  # expected <-
+  expect_equal(actual, expected)
 })
