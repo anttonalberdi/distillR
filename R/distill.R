@@ -51,15 +51,16 @@ distill <- function(
 
 
 compose_identifier_vector <- function(annotations_genome, annotcol) {
+
   identifier_vector <-
-    annotations_genome[, annotcol] %>%  # annotcol is a number, not a name
+    annotations_genome[, annotcol] %>%  # annotcol is a number, not a name!
     c() %>%
     unlist() %>%
     c() %>%
-    stringr::str_extract(  # Parse identifiers (KEGG|EC)
+    stringr::str_extract(
       pattern = "K[0-9]{5}|(?<=\\[EC:).+?(?=\\])"
     ) %>%
-    unique() %>% # Dereplicate
+    unique() %>%
     stats::na.exclude() %>%
     stringr::str_split(pattern = " ") %>%
     unlist() %>%
@@ -71,11 +72,14 @@ compose_identifier_vector <- function(annotations_genome, annotcol) {
 
 
 compose_gift_vector <- function(identifier_vector, giftdb = distillR::GIFT_db) {
+
   gift_list <- list()
+
   for (row_id in seq_len(nrow(giftdb))) {
     definition <- giftdb[row_id, "Definition"]
     gift_list[[row_id]] <- compute_gift(definition, identifier_vector)
   }
+
   gift_vector <- as.numeric(gift_list)
 
   return(gift_vector)
@@ -87,11 +91,13 @@ compose_gift_table <- function(
     annotation_table, genomecol, annotcol,
     giftdb
   ) {
+
   gift_table <- c()
-  m <- 0
+  n_genomes <- length(genomes)
+
   for (genome in genomes) {
-    m <- m + 1
-    if (length(genomes) > 1) {
+
+    if (n_genomes > 1) {
       annotations_genome <-
         annotation_table[annotation_table[, genomecol] == genome, ]
     } else {
@@ -102,7 +108,8 @@ compose_gift_table <- function(
 
     gift_vector <- compose_gift_vector(identifier_vector, giftdb)
     gift_table <- rbind(gift_table, gift_vector)
-  }
+
+    }
 
   return(gift_table)
 }
