@@ -8,5 +8,6 @@
 #     genomecol = 2,
 #     annotcol = c(9,10,19)
 #   )
+#   expect_true(TRUE)
 # })
 # nolint end
