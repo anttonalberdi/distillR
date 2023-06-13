@@ -6,7 +6,7 @@
 #' expression or abundance)
 #' @return A list of quantitative GIFT values
 #' @examples
-#' compute_qGIFT(definition, gene_count_table)
+#' \dontrun{compute_qGIFT(definition, gene_count_table)}
 #' @export
 
 # UNDER DEVELOPMENT
@@ -17,9 +17,9 @@ compute_qgift <- function(definition, gene_count_table) {
       rowwise() %>%
       mutate(
         Annotation =
-          list(map_chr(
+          list(purrr::map_chr(
             Annotation,
-            function(x) str_replace_all(x, "\\.", "_")
+            function(x) stringr::str_replace_all(x, "\\.", "_")
           ))
       ) %>%
       ungroup()

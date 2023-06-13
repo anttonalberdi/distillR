@@ -19,15 +19,15 @@ distillq_definition <- function(sample, definition_expression, def_table, level,
 
   if (level == "L0_group") {
     def_table$clusters <- 0
-    def_table_sub <- def_table[complete.cases(def_table[, level]), ]
+    def_table_sub <- def_table[stats::complete.cases(def_table[, level]), ]
     clusters <- unique(def_table_sub$clusters)
   } else if (level == "L1_group") {
     def_table$clusters <- def_table[, "L0_group"]
-    def_table_sub <- def_table[complete.cases(def_table[, level]), ]
+    def_table_sub <- def_table[stats::complete.cases(def_table[, level]), ]
     clusters <- unique(def_table_sub$clusters)
   } else {
     def_table$clusters <- do.call(paste, c(def_table[, c(3:(ncol(def_table) - 1))], sep = "-"))
-    def_table_sub <- def_table[complete.cases(def_table[, level]), ]
+    def_table_sub <- def_table[stats::complete.cases(def_table[, level]), ]
     clusters <- unique(def_table_sub$clusters)
   }
 
@@ -39,7 +39,7 @@ distillq_definition <- function(sample, definition_expression, def_table, level,
       subdef2_number <- as.numeric(subdef2[!subdef2 %in% subdef2_code])
       if (length(subdef2_code) > 0) {
         subdef2_expression <- gene_count_table %>%
-          mutate(Flag = map_lgl(Annotation, FindID, subdef2_code)) %>%
+          mutate(Flag = purrr::map_lgl(Annotation, FindID, subdef2_code)) %>%
           filter(Flag) %>%
           pull(sample)
         if (length(subdef2_expression) == 0) {
@@ -59,7 +59,7 @@ distillq_definition <- function(sample, definition_expression, def_table, level,
       subdef2_number <- as.numeric(subdef2[!subdef2 %in% subdef2_code])
       if (length(subdef2_code) > 0) {
         subdef2_expression <- gene_count_table %>%
-          mutate(Flag = map_lgl(Annotation, FindID, subdef2_code)) %>%
+          mutate(Flag = purrr::map_lgl(Annotation, FindID, subdef2_code)) %>%
           filter(Flag) %>%
           pull(sample)
         if (length(subdef2_expression) == 0) {
@@ -79,7 +79,7 @@ distillq_definition <- function(sample, definition_expression, def_table, level,
       subdef2_number <- as.numeric(subdef2[!subdef2 %in% subdef2_code])
       if (length(subdef2_code) > 0) {
         subdef2_expression <- gene_count_table %>%
-          mutate(Flag = map_lgl(Annotation, FindID, subdef2_code)) %>%
+          mutate(Flag = purrr::map_lgl(Annotation, FindID, subdef2_code)) %>%
           filter(Flag) %>%
           pull(sample)
         if (length(subdef2_expression) == 0) {
