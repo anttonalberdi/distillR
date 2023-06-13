@@ -9,7 +9,9 @@
 #' @importFrom stringr str_sub str_detect
 #' @return A (partially) distilled definition string
 #' @examples
-#' distill_definition_expression(definition_expression, def_table, level, gene_count_table)
+#' \dontrun{
+#'   distill_definition_expression(definition_expression, def_table, level, gene_count_table)
+#' }
 #' @export
 
 distillq_definition <- function(sample, definition_expression, def_table, level, gene_count_table) {
