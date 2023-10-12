@@ -117,3 +117,13 @@ test_that("Test append_gift_id_to_df", {
   )
   expect_equal(actual, expected)
 })
+
+
+test_that("Test definition_to_edge_df", {
+  actual <- definition_to_edge_df("a (b c)", "tag")
+  expected <- tibble(
+    from = c("tag_b_0", "tag_root_source", "tag_a_1", "tag_c_0"),
+    to = c("tag_c_0", "tag_a_1", "tag_b_0", "tag_root_sink")
+  )
+  expect_equal(actual, expected)
+})

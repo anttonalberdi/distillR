@@ -319,3 +319,25 @@ append_gift_id_to_df <- function(df, gift_id) {
       to = stringr::str_glue("{gift_id}_{to}")
     )
 }
+
+
+#' Pipeline to go from definition to edge list, with nodes properly renamed
+#'
+#' @param definition string with the pathway definition
+#' @param gift_id  the identity of the GIFT
+#'
+#' @return dataframe with the edges (from, to) of the pathway
+#' @export
+#'
+#' @examples
+#' definition_to_edge_df("a (b,c) (c+d)", "mygift")
+definition_to_edge_df <- function(definition, gift_id) {
+  definition %>%
+    plus_to_space() %>%
+    decouple_graph() %>%
+    dereplicate_graph() %>%
+    dereplicated_graph_to_adjacency_list() %>%
+    dplyr::bind_rows() %>%
+    trim_intermediate_sources_and_sinks_df() %>%
+    append_gift_id_to_df(gift_id)
+}
