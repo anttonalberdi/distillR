@@ -144,12 +144,12 @@ process_comma_subdefinition <-
       ) %>%
       mutate(
         from = if_else(
-          stringr::str_detect("subgraph_\\d+", from),
+          stringr::str_detect(from, "^subgraph_\\d+$"),
           stringr::str_glue("{from}_sink"),
           from
         ),
         to = if_else(
-          stringr::str_detect("subgraph_\\d+", to),
+          stringr::str_detect(to, "^subgraph_\\d+$"),
           stringr::str_glue("{to}_source"),
           to
         )
@@ -189,12 +189,12 @@ process_space_subdefinition <-
       ) %>%
       mutate(
         from = if_else(
-          stringr::str_detect("subgraph_\\d+", from),
+          stringr::str_detect(from, "^subgraph_\\d+$"),
           stringr::str_glue("{from}_sink"),
           from
         ),
         to = if_else(
-          stringr::str_detect("subgraph_\\d+", to),
+          stringr::str_detect(to, "^subgraph_\\d+$"),
           stringr::str_glue("{to}_source"),
           to
         )
@@ -285,9 +285,11 @@ trim_intermediate_sources_and_sinks_df <- function(edge_df) {
       pull(to)
 
     new_edges <-
-      expand.grid(from = predecessors,
-                  to = successors,
-                  stringsAsFactors = FALSE)
+      expand.grid(
+        from = predecessors,
+        to = successors,
+        stringsAsFactors = FALSE
+      )
 
     edge_df_final <-
       edge_df_final %>%
@@ -296,4 +298,28 @@ trim_intermediate_sources_and_sinks_df <- function(edge_df) {
   }
 
   return(edge_df_final)
+}
+
+
+#' Append tag to edge dataframe
+#'
+#' @param df Dataframe with the edges (from, to)
+#' @param gift_id tag to append to the beginning of each node
+#'
+#' @return dataframe with the nodes renamed
+#' @export
+#'
+#' @examples
+#' tibble(
+#'   from = c("root_source", "a"),
+#'   to = c("a", "sink")
+#' ) %>%
+#' append_gift_id_to_dataframe("tag")
+
+append_gift_id_to_df <- function(df, gift_id) {
+  df %>%
+    mutate(
+      from = stringr::str_glue("{gift_id}_{from}"),
+      to = stringr::str_glue("{gift_id}_{to}")
+    )
 }
