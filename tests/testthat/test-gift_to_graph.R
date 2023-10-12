@@ -15,6 +15,17 @@ test_that("Test decouple_graph", {
   expect_equal(actual, expected)
 })
 
+test_that("Test decouple_graph with a EC definition", {
+  definition <- "1.4.1.2 1.1.1.399 2.8.3.12 4.2.1.167 7.2.4.5 1.3.1.109 (2.8.3.1,2.8.3.8)"
+  actual <- decouple_graph(definition)
+  expected <- list(
+    subgraph_0 = '2.8.3.1,2.8.3.8',
+    root = '1.4.1.2 1.1.1.399 2.8.3.12 4.2.1.167 7.2.4.5 1.3.1.109 subgraph_0'
+  )
+  expect_equal(actual, expected)
+})
+
+
 test_that("Test plus_to_space", {
   definition <- "a+b"
   actual <- plus_to_space(definition)
@@ -35,6 +46,21 @@ test_that("Test dereplicate_graph", {
   )
   expect_equal(actual, expected)
 })
+
+test_that("Test dereplicate_graph with a EC definition", {
+  actual <-
+    "1.4.1.2 1.1.1.399 2.8.3.12 4.2.1.167 7.2.4.5 1.3.1.109 (2.8.3.1,2.8.3.8)" %>%
+    plus_to_space() %>%
+    decouple_graph() %>%
+    bind_rows() %>%
+    dereplicate_graph()
+  expected <- list(
+    subgraph_0 = '2.8.3.1_0,2.8.3.8_0',
+    root = '1.4.1.2_1 1.1.1.399_1 2.8.3.12_1 4.2.1.167_1 7.2.4.5_1 1.3.1.109_1 subgraph_0'
+  )
+  expect_equal(actual, expected)
+})
+
 
 test_that("Test process_comma_subdefinition", {
   actual <- process_comma_subdefinition("b,c", "subgraph_1")
@@ -124,6 +150,26 @@ test_that("Test definition_to_edge_df", {
   expected <- tibble(
     from = c("tag_b_0", "tag_root_source", "tag_a_1", "tag_c_0"),
     to = c("tag_c_0", "tag_a_1", "tag_b_0", "tag_root_sink")
+  )
+  expect_equal(actual, expected)
+})
+
+
+test_that("Test definition_to_edge_df with an EC definition", {
+  actual <- definition_to_edge_df("1.4.1.2 1.1.1.399 2.8.3.12 4.2.1.167 7.2.4.5 1.3.1.109 (2.8.3.1,2.8.3.8)", "B040207")
+  expected <- tibble(
+    from = c(
+      "B040207_root_source", "B040207_1.4.1.2_1", "B040207_1.1.1.399_1",
+      "B040207_2.8.3.12_1", "B040207_4.2.1.167_1", "B040207_7.2.4.5_1",
+      "B040207_1.3.1.109_1", "B040207_1.3.1.109_1", "B040207_2.8.3.1_0",
+      "B040207_2.8.3.8_0"
+    ),
+    to = c(
+      "B040207_1.4.1.2_1", "B040207_1.1.1.399_1", "B040207_2.8.3.12_1",
+      "B040207_4.2.1.167_1", "B040207_7.2.4.5_1", "B040207_1.3.1.109_1",
+      "B040207_2.8.3.1_0", "B040207_2.8.3.8_0", "B040207_root_sink",
+      "B040207_root_sink"
+    )
   )
   expect_equal(actual, expected)
 })

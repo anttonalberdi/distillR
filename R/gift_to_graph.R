@@ -104,7 +104,7 @@ dereplicate_graph <- function(decoupled_graph) {
       level = row_number() - 1,
       subgraph_definition_new =
         subgraph_definition %>%
-        stringr::str_replace_all("(\\w+)", stringr::str_glue("\\1_{level}")) %>%
+        stringr::str_replace_all("([\\w\\.]+)", stringr::str_glue("\\1_{level}")) %>%
         stringr::str_replace_all("(subgraph_\\d+)_\\d+", "\\1") # undo subgraph
     ) %>%
     dplyr::select(subgraph_name, subgraph_definition_new) %>%
@@ -204,6 +204,15 @@ process_space_subdefinition <-
   }
 
 
+process_single_node_definition <- function(subgraph_definition, subgraph_id) {
+  nodes <- subgraph_definition
+  edges <- tibble(
+    from = c(stringr::str_glue("{subgraph_id}_source"), subgraph_definition),
+    to = c(subgraph_definition, stringr::str_glue("{subgraph_id}_sink"))
+  )
+  return(edges)
+}
+
 
 
 #' Convert dereplicated graph to adjacency list
@@ -232,8 +241,8 @@ dereplicated_graph_to_adjacency_list <-
       } else if (stringr::str_detect(subgraph_definition, " ")) {
         edges <-
           process_space_subdefinition(subgraph_definition, subgraph_id)
-      } else {
-        # Error?
+      } else {  # single node subgraph
+        edges <- process_single_node_definition(subgraph_definition, subgraph_id)
       }
 
       list_of_edge_dfs[[subgraph_id]] <- edges
