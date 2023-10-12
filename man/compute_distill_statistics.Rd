@@ -19,6 +19,6 @@ A tibble with the statistics
 Compute the statistics from the distilled genomes
 }
 \examples{
-identifiers <-  c("K01580", "K00823", "K16871")
+identifiers <- c("K01580", "K00823", "K16871")
 compute_distill_statistics(identifiers)
 }

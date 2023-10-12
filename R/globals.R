@@ -1,4 +1,5 @@
 utils::globalVariables(c(
   ".", "Annotation", "compute_qGIFT", "Domain", "Code_element", "Code_function",
-  "Flag"
+  "Flag", "from", "to", "subgraph_definition", "subgraph_definition_new",
+  "subgraph_name"
 ))

@@ -14,21 +14,21 @@
 #' @importFrom stringr str_extract
 #' @return A gene bundle-level GIFT table
 #' @examples
+#' \dontrun{
 #' distill(
-#'     distillR::gene_annotations,
-#'     distillR::GIFT_db,
-#'     genomecol = 2,
-#'     annotcol = c(9, 10, 19)
+#'   distillR::gene_annotations,
+#'   distillR::GIFT_db,
+#'   genomecol = 2,
+#'   annotcol = c(9, 10, 19)
 #' )
+#' }
 #' @export
 
 distill <- function(
     annotation_table,
     giftdb,
     genomecol = 2,
-    annotcol = c(9, 10, 19)
-  ) {
-
+    annotcol = c(9, 10, 19)) {
   annotation_table <- as.data.frame(annotation_table)
   giftdb <- as.data.frame(giftdb)
 
@@ -53,9 +53,8 @@ distill <- function(
 
 
 compose_identifier_vector <- function(annotations_genome, annotcol) {
-
   identifier_vector <-
-    annotations_genome[, annotcol] %>%  # annotcol is a number, not a name!
+    annotations_genome[, annotcol] %>% # annotcol is a number, not a name!
     c() %>%
     unlist() %>%
     c() %>%
@@ -69,12 +68,10 @@ compose_identifier_vector <- function(annotations_genome, annotcol) {
     .[!grepl(pattern = "-", x = ., fixed = TRUE)] # Remove ambiguous EC codes  # nolint
 
   return(identifier_vector)
-
 }
 
 
 compose_gift_vector <- function(identifier_vector, giftdb = distillR::GIFT_db) {
-
   gift_list <- list()
 
   for (row_id in seq_len(nrow(giftdb))) {
@@ -91,14 +88,11 @@ compose_gift_vector <- function(identifier_vector, giftdb = distillR::GIFT_db) {
 compose_gift_table <- function(
     genomes,
     annotation_table, genomecol, annotcol,
-    giftdb
-  ) {
-
+    giftdb) {
   gift_table <- c()
   n_genomes <- length(genomes)
 
   for (genome in genomes) {
-
     if (n_genomes > 1) {
       annotations_genome <-
         annotation_table[annotation_table[, genomecol] == genome, ]
@@ -110,8 +104,7 @@ compose_gift_table <- function(
 
     gift_vector <- compose_gift_vector(identifier_vector, giftdb)
     gift_table <- rbind(gift_table, gift_vector)
-
-    }
+  }
 
   return(gift_table)
 }
@@ -132,7 +125,6 @@ compose_gift_table <- function(
 #' @export
 
 compute_gift <- function(definition, present) {
-
   present <- sanitize_identifiers(present)
   definition <- sanitize_identifiers(definition)
   definition_decomposed <- decompose_definition(definition)
@@ -248,7 +240,6 @@ decompose_definition <- function(definition) {
 #' @export
 
 distill_definition <- function(definition, definition_table, level, present) {
-
   definition_table <- process_clusters(definition_table, level)
 
   definition_table_sub <-
@@ -256,7 +247,6 @@ distill_definition <- function(definition, definition_table, level, present) {
   clusters <- unique(definition_table_sub$clusters)
 
   for (cluster in clusters) {
-
     subdef <-
       definition_table_sub %>%
       filter(clusters == cluster) %>%
@@ -324,7 +314,7 @@ process_subdef2 <- function(subdef2, present) {
   subdef2[indexes] <- subdef2[indexes] %in% c(present)
   subdef2[subdef2 == "FALSE"] <- 0
   subdef2[subdef2 == "TRUE"] <- 1
-  subdef2[subdef2 == ","] <- NA  # Avoid warnings. May need more chars
+  subdef2[subdef2 == ","] <- NA # Avoid warnings. May need more chars
   return(subdef2 %>% as.numeric())
 }
 
@@ -374,7 +364,9 @@ sanitize_identifiers <- function(definition) {
 #' @export
 
 set_levels <- function(definition_decomposed) {
-  definition_levels <- definition_decomposed %>% length() %>% length()
+  definition_levels <- definition_decomposed %>%
+    length() %>%
+    length()
   level <- 0
   for (position in seq_along(definition_decomposed)) {
     chr <- definition_decomposed[position]

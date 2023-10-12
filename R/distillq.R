@@ -21,12 +21,16 @@
 #' @return A list of quantitative GIFT tables (one table per genome)
 #' @examples
 #' \dontrun{
-#' distillq(gene_count_table, annotation_table, GIFT_db, genecol, genomecol,
-#' keggcol, eccol, pepcol)
+#' distillq(
+#'   gene_count_table, annotation_table, GIFT_db, genecol, genomecol,
+#'   keggcol, eccol, pepcol
+#' )
 #' }
 #' \dontrun{
-#' distillq(gene_count_table, annotation_table, GIFT_db, genecol = 1,
-#' genomecol = 2, keggcol = 9, eccol = c(10, 19), pepcol = 12)
+#' distillq(gene_count_table, annotation_table, GIFT_db,
+#'   genecol = 1,
+#'   genomecol = 2, keggcol = 9, eccol = c(10, 19), pepcol = 12
+#' )
 #' }
 #' @export
 
@@ -131,7 +135,9 @@ distillq <- function(gene_count_table, annotation_table, GIFT_db, genecol = 1, g
 #' expression or abundance)
 #' @return A list of quantitative GIFT values
 #' @examples
-#' \dontrun{compute_qGIFT(definition, gene_count_table)}
+#' \dontrun{
+#' compute_qGIFT(definition, gene_count_table)
+#' }
 #' @export
 
 # UNDER DEVELOPMENT
@@ -263,7 +269,7 @@ sweep_matrix_list <- function(matrix_list) {
 #' @return A (partially) distilled definition string
 #' @examples
 #' \dontrun{
-#'   distill_definition_expression(definition_expression, def_table, level, gene_count_table)
+#' distill_definition_expression(definition_expression, def_table, level, gene_count_table)
 #' }
 #' @export
 

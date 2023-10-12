@@ -13,14 +13,13 @@
 
 
 to_domains <- function(functions_table, gift_db) {
-
   domain_table <-
     functions_table %>%
     t() %>%
     as.data.frame() %>%
     rownames_to_column("Code_function") %>%
     left_join(gift_db[, c("Code_function", "Domain")], by = "Code_function") %>%
-    group_by(Domain) %>%  # nolint
+    group_by(Domain) %>% # nolint
     reframe(across(where(is.numeric), ~ mean(.x, na.rm = TRUE))) %>%
     ungroup() %>%
     reframe(
@@ -50,7 +49,6 @@ to_domains <- function(functions_table, gift_db) {
 #' @export
 
 to_elements <- function(gift_table, gift_db) {
-
   elements_table <-
     gift_table %>%
     t() %>%
@@ -60,7 +58,7 @@ to_elements <- function(gift_table, gift_db) {
       gift_db[, c("Code_bundle", "Code_element")],
       by = "Code_bundle"
     ) %>%
-    group_by(Code_element) %>%  # nolint
+    group_by(Code_element) %>% # nolint
     summarise(across(where(is.numeric), ~ max(.x, na.rm = TRUE))) %>%
     arrange(factor(Code_element, levels = unique(gift_db$Code_element))) %>%
     column_to_rownames("Code_element") %>%
@@ -85,7 +83,6 @@ to_elements <- function(gift_table, gift_db) {
 
 
 to_functions <- function(elements_table, gift_db) {
-
   functions_table <-
     elements_table %>%
     t() %>%
@@ -95,7 +92,7 @@ to_functions <- function(elements_table, gift_db) {
       gift_db[, c("Code_element", "Code_function")],
       by = "Code_element"
     ) %>%
-    group_by(Code_function) %>%  # nolint
+    group_by(Code_function) %>% # nolint
     summarise(across(where(is.numeric), ~ mean(.x, na.rm = TRUE))) %>%
     arrange(factor(Code_function, levels = unique(gift_db$Code_function))) %>%
     column_to_rownames("Code_function") %>%
@@ -123,7 +120,6 @@ to_functions <- function(elements_table, gift_db) {
 
 
 to_community <- function(gift_table, abundance_table, gift_db) {
-
   if (missing(abundance_table)) {
     # If abundance table does not exist, create a mock abundance table of a
     # single even community

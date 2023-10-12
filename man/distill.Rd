@@ -28,10 +28,12 @@ Generates a gene presence-based genome-Inferred Functional Trait (GIFT) table
 at the gene bundle level from a bacterial genome annotation table
 }
 \examples{
+\dontrun{
 distill(
-    distillR::gene_annotations,
-    distillR::GIFT_db,
-    genomecol = 2,
-    annotcol = c(9, 10, 19)
+  distillR::gene_annotations,
+  distillR::GIFT_db,
+  genomecol = 2,
+  annotcol = c(9, 10, 19)
 )
+}
 }

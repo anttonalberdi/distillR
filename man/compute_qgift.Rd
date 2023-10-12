@@ -19,5 +19,7 @@ A list of quantitative GIFT values
 Calculates the quantitative GIFTs from a gene bundle and a gene count table
 }
 \examples{
-\dontrun{compute_qGIFT(definition, gene_count_table)}
+\dontrun{
+compute_qGIFT(definition, gene_count_table)
+}
 }

@@ -20,3 +20,7 @@ man/compute_MCI_expression.Rd
 
 renv/
 inst/doc
+
+wip.R
+
+renv.lock

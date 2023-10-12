@@ -31,6 +31,6 @@ Generates the scores of each hierarchical level of a gene bundle required to cal
 }
 \examples{
 \dontrun{
-  distill_definition_expression(definition_expression, def_table, level, gene_count_table)
+distill_definition_expression(definition_expression, def_table, level, gene_count_table)
 }
 }

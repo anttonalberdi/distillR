@@ -8,12 +8,10 @@
 #' @export
 #'
 #' @examples
-#' identifiers <-  c("K01580", "K00823", "K16871")
+#' identifiers <- c("K01580", "K00823", "K16871")
 #' compute_distill_statistics(identifiers)
-
 compute_distill_statistics <- function(
-    identifier_vector, giftdb = distillR::GIFT_db
-  ) {
+    identifier_vector, giftdb = distillR::GIFT_db) {
   db_identifiers <-
     giftdb$Definition %>%
     paste(collapse = " ") %>%
@@ -37,5 +35,4 @@ compute_distill_statistics <- function(
   )
 
   return(statistics)
-
 }
