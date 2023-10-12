@@ -233,11 +233,7 @@ dereplicated_graph_to_adjacency_list <-
         edges <-
           process_space_subdefinition(subgraph_definition, subgraph_id)
       } else {
-        stop(
-          "Error: neither space or comma found in the graph. Exiting.",
-          stringr::str_glue("Subgraph id: {subgraph_id}"),
-          stringr::str_glue("Subgraph definition: {subgraph_definition}")
-        )
+        # Error?
       }
 
       list_of_edge_dfs[[subgraph_id]] <- edges
