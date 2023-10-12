@@ -18,9 +18,9 @@ dataframe with the nodes renamed
 Append tag to edge dataframe
 }
 \examples{
-tibble(
+tibble::tibble(
   from = c("root_source", "a"),
   to = c("a", "sink")
 ) \%>\%
-append_gift_id_to_dataframe("tag")
+append_gift_id_to_df("tag")
 }

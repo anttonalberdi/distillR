@@ -1,3 +1,5 @@
+# extract_first_parenthesis ----
+
 test_that("Test extract_first_parenthesis", {
   definition <- "a (b (c d)) (e f)"
   actual <- extract_first_parenthesis(definition)
@@ -5,6 +7,7 @@ test_that("Test extract_first_parenthesis", {
   expect_equal(actual, expected)
 })
 
+# decouple_graph ----
 test_that("Test decouple_graph", {
   definition <- "a (b c)"
   actual <- decouple_graph(definition)
@@ -25,7 +28,7 @@ test_that("Test decouple_graph with a EC definition", {
   expect_equal(actual, expected)
 })
 
-
+# plus_to_space ----
 test_that("Test plus_to_space", {
   definition <- "a+b"
   actual <- plus_to_space(definition)
@@ -33,6 +36,7 @@ test_that("Test plus_to_space", {
   expect_equal(actual, expected)
 })
 
+# dereplicate_graph ----
 test_that("Test dereplicate_graph", {
   actual <-
     "a (b c)" %>%
@@ -61,7 +65,7 @@ test_that("Test dereplicate_graph with a EC definition", {
   expect_equal(actual, expected)
 })
 
-
+# process_comma_subdefinition ----
 test_that("Test process_comma_subdefinition", {
   actual <- process_comma_subdefinition("b,c", "subgraph_1")
   expected <- tibble(
@@ -80,7 +84,7 @@ test_that("Test process_comma_subdefinition", {
   expect_equal(actual, expected)
 })
 
-
+# process_space_subdefinition ----
 test_that("Test process_space_subdefinition", {
   actual <- process_space_subdefinition("b c", "subgraph_1")
   expected <- tibble(
@@ -90,7 +94,17 @@ test_that("Test process_space_subdefinition", {
   expect_equal(actual, expected)
 })
 
+# process_single_node_subdefinition ----
+test_that("Test process_single_node_subdefinition", {
+  actual <- process_single_node_subdefinition("b", "subgraph_1")
+  expected <- tibble(
+    from = c("subgraph_1_source", "b"),
+    to = c("b", "subgraph_1_sink")
+  )
+  expect_equal(actual, expected)
+})
 
+# dereplicated_graph_to_adjacency_list ----
 test_that("Test dereplicated_graph_to_adjacency_list", {
   actual <-
     "a (b,c)" %>%
@@ -112,6 +126,23 @@ test_that("Test dereplicated_graph_to_adjacency_list", {
 })
 
 
+test_that("Test dereplicated_graph_to_adjacency_list with a single gene definition", {
+  actual <-
+    "a" %>%
+    plus_to_space() %>%
+    decouple_graph() %>%
+    dereplicate_graph() %>%
+    dereplicated_graph_to_adjacency_list()
+  expected <- list(
+    root = tibble(
+      from = c("root_source", "a_0"),
+      to = c("a_0", "root_sink")
+    )
+  )
+  expect_equal(actual, expected)
+})
+
+# trim_intermediate_sources_and_sinks_df ----
 test_that("Test trim_intermediate_sources_and_sinks_df", {
   actual <-
     "a (b,c) (c+d)" %>%
@@ -129,7 +160,7 @@ test_that("Test trim_intermediate_sources_and_sinks_df", {
   expect_equal(actual, expected)
 })
 
-
+# append_gift_id_to_df ----
 test_that("Test append_gift_id_to_df", {
   actual <-
     tibble(
@@ -144,7 +175,7 @@ test_that("Test append_gift_id_to_df", {
   expect_equal(actual, expected)
 })
 
-
+# definition_to_edge_df ----
 test_that("Test definition_to_edge_df", {
   actual <- definition_to_edge_df("a (b c)", "tag")
   expected <- tibble(
@@ -172,4 +203,22 @@ test_that("Test definition_to_edge_df with an EC definition", {
     )
   )
   expect_equal(actual, expected)
+})
+
+# build_gift_df ----
+test_that("Test build_gift_df", {
+  actual <- build_gift_df()
+  ncols <- ncol(actual)
+  nrows <- nrow(actual)
+  ngenes_plus_root <-
+    actual %>%
+    tidyr::pivot_longer(c(from, to)) %>%
+    select(value) %>%
+    tidyr::separate(value, into = c("gift_id", "gene_id", "number"), sep = "_") %>%
+    pull(gene_id) %>%
+    unique() %>%
+    length()
+  expect_equal(ncol(actual), 9)
+  expect_equal(nrow(actual), 6750)
+  expect_equal(ngenes_plus_root, 1547)
 })

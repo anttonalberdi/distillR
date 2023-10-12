@@ -204,7 +204,17 @@ process_space_subdefinition <-
   }
 
 
-process_single_node_definition <- function(subgraph_definition, subgraph_id) {
+#' Process a single node subdefinition: source, node, sink
+#'
+#' @param subgraph_definition Subgraph definition
+#' @param subgraph_id Subgraph id
+#'
+#' @return A data frame with the edges
+#' @export
+#'
+#' @examples
+#' process_single_node_subdefinition("b", "subgraph_1")
+process_single_node_subdefinition <- function(subgraph_definition, subgraph_id) {
   nodes <- subgraph_definition
   edges <- tibble(
     from = c(stringr::str_glue("{subgraph_id}_source"), subgraph_definition),
@@ -242,7 +252,7 @@ dereplicated_graph_to_adjacency_list <-
         edges <-
           process_space_subdefinition(subgraph_definition, subgraph_id)
       } else {  # single node subgraph
-        edges <- process_single_node_definition(subgraph_definition, subgraph_id)
+        edges <- process_single_node_subdefinition(subgraph_definition, subgraph_id)
       }
 
       list_of_edge_dfs[[subgraph_id]] <- edges
@@ -315,12 +325,11 @@ trim_intermediate_sources_and_sinks_df <- function(edge_df) {
 #' @export
 #'
 #' @examples
-#' tibble(
+#' tibble::tibble(
 #'   from = c("root_source", "a"),
 #'   to = c("a", "sink")
 #' ) %>%
-#' append_gift_id_to_dataframe("tag")
-
+#' append_gift_id_to_df("tag")
 append_gift_id_to_df <- function(df, gift_id) {
   df %>%
     mutate(
@@ -349,4 +358,41 @@ definition_to_edge_df <- function(definition, gift_id) {
     dplyr::bind_rows() %>%
     trim_intermediate_sources_and_sinks_df() %>%
     append_gift_id_to_df(gift_id)
+}
+
+
+
+#' Build the GIFT database as a dataframe
+#'
+#' @return data frame
+#' @export
+#'
+#' @examples
+#' build_gift_df()
+build_gift_df <- function(){
+  giftdb <-
+    distillR::GIFT_db %>%
+    mutate(  # Fixes
+      Definition = if_else(
+        Code_bundle == "B060213",
+        "(2.6.1.1,2.6.1.5,2.6.1.27,2.6.1.57) 1.13.11.27 1.13.11.5 5.2.1.2 3.7.1.2",
+        Definition
+      ),
+      Definition = if_else(
+        Code_bundle == "B010301",
+        "K13800,K13809,K09903",
+        Definition
+      )
+    )
+
+  gift_df <-
+    giftdb %>%
+    as_tibble() %>%
+    rowwise() %>%
+    mutate(
+      edge_df = definition_to_edge_df(Definition, Code_bundle) %>% list()
+    ) %>%
+    tidyr::unnest(edge_df)
+
+  return(gift_df)
 }
