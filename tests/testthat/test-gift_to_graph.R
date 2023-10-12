@@ -44,7 +44,7 @@ test_that("Test process_comma_subdefinition", {
   )
   expect_equal(actual, expected)
 })
-# process_comma_subdefinition("b,subgraph_0", "subgraph_1")
+
 test_that("Test process_comma_subdefinition", {
   actual <- process_comma_subdefinition("b,subgraph_0", "subgraph_1")
   expected <- tibble(
@@ -104,7 +104,7 @@ test_that("Test trim_intermediate_sources_and_sinks_df", {
 })
 
 
-test_that("Test append_gift_id_to_df",{
+test_that("Test append_gift_id_to_df", {
   actual <-
     tibble(
       from = c("root", "a"),
