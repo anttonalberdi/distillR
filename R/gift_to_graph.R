@@ -177,8 +177,10 @@ process_space_subdefinition <-
       unlist()
 
     edges <-
-      data.frame(from = stringr::str_glue("{subgraph_id}_source"),
-                 to = nodes[1]) %>%
+      tibble(
+        from = stringr::str_glue("{subgraph_id}_source"),
+        to = nodes[1]
+      ) %>%
       bind_rows(
         tibble(from = nodes) %>%
           mutate(
