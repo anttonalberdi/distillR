@@ -1,5 +1,7 @@
 utils::globalVariables(c(
-  ".", "Annotation", "compute_qGIFT", "Domain", "Code_element", "Code_function",
-  "Flag", "from", "to", "subgraph_definition", "subgraph_definition_new",
-  "subgraph_name", "Code_bundle", "Definition", "edge_df"
+  ".", "annotation", "annotation_id", "annotation_type", "cazy_hit", "cazy_hits",
+  "cost", "from_annotation", "from_code", "from_level", "gene", "genome",
+  "graph", "graph_df", "kegg_hit", "kegg_hits", "kegg_id",
+  "length_shortest_path", "peptidase_family", "shortest_path", "to_annotation",
+  "to_code", "to_level", "Code_bundle", "from", "to"
 ))

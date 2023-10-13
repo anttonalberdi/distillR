@@ -370,8 +370,10 @@ definition_to_edge_df <- function(definition, gift_id) {
 #' @examples
 #' build_gift_df()
 build_gift_df <- function(){
+  load("data-raw/GIFT_db.rda")
+
   giftdb <-
-    distillR::GIFT_db %>%
+    GIFT_db %>%
     mutate(  # Fixes
       Definition = if_else(
         Code_bundle == "B060213",
@@ -392,7 +394,12 @@ build_gift_df <- function(){
     mutate(
       edge_df = definition_to_edge_df(Definition, Code_bundle) %>% list()
     ) %>%
-    tidyr::unnest(edge_df)
+    unnest(edge_df) %>%
+    select(-Definition)
 
   return(gift_df)
 }
+
+
+gift_df <- build_gift_df()
+save(gift_df, file = "data/gift_df.rda", compress = "xz")

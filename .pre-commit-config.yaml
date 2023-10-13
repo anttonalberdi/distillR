@@ -29,12 +29,12 @@ repos:
         - readr
         - stringr
         - tidyr
-        - reshape2
         - tibble
         - tidyverse
         - git2r
         - cli
+        - cppRouting
       - id: deps-in-desc
         args: [--allow_private_imports]
       - id: use-tidy-description
-      # - id: codemeta-description-updated
+      # - id: codemeta-description-update

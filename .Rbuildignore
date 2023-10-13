@@ -7,3 +7,16 @@
 ^\.github$
 ^codecov\.yml$
 wip.R
+
+# distillr old code
+R/distill.R
+R/compute_distill_statistics.R
+R/summarize_distill.R
+R/distillq.R
+
+# distillr old tests
+tests/testthat/test-distill.R
+tests/testthat/test-compute_distill_statistics.R
+tests/testthat/test-summarize_distill.R
+tests/testthat/test-distillq.R
+^data-raw$
