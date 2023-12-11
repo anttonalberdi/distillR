@@ -24,6 +24,10 @@ GIFTs_functions <- to.functions(GIFTs_elements,GIFT_db)
 #Aggregate function-level GIFTs into overall Biosynthesis, Degradation and Structural GIFTs
 GIFTs_domains <- to.domains(GIFTs_functions,GIFT_db)
 
+#Get overall metabolic capacity indices per MAG (at the domain level)
+rowMeans(GIFTs_functions) # averaged at the function level (each function is weighed equally)
+rowMeans(GIFTs_domains) # averaged at the domain level (each domain is weighed equally)
+
 #Get community-weighed average GIFTs per sample
 GIFTs_elements_community <- to.community(GIFTs_elements,genome_counts,GIFT_db)
 GIFTs_functions_community <- to.community(GIFTs_functions,genome_counts,GIFT_db)
