@@ -106,14 +106,14 @@ In the aggregative approach, the entire community is considered as a single geno
 In the separative approach, GIFTs are calculated for each genome independently, and then community-weighed averages calculated optionally based on the relative abundances of the genomes. The caveat of this approach is that it ignores potential collaborative outputs of bacteria with complementary gene sets. This approach requires running distill() and to.community() functions.
 ```
 #Aggregative approach
-GIFTs_aggregative <- distill(gene_annotations,GIFT_db,keggcol=9,eccol=c(10,19),pepcol=12)
+GIFTs_aggregative <- distill(gene_annotations,GIFT_db,annotcol=c(9,10,19))
 
 #Separative approach (without considering relative abundances)
-GIFTs_separative_even <- distill(gene_annotations,GIFT_db,genomecol=2,keggcol=9,eccol=c(10,19),pepcol=12) %>%
+GIFTs_separative_even <- distill(gene_annotations,GIFT_db,genomecol=2,annotcol=c(9,10,19)) %>%
   to.community()
 
 #Separative approach (considering relative abundances)
-GIFTs_separative_ra <- distill(gene_annotations,GIFT_db,genomecol=2,keggcol=9,eccol=c(10,19),pepcol=12) %>%
+GIFTs_separative_ra <- distill(gene_annotations,GIFT_db,genomecol=2,annotcol=c(9,10,19)) %>%
     to.community(.,genome_counts[,2],GIFT_db)
 
 #Combine GIFT tables
