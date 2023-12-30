@@ -62,6 +62,23 @@ GIFTs_functions_community <- to.community(GIFTs_functions,genome_counts,GIFT_db)
 GIFTs_domains_community <- to.community(GIFTs_domains,genome_counts,GIFT_db)
 ```
 
+## distillR database
+
+The distillR database is stored as a data frame object named ***GIFT_db***.
+
+```r
+GIFT_db
+```
+
+The structure of the database is as follows:
+
+| Code_bundle | Code_element | Code_function | Domain | Function | Element | Definition |
+| --- | --- | --- | --- | --- | --- | --- |
+B010301 | B0103 | B01	Biosynthesis | Nucleic acid biosynthesis | UDP/UTP | (K13800,K13809,K09903) |
+B010401 | B0104 | B01	Biosynthesis | Nucleic acid biosynthesis | CDP/CTP | (K00940,K18533) K01937 |
+B010501 | B0105 | B01	Biosynthesis | Nucleic acid biosynthesis | ADP/ATP | K01939 K01756 (K00939,K18532,K18533,K00944) K00940 |
+B010601 | B0106 | B01	Biosynthesis | Nucleic acid biosynthesis | GDP/GTP | K00088 K01951 K00942 (K00940,K18533) |
+
 ## Input data structure
 distillR can perform operations with four types of input data
 
