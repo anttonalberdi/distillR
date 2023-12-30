@@ -1,20 +1,35 @@
 # distillR
 
-distillR is an R package for distilling functional annotations of bacterial genomes and metagenomes into meaningful quantitative metrics defined as Genome-Inferred Functional Traits (GIFT).
+distillR is an R package for distilling functional annotations of bacterial genomes and metagenomes into meaningful quantitative metrics defined as Genome-Inferred Functional Traits (GIFT). The package relies on a curated database of >300 metabolic pathways to calculate standardised genome-inferred functional traits using KEGG and Enzyme Commission (EC) identifiers. distillR can process functional annotations from complete bacterial genomes, incomplete bacterial genomes derived from genome-resolved metagenomics, and gene expression data associated with those genomes. The package can provide genome-specific as well as community-level estimations of functional traits to facilitate downstream statistical analyses.
+
 
 ## Quickstart
 The package distillR contains mock data and the GIFT database required to test all functions.
 
-```
-#Install and load the package distillR
+### Install and load the package distillR
+
+distillR can be installed from this same Github repository using the package devtools.
+
+```r
 install.packages("devtools")
 library(devtools)
 install_github("anttonalberdi/distillR")
 library(distillR)
+```
 
-#Run distillation
+### Run distillation
+
+This is the main function of the package, which transforms raw functional annotation data into basal quantitative genome-inferred functional traits (GIFTs).
+
+```r
 GIFTs <- distill(gene_annotations,GIFT_db,genomecol=2,annotcol=c(9,10,19))
+```
 
+### Aggregate GIFTs
+
+Relying on the hierarchical structure of the distillR database, basal GIFTs can be aggregated into larger clusters at the compound (170 compounds), function (10 functions) and domain (3 domains) level.
+
+```r
 #Aggregate bundle-level GIFTs into the compound level
 GIFTs_elements <- to.elements(GIFTs,GIFT_db)
 
@@ -23,12 +38,25 @@ GIFTs_functions <- to.functions(GIFTs_elements,GIFT_db)
 
 #Aggregate function-level GIFTs into overall Biosynthesis, Degradation and Structural GIFTs
 GIFTs_domains <- to.domains(GIFTs_functions,GIFT_db)
+```
 
-#Get overall metabolic capacity indices per MAG (at the domain level)
-rowMeans(GIFTs_functions) # averaged at the function level (each function is weighed equally)
-rowMeans(GIFTs_domains) # averaged at the domain level (each domain is weighed equally)
+### Metabolic Capacity Indices (MCI) of genomes
 
-#Get community-weighed average GIFTs per sample
+By averaging the GIFT values of each genome, one can obtain the so-called Metabolic Capacity Indices (MCI) of each bacteria.
+
+```r
+# Averaged at the function level (each function is weighed equally)
+rowMeans(GIFTs_functions)
+
+# Averaged at the domain level (each domain is weighed equally)
+rowMeans(GIFTs_domains)
+```
+
+### Community-weighed average GIFTs of genomes
+
+Lastly, microbiome-wide GIFTs can also be computed by relying on the relative abundance data of each genome in each sample.
+
+```r
 GIFTs_elements_community <- to.community(GIFTs_elements,genome_counts,GIFT_db)
 GIFTs_functions_community <- to.community(GIFTs_functions,genome_counts,GIFT_db)
 GIFTs_domains_community <- to.community(GIFTs_domains,genome_counts,GIFT_db)
