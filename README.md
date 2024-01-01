@@ -62,33 +62,56 @@ GIFTs_functions_community <- to.community(GIFTs_functions,genome_counts,GIFT_db)
 GIFTs_domains_community <- to.community(GIFTs_domains,genome_counts,GIFT_db)
 ```
 
-## distillR database
-
-The distillR database is stored as a data frame object named ***GIFT_db***.
-
-```r
-GIFT_db
-```
-
-The structure of the database is as follows:
-
-| Code_bundle | Code_element | Code_function | Domain | Function | Element | Definition |
-| --- | --- | --- | --- | --- | --- | --- |
-B010301 | B0103 | B01	Biosynthesis | Nucleic acid biosynthesis | UDP/UTP | (K13800,K13809,K09903) |
-B010401 | B0104 | B01	Biosynthesis | Nucleic acid biosynthesis | CDP/CTP | (K00940,K18533) K01937 |
-B010501 | B0105 | B01	Biosynthesis | Nucleic acid biosynthesis | ADP/ATP | K01939 K01756 (K00939,K18532,K18533,K00944) K00940 |
-B010601 | B0106 | B01	Biosynthesis | Nucleic acid biosynthesis | GDP/GTP | K00088 K01951 K00942 (K00940,K18533) |
-
 ## Input data structure
 distillR can perform operations with four types of input data
 
 ### Gene annotations (mandatory)
 
+distillR requires gene annotations to be stored in a tabular format, each row representing one gene. The minimum structure of such a table contains two columns: genomes and annotations.
+
+| Gene | Genome | Annotation |
+| --- | --- | --- |
+| Gene01 | Genome1 | K00791 |
+| Gene02 | Genome1 | tRNA dimethylallyltransferase [EC:2.5.1.75] |
+| Gene03 | Genome2 | K24846 |
+| Gene04 | Genome2 | NA |
+
+The function **distill()** requires the column numbers containing information about genomes (a single genome) and annotations (one or multiple genomes) to be specified using the arguments ***genomecol*** and ***annotcol***, respectivelly.
+
+```r
+GIFTs <- distill(gene_annotations,GIFT_db,genomecol=2,annotcol=c(9,10,19))
+```
+
 ### GIFT database (mandatory)
+
+The default distillR database is a table containing 315 gene bundles (also known as pathways or modules in other databases) stored as a data frame object named ***GIFT_db***.
+
+```r
+head(GIFT_db)
+```
+
+| Code_bundle | Code_element | Code_function | Domain | Function | Element | Definition |
+| --- | --- | --- | --- | --- | --- | --- |
+B010301 | B0103 | B01 | Biosynthesis | Nucleic acid biosynthesis | UDP/UTP | (K13800,K13809,K09903) |
+B010401 | B0104 | B01 | Biosynthesis | Nucleic acid biosynthesis | CDP/CTP | (K00940,K18533) K01937 |
+B010501 | B0105 | B01 | Biosynthesis | Nucleic acid biosynthesis | ADP/ATP | K01939 K01756 (K00939,K18532,K18533,K00944) K00940 |
+B010601 | B0106 | B01 | Biosynthesis | Nucleic acid biosynthesis | GDP/GTP | K00088 K01951 K00942 (K00940,K18533) |
+
+The bundles are collections of related genes that encode for enzymes that collectively perform a metabolic function. Bundles are organised in three hierarchical levels: elements, functions and domains.
+
+- **Elements:** collections of bundles that produce or metabolise different compounds. The default distillR database contains 170 elements.
+- **Functions:** overall metabolic functions to biosynthesise or degrade different types of molecules. The default distillR database contains 19 functions, such as Amino acid degradation, Nucleic acid biosynthesis, or Spore formation.
+- **Domains:** clusters of functions. The default distillR database contains three domains: biosynthesis, degradation and structure.
+
+The hierarchical structure of the database enables baseline GIFTs calculated at the gene bundle level to be aggregated into broader categories.
 
 ### Gene counts (requited for quantitative GIFTs)
 
+Explanations to be added.
+
 ### Genome counts (requited for community GIFTs)
+
+Explanations to be added.
 
 ## Chart plotting
 Genome-specific Genome-Inferred Functional Trait (GIFT) profiles can be plotted using ggplot2. The below example plots element-level genome-specific GIFTs.
