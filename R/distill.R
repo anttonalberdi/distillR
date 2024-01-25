@@ -4,7 +4,8 @@
 #' @param GIFT_db Table containing definitions and metadata of GIFTs (default: database provided by distillR)
 #' @param genomecol Column index (number) of the annotation_table containing the genome identifiers
 #' @param annotcol Column index(es) of the annotation_table in which to search for gene identifiers (e.g., c(3,4,5))
-#' @param stats Whether to calculate and print distillation statistics
+#' @param stats Whether to calculate and print distillation statistics. Default=TRUE
+#' @param verbosity Whether to print progress status of the distillation. Default=TRUE
 #' @importFrom stringr str_extract
 #' @return A gene bundle-level GIFT table
 #' @examples
@@ -12,7 +13,7 @@
 #' distill(annotation_table,GIFT_db,genomecol=2,annotcol=c(9,10,19),stats=T)
 #' @export
 
-distill <- function(annotation_table,GIFT_db,genomecol=2,annotcol=c(9,10,19),stats=T){
+distill <- function(annotation_table,GIFT_db,genomecol=2,annotcol=c(9,10,19),stats=T,verbosity=T){
 
   #Sanity check
   if(missing(annotation_table)) stop("Genome annotation table is missing")
@@ -34,12 +35,14 @@ distill <- function(annotation_table,GIFT_db,genomecol=2,annotcol=c(9,10,19),sta
   }
 
   #Verbosity
-  if(length(Genomes)>1){
-    cat("Calculating GIFTs for",length(Genomes),"genomes:\n")
-  }else{
-    cat("Calculating GIFTs for a single genome.\n")
-    cat("\tNote: If you were expecting multiple genomes\n")
-    cat("\tensure the genome identifier column is correctly specified.\n")
+  if(isTRUE(verbosity)){
+      if(length(Genomes)>1){
+        cat("Calculating GIFTs for",length(Genomes),"genomes:\n")
+      }else{
+        cat("Calculating GIFTs for a single genome.\n")
+        cat("\tNote: If you were expecting multiple genomes\n")
+        cat("\tensure the genome identifier column is correctly specified.\n")
+      }
   }
 
   #Calculate GIFTs for each Genome iteratively
@@ -48,7 +51,9 @@ distill <- function(annotation_table,GIFT_db,genomecol=2,annotcol=c(9,10,19),sta
   for(Genome in Genomes){
     m=m+1
     if(length(Genomes)>1){
-      cat("\t",Genome," (",m,"/",length(Genomes),")\n", sep = "")
+      if(isTRUE(verbosity)){
+          cat("\t",Genome," (",m,"/",length(Genomes),")\n", sep = "")
+      }
       #Fetch Genome annotations
       annotations_Genome <- annotation_table[annotation_table[,genomecol] == Genome,]
     }else{

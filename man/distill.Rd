@@ -9,7 +9,8 @@ distill(
   GIFT_db,
   genomecol = 2,
   annotcol = c(9, 10, 19),
-  stats = T
+  stats = T,
+  verbosity = T
 )
 }
 \arguments{
@@ -21,7 +22,9 @@ distill(
 
 \item{annotcol}{Column index(es) of the annotation_table in which to search for gene identifiers (e.g., c(3,4,5))}
 
-\item{stats}{Whether to calculate and print distillation statistics}
+\item{stats}{Whether to calculate and print distillation statistics. Default=TRUE}
+
+\item{verbosity}{Whether to print progress status of the distillation. Default=TRUE}
 }
 \value{
 A gene bundle-level GIFT table
