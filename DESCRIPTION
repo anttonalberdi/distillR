@@ -1,12 +1,11 @@
 Package: distillR
 Type: Package
-Title: What the Package Does (Title Case)
+Title: Distillation of raw genome annotations into genome-inferred functional traits
 Version: 0.3.0
-Author: Who wrote it
-Maintainer: The package maintainer <yourself@somewhere.net>
-Description: More about what it does (maybe more than one line)
-    Use four spaces when indenting paragraphs within the Description.
-License: What license is it under?
+Author: Antton Alberdi
+Maintainer: Antton Alberdi <antton.alberdi@sund.ku.dk>
+Description: distillR is an R package for distilling functional annotations of bacterial genomes and metagenomes into meaningful quantitative metrics defined as Genome-Inferred Functional Traits (GIFT). The package relies on a curated database of >300 metabolic pathways to calculate standardised genome-inferred functional traits using KEGG and Enzyme Commission (EC) identifiers. distillR can process functional annotations from complete bacterial genomes, incomplete bacterial genomes derived from genome-resolved metagenomics, and gene expression data associated with those genomes. The package can provide genome-specific as well as community-level estimations of functional traits to facilitate downstream statistical analyses.
+License: 	MIT-0
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 7.3.1
