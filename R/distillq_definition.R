@@ -88,7 +88,7 @@ distillq_definition <- function(sample, definition_expression, def_table, level,
         }else{
           subdef2_expression <- NA
         }
-        if(length(subdef2_expression) > 0 | is.na(subdef2_expression)){
+        if(length(subdef2_expression) > 0){
           value <- max(c(subdef2_number,subdef2_expression),na.rm=TRUE)
         }else{
           value <- 0
