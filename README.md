@@ -105,13 +105,25 @@ The bundles are collections of related genes that encode for enzymes that collec
 
 The hierarchical structure of the database enables baseline GIFTs calculated at the gene bundle level to be aggregated into broader categories.
 
-### Gene counts (requited for quantitative GIFTs)
+### Gene counts (required for quantitative GIFTs)
+The quantitative mode of distillR computes GIFT activity metrics from metatranscriptomic data. This analysis requires gene count data with unique gene identifiers matching the gene identifiers in the annotation file specified in the first column.
 
-Explanations to be added.
+| Gene | Sample1 | Sample2 | Sample3 |
+| --- | --- | --- | --- |
+| Gene01 | 0 | 0 | 2332 |
+| Gene02 | 123 | 115342 | 74544 |
+| Gene03 | 0 | 124 | 1231 |
+| Gene04 | 56343 | 1233 | 0 |
 
-### Genome counts (requited for community GIFTs)
+### Genome counts (required for community GIFTs)
+The community mode of distillR computes community-averaged GIFT values for the entire microbiome in each sample. This analysis requires a genome count data table with genomes as rows and samples as columns. Note that the row names of the genome counts table needs to match the genome names in the genomes column of the annotation file.
 
-Explanations to be added.
+| Genome | Sample1 | Sample2 | Sample3 |
+| --- | --- | --- | --- |
+| Genome01 | 21 | 0 | 3453 |
+| Genome02 | 1141 | 0 | 2345 |
+| Genome03 | 123 | 454 | 0 |
+| Genome04 | 1665 | 34 | 5235 |
 
 ## Chart plotting
 Genome-specific Genome-Inferred Functional Trait (GIFT) profiles can be plotted using ggplot2. The below example plots element-level genome-specific GIFTs.
