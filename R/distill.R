@@ -13,11 +13,10 @@
 #' distill(annotation_table,GIFT_db,genomecol=2,annotcol=c(9,10,19),stats=T)
 #' @export
 
-distill <- function(annotation_table,GIFT_db,genomecol=2,annotcol=c(9,10,19),stats=T,verbosity=T){
+distill <- function(annotation_table,GIFT_db=GIFT_db,genomecol=2,annotcol=c(9,10,19),stats=T,verbosity=T){
 
   #Sanity check
   if(missing(annotation_table)) stop("Genome annotation table is missing")
-  if(missing(GIFT_db)) stop("Pathway database is missing")
   if(length(genomecol)!=1) stop("The argument genomecol must be an integer indicating the number of the column containing the Genome identifiers in the annotations table")
   if(missing(annotcol)) stop("Specify at least one column containing functional annotations")
 

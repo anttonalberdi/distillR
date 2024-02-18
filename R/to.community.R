@@ -11,7 +11,7 @@
 #' @export
 
 
-to.community <- function(GIFT_table,abundance_table,GIFT_db){
+to.community <- function(GIFT_table,abundance_table,GIFT_db=GIFT_db){
 
   #Declare TSS function
   tss <- function(abund){sweep(abund, 2, colSums(abund), FUN="/")}

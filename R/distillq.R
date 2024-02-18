@@ -16,7 +16,7 @@
 #' @export
 
 #UNDER DEVELOPMENT
-distillq <- function(gene_count_table,annotation_table,GIFT_db,genecol=1,genomecol=2,annotcol=c(9,10,19)){
+distillq <- function(gene_count_table,annotation_table,GIFT_db=GIFT_db,genecol=1,genomecol=2,annotcol=c(9,10,19)){
 
   #Sanity check
   if(missing(gene_count_table)) stop("Gene expression table is missing")

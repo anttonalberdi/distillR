@@ -10,7 +10,7 @@
 #' @export
 
 
-to.domains <- function(functions_table,GIFT_db){
+to.domains <- function(functions_table,GIFT_db=GIFT_db){
 
   #Convert tables into data frames
   if(!missing(functions_table)){functions_table <- as.data.frame(functions_table)}
