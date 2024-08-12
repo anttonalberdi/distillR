@@ -60,10 +60,23 @@ distillq <- function(gene_count_table, annotation_table, GIFT_db, genecol = 1, g
     filter(.[[genecol]] %in% intersect) %>% # filter overlapping genes
     select(c(genecol, genomecol, annotcol)) %>% # select relevant columns
     # Process annotations
-    tidyr::unite("Annotation", 3:ncol(.), remove = T, sep = " ") %>% # paste annotation columns into a single column
-    mutate(Annotation = stringr::str_extract_all(Annotation, "K[0-9][0-9][0-9][0-9][0-9]|(?<=\\[EC:).+?(?=\\])")) %>% # Extract identifiers
+    tidyr::unite( # paste annotation columns into a single column
+      "Annotation",
+      3:ncol(.),
+      remove = TRUE,
+      sep = " "
+    ) %>%
+    mutate( # Extract identifiers
+      Annotation = stringr::str_extract_all(
+        string = Annotation,
+        pattern = "K[0-9][0-9][0-9][0-9][0-9]|(?<=\\[EC:).+?(?=\\])"
+      )
+    ) %>%
     rowwise() %>%
-    mutate(Annotation = list(unlist(strsplit(Annotation, " ")))) %>% # Separate multiple EC annotations (e.g. "4.3.2.5.7 4.5.2.34" into "4.3.2.5.7","4.5.2.34")
+    mutate( # Separate multiple EC annotations (e.g. "4.3.2.5.7 4.5.2.34" into
+      # "4.3.2.5.7","4.5.2.34")
+      Annotation = list(unlist(strsplit(Annotation, " ")))
+    ) %>%
     ungroup() %>%
     rename(Gene = 1, Genome = 2) # rename columns
 
@@ -73,7 +86,8 @@ distillq <- function(gene_count_table, annotation_table, GIFT_db, genecol = 1, g
     rename(Gene = 1) # rename gene column
 
   # Merge annotations and count data
-  annotation_gene_count_table <- inner_join(annotation_table, gene_count_table, by = "Gene")
+  annotation_gene_count_table <- annotation_table %>%
+    inner_join(gene_count_table, by = "Gene")
 
   # List Genomes
   Genomes <- unique(annotation_gene_count_table$Genome)

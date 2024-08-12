@@ -19,7 +19,7 @@ get_bundle_cost <- function(annotation_vec) {
       cost = dplyr::if_else(
         condition =
           (from_annotation %in% annotation_vec) &
-          (to_annotation %in% annotation_vec),
+            (to_annotation %in% annotation_vec),
         true = 0,
         false = 1
       )
@@ -32,7 +32,7 @@ get_bundle_cost <- function(annotation_vec) {
       source = stringr::str_glue("{Code_bundle}_root_source"),
       sink = stringr::str_glue("{Code_bundle}_root_sink"),
       shortest_path = cppRouting::get_path_pair(Graph = graph, from = source, to = sink),
-      length_shortest_path = length(shortest_path) - 1,  # remove root and sink effect
+      length_shortest_path = length(shortest_path) - 1, # remove root and sink effect
       cost = cppRouting::get_distance_pair(Graph = graph, from = source, to = sink),
       # completeness = 1 - cost / length_shortest_path
     ) %>%

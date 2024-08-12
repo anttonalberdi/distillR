@@ -20,12 +20,17 @@
 #' @examples
 #' distillR::gene_annotations %>% import_dram()
 import_dram <- function(dram_raw_table) {
-
   dram_raw_table %>%
     tibble::as_tibble() %>%
-    dplyr::select(genome, gene, kegg_id, kegg_hit, cazy_hits, peptidase_family) %>%
+    dplyr::select(
+      genome, gene, kegg_id, kegg_hit, cazy_hits, peptidase_family
+    ) %>%
     dplyr::group_by(genome) %>%
-    tidyr::pivot_longer(-genome:-gene, names_to = "annotation_type", values_to = "annotation") %>%
+    tidyr::pivot_longer(
+      -genome:-gene,
+      names_to = "annotation_type",
+      values_to = "annotation"
+    ) %>%
     dplyr::filter(annotation != "") %>%
     tidyr::pivot_wider(names_from = annotation_type, values_from = annotation) %>%
     tidyr::extract(

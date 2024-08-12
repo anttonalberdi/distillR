@@ -22,8 +22,8 @@ test_that("Test decouple_graph with a EC definition", {
   definition <- "1.4.1.2 1.1.1.399 2.8.3.12 4.2.1.167 7.2.4.5 1.3.1.109 (2.8.3.1,2.8.3.8)"
   actual <- decouple_graph(definition)
   expected <- list(
-    subgraph_0 = '2.8.3.1,2.8.3.8',
-    root = '1.4.1.2 1.1.1.399 2.8.3.12 4.2.1.167 7.2.4.5 1.3.1.109 subgraph_0'
+    subgraph_0 = "2.8.3.1,2.8.3.8",
+    root = "1.4.1.2 1.1.1.399 2.8.3.12 4.2.1.167 7.2.4.5 1.3.1.109 subgraph_0"
   )
   expect_equal(actual, expected)
 })
@@ -59,8 +59,8 @@ test_that("Test dereplicate_graph with a EC definition", {
     bind_rows() %>%
     dereplicate_graph()
   expected <- list(
-    subgraph_0 = '2.8.3.1_0,2.8.3.8_0',
-    root = '1.4.1.2_1 1.1.1.399_1 2.8.3.12_1 4.2.1.167_1 7.2.4.5_1 1.3.1.109_1 subgraph_0'
+    subgraph_0 = "2.8.3.1_0,2.8.3.8_0",
+    root = "1.4.1.2_1 1.1.1.399_1 2.8.3.12_1 4.2.1.167_1 7.2.4.5_1 1.3.1.109_1 subgraph_0"
   )
   expect_equal(actual, expected)
 })

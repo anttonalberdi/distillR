@@ -104,8 +104,8 @@ dereplicate_graph <- function(decoupled_graph) {
       level = row_number() - 1,
       subgraph_definition_new =
         subgraph_definition %>%
-        stringr::str_replace_all("([\\w\\.]+)", stringr::str_glue("\\1_{level}")) %>%
-        stringr::str_replace_all("(subgraph_\\d+)_\\d+", "\\1") # undo subgraph
+          stringr::str_replace_all("([\\w\\.]+)", stringr::str_glue("\\1_{level}")) %>%
+          stringr::str_replace_all("(subgraph_\\d+)_\\d+", "\\1") # undo subgraph
     ) %>%
     dplyr::select(subgraph_name, subgraph_definition_new) %>%
     tibble::deframe() %>%
@@ -251,7 +251,7 @@ dereplicated_graph_to_adjacency_list <-
       } else if (stringr::str_detect(subgraph_definition, " ")) {
         edges <-
           process_space_subdefinition(subgraph_definition, subgraph_id)
-      } else {  # single node subgraph
+      } else { # single node subgraph
         edges <- process_single_node_subdefinition(subgraph_definition, subgraph_id)
       }
 
@@ -272,12 +272,12 @@ dereplicated_graph_to_adjacency_list <-
 #'
 #' @examples
 #' "a (b,c) (c+d)" %>%
-#'  plus_to_space() %>%
-#'  decouple_graph() %>%
-#'  dereplicate_graph() %>%
-#'  dereplicated_graph_to_adjacency_list() %>%
-#'  dplyr::bind_rows() %>%
-#'  trim_intermediate_sources_and_sinks_df()
+#'   plus_to_space() %>%
+#'   decouple_graph() %>%
+#'   dereplicate_graph() %>%
+#'   dereplicated_graph_to_adjacency_list() %>%
+#'   dplyr::bind_rows() %>%
+#'   trim_intermediate_sources_and_sinks_df()
 trim_intermediate_sources_and_sinks_df <- function(edge_df) {
   nodes_to_delete <-
     c(
@@ -329,7 +329,7 @@ trim_intermediate_sources_and_sinks_df <- function(edge_df) {
 #'   from = c("root_source", "a"),
 #'   to = c("a", "sink")
 #' ) %>%
-#' append_gift_id_to_df("tag")
+#'   append_gift_id_to_df("tag")
 append_gift_id_to_df <- function(df, gift_id) {
   df %>%
     mutate(
@@ -369,12 +369,12 @@ definition_to_edge_df <- function(definition, gift_id) {
 #'
 #' @examples
 #' build_gift_df()
-build_gift_df <- function(){
+build_gift_df <- function() {
   load("data-raw/GIFT_db.rda")
 
   giftdb <-
     GIFT_db %>%
-    mutate(  # Fixes
+    mutate( # Fixes
       Definition = if_else(
         Code_bundle == "B060213",
         "(2.6.1.1,2.6.1.5,2.6.1.27,2.6.1.57) 1.13.11.27 1.13.11.5 5.2.1.2 3.7.1.2",
