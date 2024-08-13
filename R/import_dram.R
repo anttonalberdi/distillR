@@ -32,9 +32,15 @@ import_dram <- function(dram_raw_table) {
       values_to = "annotation"
     ) %>%
     dplyr::filter(annotation != "") %>%
-    tidyr::pivot_wider(names_from = annotation_type, values_from = annotation) %>%
+    tidyr::pivot_wider(
+      names_from = annotation_type,
+      values_from = annotation
+    ) %>%
     tidyr::extract(
-      col = kegg_hit, into = "kegg_hits", regex = "\\[EC:([0-9.\\- ]+)\\]", remove = FALSE
+      col = kegg_hit,
+      into = "kegg_hits",
+      regex = "\\[EC:([0-9.\\- ]+)\\]",
+      remove = FALSE
     ) %>%
     dplyr::mutate(
       kegg_hits = stringr::str_split(kegg_hits, " "),
@@ -48,8 +54,14 @@ import_dram <- function(dram_raw_table) {
       regex = "EC ([0-9.\\- ]+)",
       remove = FALSE
     ) %>%
-    dplyr::select(genome, gene, kegg_id, kegg_hits, cazy_hit, peptidase_family) %>%
-    tidyr::pivot_longer(-genome:-gene, names_to = "annotation_type", values_to = "annotation_id") %>%
+    dplyr::select(
+      genome, gene, kegg_id, kegg_hits, cazy_hit, peptidase_family
+    ) %>%
+    tidyr::pivot_longer(
+      -genome:-gene,
+      names_to = "annotation_type",
+      values_to = "annotation_id"
+    ) %>%
     dplyr::filter(!is.na(annotation_id)) %>%
     dplyr::distinct() %>%
     dplyr::ungroup()
