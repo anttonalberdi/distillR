@@ -5,7 +5,7 @@ test_that("Test distill", {
     annotation_table =
       distillR::gene_annotations %>%
         dplyr::filter(genome %in% c("MAG1", "MAG2")),
-    giftdb = distillR::GIFT_db,
+    giftdb = distillR::gift_df,
     genomecol = 2,
     annotcol = c(9, 10, 19)
   )
@@ -76,14 +76,14 @@ test_that("Test process_cluster other levels", {
   expect_true(TRUE)
 })
 
-test_that("Test process_subdef2 on link", {
-  subdef <-
-    subdef2 <- subdef[(subdef != " ") & (subdef != "+")]
-  present <-
-    actual <- process_subdef2(subdef2, present)
-  expected <-
-    expect_true(TRUE)
-})
+# test_that("Test process_subdef2 on link", {
+#   subdef <-
+#     subdef2 <- subdef[(subdef != " ") & (subdef != "+")]
+#   present <-
+#     actual <- process_subdef2(subdef2, present)
+#   expected <-
+#     expect_true(TRUE)
+# })
 
 
 # test_that("Test get_value space or plus", {

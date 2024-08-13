@@ -72,6 +72,7 @@ compose_identifier_vector <- function(annotations_genome, annotcol) {
 
 
 compose_gift_vector <- function(identifier_vector, giftdb = distillR::GIFT_db) {
+
   gift_list <- list()
 
   for (row_id in seq_len(nrow(giftdb))) {
@@ -310,7 +311,7 @@ process_clusters <- function(definition_table, level) {
 process_subdef2 <- function(subdef2, present) {
   indexes <-
     grepl("_", subdef2, fixed = TRUE) |
-      grepl("[A-Z]", subdef2, fixed = FALSE)
+    grepl("[A-Z]", subdef2, fixed = FALSE)
   subdef2[indexes] <- subdef2[indexes] %in% c(present)
   subdef2[subdef2 == "FALSE"] <- 0
   subdef2[subdef2 == "TRUE"] <- 1
