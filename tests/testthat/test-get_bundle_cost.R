@@ -19,7 +19,7 @@ test_that("get_bundle_cost returns the correct dataframe", {
     get_bundle_cost()
   # readr::write_rds(x = actual, file = "tests/testthat/fixtures/get_bundle_cost_expected.rds")  # nolint
   expected <- readr::read_rds(
-    "tests/testthat/fixtures/get_bundle_cost_expected.rds"
+    test_path("fixtures", "get_bundle_cost_expected.rds")
   )
   expect_equal(actual, expected)
 })

@@ -9,7 +9,7 @@
 #' \dontrun{
 #' to.domains(functions_table, gift_db)
 #' }
-#' @export
+#' @noexport
 
 
 to_domains <- function(functions_table, gift_db) {

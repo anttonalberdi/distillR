@@ -5,19 +5,22 @@
 #' @param giftdb Table with the GIFTs (defaults to distillR::GIFT_DB)
 #'
 #' @return A tibble with the statistics
-#' @export
+#' @noexport
 #'
 #' @examples
 #' identifiers <- c("K01580", "K00823", "K16871")
 #' compute_distill_statistics(identifiers)
 compute_distill_statistics <- function(
-    identifier_vector, giftdb = distillR::GIFT_db) {
+    identifier_vector, giftdb = distillR::GIFT_db
+  ) {
+
   db_identifiers <-
     giftdb$Definition %>%
     paste(collapse = " ") %>%
     strsplit(split = " |\\,|\\)|\\(|\\+") %>%
     unlist() %>%
     unique()
+
   length_db <- length(db_identifiers)
   length_data <- length(identifier_vector)
   length_intersect <- length(intersect(db_identifiers, identifier_vector))

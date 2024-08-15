@@ -1,3 +1,13 @@
+utils::globalVariables(c(
+  ".", "annotation", "annotation_id", "annotation_type", "cazy_hit",
+  "cazy_hits", "cost", "from_annotation", "from_code", "from_level", "gene",
+  "genome", "graph", "graph_df", "kegg_hit", "kegg_hits", "kegg_id",
+  "length_shortest_path", "peptidase_family", "shortest_path", "to_annotation",
+  "to_code", "to_level", "Code_bundle", "from", "to"
+))
+
+
+
 #' Extract the deepest-leftest parenthesis
 #'
 #' @param definition A definition of a pathway
@@ -101,11 +111,17 @@ dereplicate_graph <- function(decoupled_graph) {
     tibble::rownames_to_column("subgraph_name") %>%
     tibble::as_tibble() %>%
     dplyr::mutate(
-      level = row_number() - 1,
+      level = dplyr::row_number() - 1,
       subgraph_definition_new =
         subgraph_definition %>%
-          stringr::str_replace_all("([\\w\\.]+)", stringr::str_glue("\\1_{level}")) %>%
-          stringr::str_replace_all("(subgraph_\\d+)_\\d+", "\\1") # undo subgraph
+        stringr::str_replace_all(
+          pattern = "([\\w\\.]+)",
+          replacement = stringr::str_glue("\\1_{level}")
+        ) %>%
+        stringr::str_replace_all(  # undo subgraph
+          pattern = "(subgraph_\\d+)_\\d+",
+          replacement = "\\1"
+        )
     ) %>%
     dplyr::select(subgraph_name, subgraph_definition_new) %>%
     tibble::deframe() %>%
@@ -132,23 +148,23 @@ process_comma_subdefinition <-
       unlist()
 
     edges <-
-      bind_rows(
-        tibble(
+      dplyr::bind_rows(
+        tibble::tibble(
           from = stringr::str_glue("{subgraph_id}_source"),
           to = nodes
         ),
-        tibble(
+        tibble::tibble(
           from = nodes,
           to = stringr::str_glue("{subgraph_id}_sink")
         )
       ) %>%
-      mutate(
-        from = if_else(
+      dplyr::mutate(
+        from = dplyr::if_else(
           stringr::str_detect(from, "^subgraph_\\d+$"),
           stringr::str_glue("{from}_sink"),
           from
         ),
-        to = if_else(
+        to = dplyr::if_else(
           stringr::str_detect(to, "^subgraph_\\d+$"),
           stringr::str_glue("{to}_source"),
           to
@@ -177,23 +193,23 @@ process_space_subdefinition <-
       unlist()
 
     edges <-
-      tibble(
+      tibble::tibble(
         from = stringr::str_glue("{subgraph_id}_source"),
         to = nodes[1]
       ) %>%
-      bind_rows(
-        tibble(from = nodes) %>%
-          mutate(
-            to = lead(from, default = stringr::str_glue("{subgraph_id}_sink"))
-          )
+      dplyr::bind_rows(
+        tibble::tibble(from = nodes) %>%
+        dplyr::mutate(
+          to = dplyr::lead(from, default = stringr::str_glue("{subgraph_id}_sink"))
+        )
       ) %>%
-      mutate(
-        from = if_else(
+      dplyr::mutate(
+        from = dplyr::if_else(
           stringr::str_detect(from, "^subgraph_\\d+$"),
           stringr::str_glue("{from}_sink"),
           from
         ),
-        to = if_else(
+        to = dplyr::if_else(
           stringr::str_detect(to, "^subgraph_\\d+$"),
           stringr::str_glue("{to}_source"),
           to
@@ -214,13 +230,14 @@ process_space_subdefinition <-
 #'
 #' @examples
 #' process_single_node_subdefinition("b", "subgraph_1")
-process_single_node_subdefinition <- function(subgraph_definition, subgraph_id) {
-  nodes <- subgraph_definition
-  edges <- tibble(
-    from = c(stringr::str_glue("{subgraph_id}_source"), subgraph_definition),
-    to = c(subgraph_definition, stringr::str_glue("{subgraph_id}_sink"))
-  )
-  return(edges)
+process_single_node_subdefinition <-
+  function(subgraph_definition, subgraph_id) {
+    nodes <- subgraph_definition
+    edges <- tibble::tibble(
+      from = c(stringr::str_glue("{subgraph_id}_source"), subgraph_definition),
+      to = c(subgraph_definition, stringr::str_glue("{subgraph_id}_sink"))
+    )
+    return(edges)
 }
 
 
@@ -252,7 +269,10 @@ dereplicated_graph_to_adjacency_list <-
         edges <-
           process_space_subdefinition(subgraph_definition, subgraph_id)
       } else { # single node subgraph
-        edges <- process_single_node_subdefinition(subgraph_definition, subgraph_id)
+        edges <- process_single_node_subdefinition(
+          subgraph_definition,
+          subgraph_id
+        )
       }
 
       list_of_edge_dfs[[subgraph_id]] <- edges
@@ -281,8 +301,8 @@ dereplicated_graph_to_adjacency_list <-
 trim_intermediate_sources_and_sinks_df <- function(edge_df) {
   nodes_to_delete <-
     c(
-      edge_df %>% filter(str_detect(from, "^subgraph_")) %>% pull(from),
-      edge_df %>% filter(str_detect(to, "^subgraph_")) %>% pull(to)
+      edge_df %>% dplyr::filter(stringr::str_detect(from, "^subgraph_")) %>% dplyr::pull(from),
+      edge_df %>% dplyr::filter(stringr::str_detect(to, "^subgraph_")) %>% dplyr::pull(to)
     ) %>%
     unique()
 
@@ -291,13 +311,13 @@ trim_intermediate_sources_and_sinks_df <- function(edge_df) {
   for (node_to_delete in nodes_to_delete) {
     predecessors <-
       edge_df_final %>%
-      filter(to == node_to_delete) %>%
-      pull(from)
+      dplyr::filter(to == node_to_delete) %>%
+      dplyr::pull(from)
 
     successors <-
       edge_df_final %>%
-      filter(from == node_to_delete) %>%
-      pull(to)
+      dplyr::filter(from == node_to_delete) %>%
+      dplyr::pull(to)
 
     new_edges <-
       expand.grid(
@@ -308,8 +328,8 @@ trim_intermediate_sources_and_sinks_df <- function(edge_df) {
 
     edge_df_final <-
       edge_df_final %>%
-      filter(!(from == node_to_delete | to == node_to_delete)) %>%
-      bind_rows(new_edges)
+      dplyr::filter(!(from == node_to_delete | to == node_to_delete)) %>%
+      dplyr::bind_rows(new_edges)
   }
 
   return(edge_df_final)
@@ -332,10 +352,10 @@ trim_intermediate_sources_and_sinks_df <- function(edge_df) {
 #'   append_gift_id_to_df("tag")
 append_gift_id_to_df <- function(df, gift_id) {
   df %>%
-    mutate(
-      from = stringr::str_glue("{gift_id}_{from}"),
-      to = stringr::str_glue("{gift_id}_{to}")
-    )
+  dplyr::mutate(
+    from = stringr::str_glue("{gift_id}_{from}"),
+    to = stringr::str_glue("{gift_id}_{to}")
+  )
 }
 
 
@@ -361,6 +381,32 @@ definition_to_edge_df <- function(definition, gift_id) {
 }
 
 
+#' Clean two bad definitions
+#'
+#' @param giftdb
+#'
+#' @return data frame with the cleaned definitions
+#'
+#' @noRd
+clean_bad_definitions <- function(giftdb) {
+  giftdb %>%
+  dplyr::mutate(
+    Definition = dplyr::if_else(
+      Code_bundle == "B060213",
+      strwrap(
+        "(2.6.1.1,2.6.1.5,2.6.1.27,2.6.1.57)
+        1.13.11.27 1.13.11.5 5.2.1.2 3.7.1.2"
+      ),
+      Definition
+    ),
+    Definition = dplyr::if_else(
+      Code_bundle == "B010301",
+      "K13800,K13809,K09903",
+      Definition
+    )
+  )
+}
+
 
 #' Build the GIFT database as a dataframe
 #'
@@ -370,36 +416,33 @@ definition_to_edge_df <- function(definition, gift_id) {
 #' @examples
 #' build_gift_df()
 build_gift_df <- function() {
+
   load("data-raw/GIFT_db.rda")
 
-  giftdb <-
-    GIFT_db %>%
-    mutate( # Fixes
-      Definition = if_else(
-        Code_bundle == "B060213",
-        "(2.6.1.1,2.6.1.5,2.6.1.27,2.6.1.57) 1.13.11.27 1.13.11.5 5.2.1.2 3.7.1.2",
-        Definition
-      ),
-      Definition = if_else(
-        Code_bundle == "B010301",
-        "K13800,K13809,K09903",
-        Definition
-      )
-    )
-
   gift_df <-
-    giftdb %>%
-    as_tibble() %>%
-    rowwise() %>%
-    mutate(
+    GIFT_db %>%
+    clean_bad_definitions() %>%
+    tibble::as_tibble() %>%
+    dplyr::rowwise() %>%
+    dplyr::mutate(
       edge_df = definition_to_edge_df(Definition, Code_bundle) %>% list()
     ) %>%
-    unnest(edge_df) %>%
-    select(-Definition)
+    tidyr::unnest(edge_df) %>%
+    dplyr::select(-Definition) %>%
+    dplyr::select(
+      domain = Domain,
+      function_id = Code_function,
+      function_name = Function,
+      element_id = Code_element,
+      element_name = Element,
+      pathway_id = Code_bundle,
+      from, to
+    )
 
   return(gift_df)
 }
 
-
-gift_df <- build_gift_df()
-save(gift_df, file = "data/gift_df.rda", compress = "xz")
+if (!interactive()) {
+  gift_df <- build_gift_df()
+  save(gift_df, file = "R/sysdata.rda", compress = "xz", compression_level = 9)
+}

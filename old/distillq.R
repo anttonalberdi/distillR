@@ -32,7 +32,7 @@
 #'   genomecol = 2, keggcol = 9, eccol = c(10, 19), pepcol = 12
 #' )
 #' }
-#' @export
+#' @noexport
 
 # UNDER DEVELOPMENT
 # nolint start
@@ -152,7 +152,7 @@ distillq <- function(gene_count_table, annotation_table, GIFT_db, genecol = 1, g
 #' \dontrun{
 #' compute_qGIFT(definition, gene_count_table)
 #' }
-#' @export
+#' @noexport
 
 # UNDER DEVELOPMENT
 compute_qgift <- function(definition, gene_count_table) {
@@ -240,7 +240,7 @@ compute_qgift <- function(definition, gene_count_table) {
 #' \dontrun{
 #' sweep_matrix_list(matrix_list)
 #' }
-#' @export
+#' @noexport
 
 sweep_matrix_list <- function(matrix_list) {
   # Declare vectors
@@ -285,7 +285,7 @@ sweep_matrix_list <- function(matrix_list) {
 #' \dontrun{
 #' distill_definition_expression(definition_expression, def_table, level, gene_count_table)
 #' }
-#' @export
+#' @noexport
 
 distillq_definition <- function(sample, definition_expression, def_table, level, gene_count_table) {
   FindID <- function(x, idToFind) {
