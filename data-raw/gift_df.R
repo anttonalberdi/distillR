@@ -444,5 +444,5 @@ build_gift_df <- function() {
 
 if (!interactive()) {
   gift_df <- build_gift_df()
-  save(gift_df, file = "R/sysdata.rda", compress = "xz", compression_level = 9)
+  save(gift_df, file = "R/sysdata.rda", compress = "xz", compression_level = 9, version = 2)
 }
