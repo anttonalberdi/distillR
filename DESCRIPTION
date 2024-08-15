@@ -1,34 +1,35 @@
 Package: distillR
-Title: What the Package Does (One Line, Title Case)
+Title: Distill bacterial and metagenome annotations
 Version: 0.0.0.9000
 Authors@R:
-    person("Jorge", "Langa", , "jorgeeliseo.langa@ehu.eus", role = c("aut", "cre"),
-           comment = c(ORCID = "0000-0001-5137-8204"))
     person("Antton", "Alberdi", , "antton.alberdi@sund.ku.dk", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0002-2875-6446"))
-Description:
-  R package for distilling functional annotations of bacterial genomes and metagenomes.
+Description:R package for distilling functional annotations of bacterial
+    genomes and metagenomes.
 License: MIT + file LICENSE
-Encoding: UTF-8
-Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.3.2
+URL: https://github.com/anttonalberdi/distillR
+BugReports: https://github.com/anttonalberdi/distillR/issues
+Depends:
+    R (>= 2.10)
 Imports:
     cppRouting,
     dplyr,
     magrittr,
-    purrr,
     stringr,
     tibble,
-    tidyr,
-Depends:
-    R (>= 2.10),
+    tidyr
 Suggests:
     covr,
-    knitr,
-    rmarkdown,
-    testthat (>= 3.0.0),
-    readr,
     ggplot2,
+    knitr,
+    purrr,
+    readr,
+    rmarkdown,
+    testthat (>= 3.0.0)
+VignetteBuilder:
+    knitr
 Config/testthat/edition: 3
+Encoding: UTF-8
 LazyData: true
-VignetteBuilder: knitr
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.3.2
