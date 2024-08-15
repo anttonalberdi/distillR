@@ -1,8 +1,8 @@
-get_bundle_cost <- function(annotation_vec) {
+get_bundle_cost <- function(annotation_vector) {
 
-  annotation_vec <- c("root", "source", annotation_vec) %>% unique()  # nolint
+  annotation_vector <- c("root", "source", annotation_vector) %>% unique()  # nolint
 
-  distillR::gift_df %>%
+  gift_df %>%
     tidyr::separate(
       col = from,
       into = c("from_code", "from_annotation", "from_level"),
@@ -19,19 +19,19 @@ get_bundle_cost <- function(annotation_vec) {
     dplyr::mutate(
       cost = dplyr::if_else(
         condition =
-          (from_annotation %in% annotation_vec) &
-          (to_annotation %in% annotation_vec),
+          (from_annotation %in% annotation_vector) &
+          (to_annotation %in% annotation_vector),
         true = 0,
         false = 1
       )
     ) %>%
-    dplyr::select(Code_bundle, from, to, cost) %>%
+    dplyr::select(pathway_id, from, to, cost) %>%
     tidyr::nest(graph_df = c(from, to, cost)) %>%
     dplyr::rowwise() %>%
     dplyr::mutate(
       graph = cppRouting::makegraph(graph_df, directed = TRUE) %>% list(),
-      source = stringr::str_glue("{Code_bundle}_root_source"),
-      sink = stringr::str_glue("{Code_bundle}_root_sink"),
+      source = stringr::str_glue("{pathway_id}_root_source"),
+      sink = stringr::str_glue("{pathway_id}_root_sink"),
       shortest_path = cppRouting::get_path_pair(
         Graph = graph, from = source, to = sink
       ),
@@ -43,5 +43,5 @@ get_bundle_cost <- function(annotation_vec) {
       # completeness = 1 - cost / length_shortest_path  # nolint
     ) %>%
     dplyr::ungroup() %>%
-    dplyr::select(Code_bundle, length_shortest_path, cost)
+    dplyr::select(pathway_id, length_shortest_path, cost)
 }
