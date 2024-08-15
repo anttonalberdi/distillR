@@ -14,7 +14,7 @@ test_that("get_bundle_cost returns the correct dataframe", {
   actual <-
     distillR::gene_annotations %>%
     distillR::import_dram() %>%
-    dplyr::filter(genome == "MAG1") %>%
+    dplyr::filter(mag_id == "MAG1") %>%
     dplyr::pull(annotation_id) %>%
     get_bundle_cost()
   # readr::write_rds(x = actual, file = "tests/testthat/fixtures/get_bundle_cost_expected.rds")  # nolint

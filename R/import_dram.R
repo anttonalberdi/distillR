@@ -23,11 +23,11 @@ import_dram <- function(dram_raw_table) {
   dram_raw_table %>%
     tibble::as_tibble() %>%
     dplyr::select(
-      genome, gene, kegg_id, kegg_hit, cazy_hits, peptidase_family
+      mag_id = genome, gene_id = gene, kegg_id, kegg_hit, cazy_hits, peptidase_family
     ) %>%
-    dplyr::group_by(genome) %>%
+    dplyr::group_by(mag_id) %>%
     tidyr::pivot_longer(
-      -genome:-gene,
+      -mag_id:-gene_id,
       names_to = "annotation_type",
       values_to = "annotation"
     ) %>%
@@ -55,10 +55,10 @@ import_dram <- function(dram_raw_table) {
       remove = FALSE
     ) %>%
     dplyr::select(
-      genome, gene, kegg_id, kegg_hits, cazy_hit, peptidase_family
+      mag_id, gene_id, kegg_id, kegg_hits, cazy_hit, peptidase_family
     ) %>%
     tidyr::pivot_longer(
-      -genome:-gene,
+      -mag_id:-gene_id,
       names_to = "annotation_type",
       values_to = "annotation_id"
     ) %>%
