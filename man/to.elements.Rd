@@ -4,7 +4,7 @@
 \alias{to.elements}
 \title{Merges bundle-level GIFTs into the element level}
 \usage{
-to.elements(GIFT_table, GIFT_db)
+to.elements(GIFT_table, GIFT_db = GIFT_db)
 }
 \arguments{
 \item{GIFT_table}{Bundle-level GIFT table}

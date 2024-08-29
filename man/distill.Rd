@@ -6,7 +6,7 @@
 \usage{
 distill(
   annotation_table,
-  GIFT_db,
+  GIFT_db = GIFT_db,
   genomecol = 2,
   annotcol = c(9, 10, 19),
   stats = T,

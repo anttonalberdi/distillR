@@ -1,7 +1,6 @@
 # distillR
 
-distillR is an R package for distilling functional annotations of bacterial genomes and metagenomes into meaningful quantitative metrics defined as Genome-Inferred Functional Traits (GIFT). The package relies on a curated database of >300 metabolic pathways to calculate standardised genome-inferred functional traits using KEGG and Enzyme Commission (EC) identifiers. distillR can process functional annotations from complete bacterial genomes, incomplete bacterial genomes derived from genome-resolved metagenomics, and gene expression data associated with those genomes. The package can provide genome-specific as well as community-level estimations of functional traits to facilitate downstream statistical analyses.
-
+distillR is an R package for distilling functional annotations of bacterial genomes and metagenomes into meaningful quantitative metrics defined as Genome-Inferred Functional Traits (GIFT). The package relies on a curated database of ~500 metabolic pathways and gene clusters (collectivelly refered to as 'bundles') to calculate standardised genome-inferred functional traits using KEGG and Enzyme Commission (EC) identifiers. distillR can process functional annotations from complete bacterial genomes, as well as incomplete bacterial genomes derived from genome-resolved metagenomics. The package can provide genome-specific as well as community-level estimations of functional traits to facilitate downstream statistical analyses.
 
 ## Quickstart
 The package distillR contains mock data and the GIFT database required to test all functions.
@@ -27,7 +26,7 @@ GIFTs <- distill(gene_annotations,GIFT_db,genomecol=2,annotcol=c(9,10,19))
 
 ### Aggregate GIFTs
 
-Relying on the hierarchical structure of the distillR database, basal GIFTs can be aggregated into larger clusters at the compound (170 compounds), function (10 functions) and domain (3 domains) level.
+Relying on the hierarchical structure of the distillR database, basal GIFTs can be aggregated into larger clusters at the compound (217 elements), function (30 functions) and domain (4 domains) levels.
 
 ```r
 #Aggregate bundle-level GIFTs into the compound level
@@ -63,7 +62,7 @@ GIFTs_domains_community <- to.community(GIFTs_domains,genome_counts,GIFT_db)
 ```
 
 ## Input data structure
-distillR can perform operations with four types of input data
+distillR can perform operations with four types of input data.
 
 ### Gene annotations (mandatory)
 
@@ -99,10 +98,14 @@ B010601 | B0106 | B01 | Biosynthesis | Nucleic acid biosynthesis | GDP/GTP | K00
 
 The bundles are collections of related genes that encode for enzymes that collectively perform a metabolic function. Bundles are organised in three hierarchical levels: elements, functions and domains.
 
-- **Elements:** collections of bundles that produce or metabolise different compounds. The default distillR database contains 170 elements.
-- **Functions:** overall metabolic functions to biosynthesise or degrade different types of molecules. The default distillR database contains 19 functions, such as Amino acid degradation, Nucleic acid biosynthesis, or Spore formation.
-- **Domains:** clusters of functions. The default distillR database contains three domains: biosynthesis, degradation and structure.
-
+- **Elements:** collections of bundles that produce or metabolise different compounds. The default distillR database contains ~300 elements.
+- **Functions:** overall metabolic functions to biosynthesise or degrade different types of molecules. The default distillR database contains 3' functions, such as Amino acid degradation, Nucleic acid biosynthesis, or Spore formation.
+- **Domains:** clusters of functions. The default distillR database contains four domains: biosynthesis, degradation, transport and structure.
+  - ***Biosynthesis:*** pathways to produce the compounds (elements) of interest.
+  - ***Degradation:*** pathways to degrade the compounds (elements) of interest.
+  - ***Transport:*** genes and gene clusters involved in transmembranic transport of compounds (elements) of interest.
+  - ***Structure:*** genes and gene clusters involved in the biosynthesis of structural elementsof interest.
+  
 The hierarchical structure of the database enables baseline GIFTs calculated at the gene bundle level to be aggregated into broader categories.
 
 ### Gene counts (required for quantitative GIFTs)
@@ -166,17 +169,6 @@ GIFTs_functions_community %>%
     theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1),strip.text.x = element_text(angle = 90))
 ```
 ![Community-level GIFT heatmap](figures/GIFT_community_heatmap.png)
-
-## Quantitative GIFTs
-Quantitative GIFTs are genome-inferred functional traits that are based on quantitative gene data rather than gene presence (as regular GIFTs). Such data can be derived from shotgun gene-expression analyses (RNAseq) or can be generated for an entire community by mapping sequencing reads to a catalogue of genes derived from a metagenomic (co)assembly. Quantitative GIFTs are calculated using function distillq(), which requires two more bits of information compared to distill(): a gene count table containing quantitative gene data per sample, and the column number of the annotation table in which gene identifiers can be found.
-
-```
-#Run distillation
-qGIFTs <- distillq(gene_expression,gene_annotations,GIFT_db,genecol=1,genomecol=2,annotcol=c(9,10,19))
-
-#Sweep list structure from genome-based to sample-based
-qGIFTs_persample <- sweep_matrix_list(qGIFTs)
-```
 
 ## Community GIFTs
 Using distillR, community GIFTs can be calculated using two contrasting approaches.

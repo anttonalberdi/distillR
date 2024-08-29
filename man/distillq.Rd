@@ -7,7 +7,7 @@
 distillq(
   gene_count_table,
   annotation_table,
-  GIFT_db,
+  GIFT_db = GIFT_db,
   genecol = 1,
   genomecol = 2,
   annotcol = c(9, 10, 19)

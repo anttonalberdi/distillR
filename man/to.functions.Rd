@@ -4,7 +4,7 @@
 \alias{to.functions}
 \title{Aggregates element-level GIFTs into the function level}
 \usage{
-to.functions(elements_table, GIFT_db)
+to.functions(elements_table, GIFT_db = GIFT_db)
 }
 \arguments{
 \item{elements_table}{Element-level GIFT table}

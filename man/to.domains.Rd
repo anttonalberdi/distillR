@@ -4,7 +4,7 @@
 \alias{to.domains}
 \title{Aggregates function-level GIFTs into the domain level}
 \usage{
-to.domains(functions_table, GIFT_db)
+to.domains(functions_table, GIFT_db = GIFT_db)
 }
 \arguments{
 \item{functions_table}{Function-level GIFT table}

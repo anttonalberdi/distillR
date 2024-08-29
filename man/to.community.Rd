@@ -4,7 +4,7 @@
 \alias{to.community}
 \title{Converts genome-xpecific GIFTs into the community level}
 \usage{
-to.community(GIFT_table, abundance_table, GIFT_db)
+to.community(GIFT_table, abundance_table, GIFT_db = GIFT_db)
 }
 \arguments{
 \item{GIFT_table}{GIFT table at any hierarchical level}

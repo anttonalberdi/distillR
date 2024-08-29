@@ -22,6 +22,7 @@ to.elements <- function(GIFT_table,GIFT_db=GIFT_db){
      group_by(Code_element) %>%
      summarise(across(where(is.numeric), ~ max(.x, na.rm = TRUE))) %>%
      arrange(factor(Code_element, levels = unique(GIFT_db$Code_element))) %>%
+     filter(!is.na(Code_element)) %>%
      column_to_rownames('Code_element'))
 
    return(elements_table)
