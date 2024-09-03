@@ -3,7 +3,6 @@ test_that("distill returns something", {
     import_dram() %>%
     dplyr::filter(mag_id == "MAG1")
 
-
   expect_visible(distill(annotations))
 })
 

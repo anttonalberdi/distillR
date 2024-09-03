@@ -1,9 +1,14 @@
-#' Compute the shortest paths
+#' Distill the annotations by computing the completeness of a pathway given
+#' present annotations
 #'
-#' @return
+#' @param dram_annotation Table containing the imported annotation from DRAM
+#' @return A tibble with the completeness of a pathway given present annotations
 #' @export
 #'
 #' @examples
+#' gene_annotations %>%
+#'  import_dram() %>%
+#'  distill()
 distill <- function(dram_annotations) {
   dram_annotations %>%
     dplyr::select(mag_id, annotation_id) %>%
