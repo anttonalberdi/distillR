@@ -12,7 +12,6 @@
 #' @examples
 #' get_bundle_cost(c("S09X", "6.1.1.4"))
 get_bundle_cost <- function(annotation_vector) {
-
   annotation_vector_clean <- c("root", "source", annotation_vector) %>% unique()
 
   gift_df %>%

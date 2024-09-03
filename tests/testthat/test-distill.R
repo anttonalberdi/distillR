@@ -23,7 +23,6 @@ test_that("distill returns the correct tibble", {
 
 
 test_that("distill returns the correct tibble", {
-
   actual <-
     gene_annotations %>%
     import_dram() %>%

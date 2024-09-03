@@ -5,7 +5,6 @@
 #'
 #' @examples
 distill <- function(dram_annotations) {
-
   dram_annotations %>%
     dplyr::select(mag_id, annotation_id) %>%
     dplyr::distinct() %>%
@@ -15,10 +14,9 @@ distill <- function(dram_annotations) {
     ) %>%
     dplyr::mutate(
       bundle_cost = get_bundle_cost(
-        annotation_vector = annotation_ids
+        annotation_vector = annotation_ids  # nolint: object_usage_linter
       ) %>% list()
     ) %>%
     dplyr::select(-annotation_ids) %>%
-    tidyr::unnest(bundle_cost)
-
+    tidyr::unnest(bundle_cost)  # nolint: object_usage_linte
 }

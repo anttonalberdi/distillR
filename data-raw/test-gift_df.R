@@ -52,7 +52,6 @@ test_that("Test dereplicate_graph", {
 })
 
 test_that("Test dereplicate_graph with a EC definition", {
-
   # Trying strwrapping this results in a failed test
   definition <-
     "1.4.1.2 1.1.1.399 2.8.3.12 4.2.1.167 7.2.4.5 1.3.1.109 (2.8.3.1,2.8.3.8)"
@@ -107,7 +106,6 @@ test_that("Test process_space_subdefinition", {
 
 # process_single_node_subdefinition ----
 test_that("Test process_single_node_subdefinition", {
-
   actual <- process_single_node_subdefinition("b", "subgraph_1")
 
   expected <- tibble::tibble(
@@ -120,7 +118,6 @@ test_that("Test process_single_node_subdefinition", {
 
 # dereplicated_graph_to_adjacency_list ----
 test_that("Test dereplicated_graph_to_adjacency_list", {
-
   actual <-
     "a (b,c)" %>%
     plus_to_space() %>%
@@ -143,26 +140,29 @@ test_that("Test dereplicated_graph_to_adjacency_list", {
 })
 
 
-test_that("Test dereplicated_graph_to_adjacency_list with a single gene
-  definition", {
-  actual <-
-    "a" %>%
-    plus_to_space() %>%
-    decouple_graph() %>%
-    dereplicate_graph() %>%
-    dereplicated_graph_to_adjacency_list()
-  expected <- list(
-    root = tibble::tibble(
-      from = c("root_source", "a_0"),
-      to = c("a_0", "root_sink")
+test_that(
+  "Test dereplicated_graph_to_adjacency_list with a single gene definition",
+  {
+    actual <-
+      "a" %>%
+      plus_to_space() %>%
+      decouple_graph() %>%
+      dereplicate_graph() %>%
+      dereplicated_graph_to_adjacency_list()
+
+    expected <- list(
+      root = tibble::tibble(
+        from = c("root_source", "a_0"),
+        to = c("a_0", "root_sink")
+      )
     )
-  )
-  expect_equal(actual, expected)
-})
+
+    expect_equal(actual, expected)
+  }
+)
 
 # trim_intermediate_sources_and_sinks_df ----
 test_that("Test trim_intermediate_sources_and_sinks_df", {
-
   actual <-
     "a (b,c) (c+d)" %>%
     plus_to_space() %>%
@@ -183,11 +183,10 @@ test_that("Test trim_intermediate_sources_and_sinks_df", {
 
 # append_gift_id_to_df ----
 test_that("Test append_gift_id_to_df", {
-
   actual <- tibble::tibble(
-      from = c("root", "a"),
-      to = c("a", "sink")
-    ) %>%
+    from = c("root", "a"),
+    to = c("a", "sink")
+  ) %>%
     append_gift_id_to_df("tag")
 
   expected <- tibble::tibble(
@@ -200,7 +199,6 @@ test_that("Test append_gift_id_to_df", {
 
 # definition_to_edge_df ----
 test_that("Test definition_to_edge_df", {
-
   actual <- definition_to_edge_df("a (b c)", "tag")
 
   expected <- tibble::tibble(
@@ -213,7 +211,6 @@ test_that("Test definition_to_edge_df", {
 
 
 test_that("Test definition_to_edge_df with an EC definition", {
-
   actual <- definition_to_edge_df(
     "1.4.1.2 1.1.1.399 2.8.3.12 4.2.1.167 7.2.4.5 1.3.1.109 (2.8.3.1,2.8.3.8)",
     "B040207"

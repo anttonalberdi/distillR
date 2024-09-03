@@ -113,17 +113,17 @@ dereplicate_graph <- function(decoupled_graph) {
     dplyr::mutate(
       level = dplyr::row_number() - 1,
       subgraph_definition_new =
-        subgraph_definition %>%
-          stringr::str_replace_all(
-            pattern = "([\\w\\.]+)",
-            replacement = stringr::str_glue("\\1_{level}")
-          ) %>%
-          stringr::str_replace_all( # undo subgraph
-            pattern = "(subgraph_\\d+)_\\d+",
-            replacement = "\\1"
-          )
+        subgraph_definition %>%  # nolint: object_usage_linte
+        stringr::str_replace_all(
+          pattern = "([\\w\\.]+)",
+          replacement = stringr::str_glue("\\1_{level}")
+        ) %>%
+        stringr::str_replace_all( # undo subgraph
+          pattern = "(subgraph_\\d+)_\\d+",
+          replacement = "\\1"
+        )
     ) %>%
-    dplyr::select(subgraph_name, subgraph_definition_new) %>%
+    dplyr::select(subgraph_name, subgraph_definition_new) %>% # nolint: object_usage_linte
     tibble::deframe() %>%
     as.list()
 }
@@ -200,7 +200,10 @@ process_space_subdefinition <-
       dplyr::bind_rows(
         tibble::tibble(from = nodes) %>%
           dplyr::mutate(
-            to = dplyr::lead(from, default = stringr::str_glue("{subgraph_id}_sink"))
+            to = dplyr::lead(
+              from,
+              default = stringr::str_glue("{subgraph_id}_sink")
+            )
           )
       ) %>%
       dplyr::mutate(
@@ -230,9 +233,8 @@ process_space_subdefinition <-
 #'
 #' @examples
 #' process_single_node_subdefinition("b", "subgraph_1")
-process_single_node_subdefinition <-
+process_single_node_subdefinition <-  # nolint: object_length_linter
   function(subgraph_definition, subgraph_id) {
-    nodes <- subgraph_definition
     edges <- tibble::tibble(
       from = c(stringr::str_glue("{subgraph_id}_source"), subgraph_definition),
       to = c(subgraph_definition, stringr::str_glue("{subgraph_id}_sink"))
@@ -255,7 +257,7 @@ process_single_node_subdefinition <-
 #'   distillR::decouple_graph() %>%
 #'   dereplicate_graph() %>%
 #'   dereplicated_graph_to_adjacency_list()
-dereplicated_graph_to_adjacency_list <-
+dereplicated_graph_to_adjacency_list <-  # nolint: object_length_linter
   function(dereplicated_graph) {
     list_of_edge_dfs <- list()
 
@@ -298,11 +300,15 @@ dereplicated_graph_to_adjacency_list <-
 #'   dereplicated_graph_to_adjacency_list() %>%
 #'   dplyr::bind_rows() %>%
 #'   trim_intermediate_sources_and_sinks_df()
-trim_intermediate_sources_and_sinks_df <- function(edge_df) {
+trim_intermediate_sources_and_sinks_df <- function(edge_df) {  # nolint: object_length_linter
   nodes_to_delete <-
     c(
-      edge_df %>% dplyr::filter(stringr::str_detect(from, "^subgraph_")) %>% dplyr::pull(from),
-      edge_df %>% dplyr::filter(stringr::str_detect(to, "^subgraph_")) %>% dplyr::pull(to)
+      edge_df %>%
+        dplyr::filter(stringr::str_detect(from, "^subgraph_")) %>%
+        dplyr::pull(from),
+      edge_df %>%
+        dplyr::filter(stringr::str_detect(to, "^subgraph_")) %>%
+        dplyr::pull(to)
     ) %>%
     unique()
 
@@ -397,7 +403,7 @@ clean_bad_definitions <- function(giftdb) {
           "(2.6.1.1,2.6.1.5,2.6.1.27,2.6.1.57)
         1.13.11.27 1.13.11.5 5.2.1.2 3.7.1.2"
         ),
-        Definition
+        Definition # nolint: object_usage_linte
       ),
       Definition = dplyr::if_else(
         Code_bundle == "B010301",
@@ -419,21 +425,21 @@ build_gift_df <- function() {
   load("data-raw/GIFT_db.rda")
 
   gift_df <-
-    GIFT_db %>%
+    GIFT_db %>% # nolint: object_usage_linte
     clean_bad_definitions() %>%
     tibble::as_tibble() %>%
     dplyr::rowwise() %>%
     dplyr::mutate(
-      edge_df = definition_to_edge_df(Definition, Code_bundle) %>% list()
+      edge_df = definition_to_edge_df(Definition, Code_bundle) %>% list() # nolint: object_usage_linte
     ) %>%
-    tidyr::unnest(edge_df) %>%
+    tidyr::unnest(edge_df) %>% # nolint: object_usage_linte
     dplyr::select(-Definition) %>%
     dplyr::select(
-      domain = Domain,
-      function_id = Code_function,
-      function_name = Function,
-      element_id = Code_element,
-      element_name = Element,
+      domain = Domain, # nolint: object_usage_linte
+      function_id = Code_function, # nolint: object_usage_linte
+      function_name = Function, # nolint: object_usage_linte
+      element_id = Code_element, # nolint: object_usage_linte
+      element_name = Element, # nolint: object_usage_linte
       pathway_id = Code_bundle,
       from, to
     )
@@ -443,5 +449,11 @@ build_gift_df <- function() {
 
 if (!interactive()) {
   gift_df <- build_gift_df()
-  save(gift_df, file = "R/sysdata.rda", compress = "xz", compression_level = 9, version = 2)
+  save(
+    gift_df,
+    file = "R/sysdata.rda",
+    compress = "xz",
+    compression_level = 9,
+    version = 2
+  )
 }

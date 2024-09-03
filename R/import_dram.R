@@ -23,7 +23,8 @@ import_dram <- function(dram_raw_table) {
   dram_raw_table %>%
     tibble::as_tibble() %>%
     dplyr::select(
-      mag_id = genome, gene_id = gene, kegg_id, kegg_hit, cazy_hits, peptidase_family
+      mag_id = genome, gene_id = gene, kegg_id, kegg_hit, cazy_hits,
+      peptidase_family
     ) %>%
     dplyr::group_by(mag_id) %>%
     tidyr::pivot_longer(
