@@ -4,13 +4,13 @@ test_that("get_bundle_cost returns something", {
 })
 
 
-test_that("get_bundle_cost returns the correct tibble", {
+test_that("get_bundle_cost returns the correct tibble size", {
   annotation_vector <- c("S09X", "6.1.1.4")
   dims <- dim(get_bundle_cost(annotation_vector))
   expect_equal(dims, c(315, 3))
 })
 
-test_that("get_bundle_cost returns the correct dataframe", {
+test_that("get_bundle_cost returns the correct tibble data", {
   actual <-
     distillR::gene_annotations %>%
     distillR::import_dram() %>%

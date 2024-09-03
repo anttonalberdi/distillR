@@ -1,6 +1,19 @@
+#' Compute the shortest path cost for a given set of annotations
+#'
+#' @param annotation_vector A vector of annotations to compute the shortest
+#' path between the source and sink metabolite
+#'
+#' @return A tibble with the following columns:
+#' - `pathway_id`: The pathway identifier
+#' - `length_shortest_path`: The length of the shortest path
+#' - `cost`: The number of genes missing in the shortest path
+#' @export
+#'
+#' @examples
+#' get_bundle_cost(c("S09X", "6.1.1.4"))
 get_bundle_cost <- function(annotation_vector) {
 
-  annotation_vector <- c("root", "source", annotation_vector) %>% unique()  # nolint
+  annotation_vector_clean <- c("root", "source", annotation_vector) %>% unique()
 
   gift_df %>%
     tidyr::separate(
@@ -19,8 +32,8 @@ get_bundle_cost <- function(annotation_vector) {
     dplyr::mutate(
       cost = dplyr::if_else(
         condition =
-          (from_annotation %in% annotation_vector) &
-          (to_annotation %in% annotation_vector),
+          (from_annotation %in% annotation_vector_clean) &
+          (to_annotation %in% annotation_vector_clean),
         true = 0,
         false = 1
       )
@@ -43,5 +56,6 @@ get_bundle_cost <- function(annotation_vector) {
       # completeness = 1 - cost / length_shortest_path  # nolint
     ) %>%
     dplyr::ungroup() %>%
-    dplyr::select(pathway_id, length_shortest_path, cost)
+    dplyr::select(pathway_id, length_shortest_path, cost) %>%
+    dplyr::arrange(pathway_id, length_shortest_path, cost)
 }

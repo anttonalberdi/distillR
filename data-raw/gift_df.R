@@ -114,14 +114,14 @@ dereplicate_graph <- function(decoupled_graph) {
       level = dplyr::row_number() - 1,
       subgraph_definition_new =
         subgraph_definition %>%
-        stringr::str_replace_all(
-          pattern = "([\\w\\.]+)",
-          replacement = stringr::str_glue("\\1_{level}")
-        ) %>%
-        stringr::str_replace_all(  # undo subgraph
-          pattern = "(subgraph_\\d+)_\\d+",
-          replacement = "\\1"
-        )
+          stringr::str_replace_all(
+            pattern = "([\\w\\.]+)",
+            replacement = stringr::str_glue("\\1_{level}")
+          ) %>%
+          stringr::str_replace_all( # undo subgraph
+            pattern = "(subgraph_\\d+)_\\d+",
+            replacement = "\\1"
+          )
     ) %>%
     dplyr::select(subgraph_name, subgraph_definition_new) %>%
     tibble::deframe() %>%
@@ -199,9 +199,9 @@ process_space_subdefinition <-
       ) %>%
       dplyr::bind_rows(
         tibble::tibble(from = nodes) %>%
-        dplyr::mutate(
-          to = dplyr::lead(from, default = stringr::str_glue("{subgraph_id}_sink"))
-        )
+          dplyr::mutate(
+            to = dplyr::lead(from, default = stringr::str_glue("{subgraph_id}_sink"))
+          )
       ) %>%
       dplyr::mutate(
         from = dplyr::if_else(
@@ -238,7 +238,7 @@ process_single_node_subdefinition <-
       to = c(subgraph_definition, stringr::str_glue("{subgraph_id}_sink"))
     )
     return(edges)
-}
+  }
 
 
 
@@ -352,10 +352,10 @@ trim_intermediate_sources_and_sinks_df <- function(edge_df) {
 #'   append_gift_id_to_df("tag")
 append_gift_id_to_df <- function(df, gift_id) {
   df %>%
-  dplyr::mutate(
-    from = stringr::str_glue("{gift_id}_{from}"),
-    to = stringr::str_glue("{gift_id}_{to}")
-  )
+    dplyr::mutate(
+      from = stringr::str_glue("{gift_id}_{from}"),
+      to = stringr::str_glue("{gift_id}_{to}")
+    )
 }
 
 
@@ -390,21 +390,21 @@ definition_to_edge_df <- function(definition, gift_id) {
 #' @noRd
 clean_bad_definitions <- function(giftdb) {
   giftdb %>%
-  dplyr::mutate(
-    Definition = dplyr::if_else(
-      Code_bundle == "B060213",
-      strwrap(
-        "(2.6.1.1,2.6.1.5,2.6.1.27,2.6.1.57)
+    dplyr::mutate(
+      Definition = dplyr::if_else(
+        Code_bundle == "B060213",
+        strwrap(
+          "(2.6.1.1,2.6.1.5,2.6.1.27,2.6.1.57)
         1.13.11.27 1.13.11.5 5.2.1.2 3.7.1.2"
+        ),
+        Definition
       ),
-      Definition
-    ),
-    Definition = dplyr::if_else(
-      Code_bundle == "B010301",
-      "K13800,K13809,K09903",
-      Definition
+      Definition = dplyr::if_else(
+        Code_bundle == "B010301",
+        "K13800,K13809,K09903",
+        Definition
+      )
     )
-  )
 }
 
 
@@ -416,7 +416,6 @@ clean_bad_definitions <- function(giftdb) {
 #' @examples
 #' build_gift_df()
 build_gift_df <- function() {
-
   load("data-raw/GIFT_db.rda")
 
   gift_df <-
