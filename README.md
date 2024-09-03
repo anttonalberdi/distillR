@@ -1,5 +1,5 @@
 [![R-CMD-check](https://github.com/anttonalberdi/distillR/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/anttonalberdi/distillR/actions/workflows/R-CMD-check.yaml)
-[![Codecov test coverage](https://codecov.io/gh/anttonalberdi/distillR/branch/main/graph/badge.svg)](https://app.codecov.io/gh/anttonalberdi/distillR?branch=main)
+[![Codecov test coverage](https://codecov.io/gh/anttonalberdi/distillR/graph/badge.svg)](https://app.codecov.io/gh/anttonalberdi/distillR)
 
 # distillR
 
