@@ -7,7 +7,7 @@ test_that("distill returns something", {
 })
 
 
-test_that("distill returns the correct tibble", {
+test_that("distill returns the correct tibble dimensions", {
   annotations <-
     gene_annotations %>%
     import_dram() %>%
