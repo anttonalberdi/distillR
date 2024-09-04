@@ -7,8 +7,8 @@
 #'
 #' @examples
 #' gene_annotations %>%
-#'  import_dram() %>%
-#'  distill()
+#'   import_dram() %>%
+#'   distill()
 distill <- function(dram_annotations) {
   dram_annotations %>%
     dplyr::select(mag_id, annotation_id) %>%
@@ -18,10 +18,10 @@ distill <- function(dram_annotations) {
       annotation_ids = list(annotation_id)
     ) %>%
     dplyr::mutate(
-      bundle_cost = get_bundle_cost(
-        annotation_vector = annotation_ids  # nolint: object_usage_linter
+      bundle_cost = compute_shortest_paths(
+        annotation_vector = annotation_ids # nolint: object_usage_linter
       ) %>% list()
     ) %>%
     dplyr::select(-annotation_ids) %>%
-    tidyr::unnest(bundle_cost)  # nolint: object_usage_linte
+    tidyr::unnest(bundle_cost) # nolint: object_usage_linte
 }

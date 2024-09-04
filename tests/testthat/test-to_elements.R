@@ -10,7 +10,6 @@ test_that("to_function returns the correct tibble dimensions", {
   actual <- to_elements(distilled)
   actual_dims <- dim(distilled)
   expect_equal(actual_dims, c(315, 4))
-
 })
 
 

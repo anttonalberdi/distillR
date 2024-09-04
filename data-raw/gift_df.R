@@ -101,6 +101,7 @@ plus_to_space <- function(definition) {
 #' "a (b c)" %>%
 #'   decouple_graph() %>%
 #'   dereplicate_graph()
+
 dereplicate_graph <- function(decoupled_graph) {
   decoupled_graph %>%
     tibble::as_tibble() %>%
@@ -113,7 +114,7 @@ dereplicate_graph <- function(decoupled_graph) {
     dplyr::mutate(
       level = dplyr::row_number() - 1,
       subgraph_definition_new =
-        subgraph_definition %>%  # nolint: object_usage_linte
+        subgraph_definition %>% # nolint: object_usage_linte
         stringr::str_replace_all(
           pattern = "([\\w\\.]+)",
           replacement = stringr::str_glue("\\1_{level}")
@@ -233,7 +234,7 @@ process_space_subdefinition <-
 #'
 #' @examples
 #' process_single_node_subdefinition("b", "subgraph_1")
-process_single_node_subdefinition <-  # nolint: object_length_linter
+process_single_node_subdefinition <- # nolint: object_length_linter
   function(subgraph_definition, subgraph_id) {
     edges <- tibble::tibble(
       from = c(stringr::str_glue("{subgraph_id}_source"), subgraph_definition),
@@ -257,7 +258,7 @@ process_single_node_subdefinition <-  # nolint: object_length_linter
 #'   distillR::decouple_graph() %>%
 #'   dereplicate_graph() %>%
 #'   dereplicated_graph_to_adjacency_list()
-dereplicated_graph_to_adjacency_list <-  # nolint: object_length_linter
+dereplicated_graph_to_adjacency_list <- # nolint: object_length_linter
   function(dereplicated_graph) {
     list_of_edge_dfs <- list()
 
@@ -300,7 +301,7 @@ dereplicated_graph_to_adjacency_list <-  # nolint: object_length_linter
 #'   dereplicated_graph_to_adjacency_list() %>%
 #'   dplyr::bind_rows() %>%
 #'   trim_intermediate_sources_and_sinks_df()
-trim_intermediate_sources_and_sinks_df <- function(edge_df) {  # nolint: object_length_linter
+trim_intermediate_sources_and_sinks_df <- function(edge_df) { # nolint: object_length_linter
   nodes_to_delete <-
     c(
       edge_df %>%
@@ -443,7 +444,7 @@ build_gift_df <- function() {
       )
     ) %>%
     dplyr::select(
-      domain_id,  # nolint: object_usage_linter
+      domain_id, # nolint: object_usage_linter
       domain_name = Domain, # nolint: object_usage_linter
       function_id = Code_function, # nolint: object_usage_linter
       function_name = Function, # nolint: object_usage_linter
