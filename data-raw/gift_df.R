@@ -434,15 +434,24 @@ build_gift_df <- function() {
     ) %>%
     tidyr::unnest(edge_df) %>% # nolint: object_usage_linte
     dplyr::select(-Definition) %>%
+    dplyr::mutate(
+      domain_id = dplyr::case_when(
+        Domain == "Biosynthesis" ~ "B",
+        Domain == "Degradation" ~ "D",
+        Domain == "Structure" ~ "S",
+        TRUE ~ NA
+      )
+    ) %>%
     dplyr::select(
-      domain = Domain, # nolint: object_usage_linte
+      domain_id,
+      domain_name = Domain, # nolint: object_usage_linte
       function_id = Code_function, # nolint: object_usage_linte
       function_name = Function, # nolint: object_usage_linte
       element_id = Code_element, # nolint: object_usage_linte
       element_name = Element, # nolint: object_usage_linte
       pathway_id = Code_bundle,
       from, to
-    )
+    ) %>%
 
   return(gift_df)
 }

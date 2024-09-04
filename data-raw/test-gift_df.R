@@ -254,7 +254,7 @@ test_that("Test build_gift_df", {
     unique() %>%
     length()
 
-  expect_equal(ncol(actual), 8)
-  expect_equal(nrow(actual), 6750)
+  expect_equal(ncols, 9)
+  expect_equal(nrows, 6750)
   expect_equal(ngenes_plus_root, 1547)
 })
