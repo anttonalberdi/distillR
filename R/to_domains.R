@@ -10,7 +10,7 @@ to_domains <- function(distilled) {
   distilled %>%
     dplyr::left_join(gift_df, by = "pathway_id") %>%
     dplyr::select(
-      mag_id, domain_id, domain_name, pathway_id, length_shortest_path, cost
+      mag_id, domain_id, domain_name, pathway_id, length_shortest_path, cost  # nolint object_usage_linter
     ) %>%
     dplyr::distinct() %>%
     dplyr::group_by(mag_id, domain_id, domain_name) %>%

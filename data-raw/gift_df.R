@@ -443,15 +443,15 @@ build_gift_df <- function() {
       )
     ) %>%
     dplyr::select(
-      domain_id,
-      domain_name = Domain, # nolint: object_usage_linte
-      function_id = Code_function, # nolint: object_usage_linte
-      function_name = Function, # nolint: object_usage_linte
-      element_id = Code_element, # nolint: object_usage_linte
-      element_name = Element, # nolint: object_usage_linte
+      domain_id,  # nolint: object_usage_linter
+      domain_name = Domain, # nolint: object_usage_linter
+      function_id = Code_function, # nolint: object_usage_linter
+      function_name = Function, # nolint: object_usage_linter
+      element_id = Code_element, # nolint: object_usage_linter
+      element_name = Element, # nolint: object_usage_linter
       pathway_id = Code_bundle,
       from, to
-    ) %>%
+    )
 
   return(gift_df)
 }
