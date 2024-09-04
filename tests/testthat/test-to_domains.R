@@ -1,10 +1,10 @@
-test_that("to_function returns something", {
+test_that("to_domains returns something", {
   distilled <- readr::read_rds(test_path("fixtures", "distill_expected.rds"))
   expect_visible(to_domains(distilled))
 })
 
 
-test_that("to_function returns the correct tibble dimensions", {
+test_that("to_domains returns the correct tibble dimensions", {
   distilled <- readr::read_rds(test_path("fixtures", "distill_expected.rds"))
 
   actual <- to_domains(distilled)
@@ -13,7 +13,7 @@ test_that("to_function returns the correct tibble dimensions", {
 })
 
 
-test_that("to_function returns the correct tibble", {
+test_that("to_domains returns the correct tibble", {
   distilled <- readr::read_rds(test_path("fixtures", "distill_expected.rds"))
   actual <- distilled %>% to_domains()
 
