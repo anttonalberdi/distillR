@@ -1,25 +1,10 @@
-test_that("to_functions returns something", {
-  distilled <- readr::read_rds(test_path("fixtures", "distill_expected.rds"))
-  expect_visible(to_functions(distilled))
-})
-
-
-test_that("to_functions returns the correct tibble dimensions", {
-  distilled <- readr::read_rds(test_path("fixtures", "distill_expected.rds"))
-
-  actual <- to_functions(distilled)
-  actual_dims <- dim(distilled)
-  expect_equal(actual_dims, c(315, 4))
-})
-
-
 test_that("to_functions returns the correct tibble", {
-  distilled <- readr::read_rds(test_path("fixtures", "distill_expected.rds"))
+  distilled <- readr::read_rds(test_path("fixtures", "distill.rds"))
   actual <- distilled %>% to_functions()
 
-  # readr::write_rds(x = actual, file = "tests/testthat/fixtures/to_function_expected.rds")  # nolint
+  # readr::write_rds(x = actual, file = "tests/testthat/fixtures/to_functions.rds")  # nolint
   expected <- readr::read_rds(
-    test_path("fixtures", "to_function_expected.rds")
+    test_path("fixtures", "to_functions.rds")
   )
 
   expect_equal(actual, expected)
