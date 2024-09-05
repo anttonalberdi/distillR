@@ -2,14 +2,14 @@
 #'
 #' @param dram_raw_table Dataframe with the raw DRAM table.
 #' Must contain at least the following columns:
-#' - genome: genome name
-#' - gene:
-#' - kegg_id: KEGG Ortholog IDs (KOs)
-#' - kegg_hit: KEGG description with EC codes
-#' - cazy_hits: CAZy family hits with EC codes
-#' - peptidase_family: peptidase family
+#' - `...1`: gene name (DRAM leaves this column empty)
+#' - `fasta`: MAG identifier
+#' - `ko_id`: KEGG Ortholog IDs (KOs)
+#' - `kegg_hit`: KEGG description with EC codes
+#' - `cazy_ids`: CAZy family hits with EC codes
+#' - `peptidase_family`: peptidase family identifiers
 #'
-#' From this table the KOs, EC and peptidase codes will be exracted for further
+#' From this table the KOs, EC and peptidase codes will be extracted for further
 #' analyses for distillR.
 #' @return Dataframe with the following columns:
 #' - genome: provided genome names
@@ -18,13 +18,13 @@
 #' @export
 #'
 #' @examples
-#' distillR::gene_annotations %>% import_dram()
+#' dram %>% import_dram()
 import_dram <- function(dram_raw_table) {
   dram_raw_table %>%
     tibble::as_tibble() %>%
     dplyr::select(
-      mag_id = genome, gene_id = gene, kegg_id, kegg_hit, cazy_hits,
-      peptidase_family
+      mag_id = fasta, gene_id = `...1`, ko_id, kegg_hit, cazy_ids,  # nolint
+      peptidase_family  # nolint
     ) %>%
     dplyr::group_by(mag_id) %>%
     tidyr::pivot_longer(
@@ -32,7 +32,7 @@ import_dram <- function(dram_raw_table) {
       names_to = "annotation_type",
       values_to = "annotation"
     ) %>%
-    dplyr::filter(annotation != "") %>%
+    dplyr::filter(!is.na(annotation)) %>%
     tidyr::pivot_wider(
       names_from = annotation_type,
       values_from = annotation
@@ -45,18 +45,12 @@ import_dram <- function(dram_raw_table) {
     ) %>%
     dplyr::mutate(
       kegg_hits = stringr::str_split(kegg_hits, " "),
-      cazy_hits = stringr::str_split(cazy_hits, "; ")
+      cazy_ids = stringr::str_split(cazy_ids, "; ")
     ) %>%
-    tidyr::unnest(cazy_hits) %>%
+    tidyr::unnest(cazy_ids) %>%
     tidyr::unnest(kegg_hits) %>%
-    tidyr::extract(
-      col = cazy_hits,
-      into = c("cazy_hit"),
-      regex = "EC ([0-9.\\- ]+)",
-      remove = FALSE
-    ) %>%
     dplyr::select(
-      mag_id, gene_id, kegg_id, kegg_hits, cazy_hit, peptidase_family
+      mag_id, gene_id, ko_id, kegg_hits, cazy_ids, peptidase_family
     ) %>%
     tidyr::pivot_longer(
       -mag_id:-gene_id,

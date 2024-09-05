@@ -1,9 +1,6 @@
-test_that("Test import_dram returns something", {
-  expect_visible(import_dram(gene_annotations))
-})
-
-test_that("Test import_dram still returns the same rows and columns", {
-  annotations <- import_dram(gene_annotations)
-  expect_equal(nrow(annotations), 30576)
-  expect_equal(ncol(annotations), 4)
+test_that("import_dram still returns the same tibble", {
+  actual <- dram %>% import_dram()
+  # write_rds(actual, test_path("fixtures", "import_dram.rds"), compress = "xz", version = 2, compression = 9)  # nolint
+  expected <- test_path("fixtures", "import_dram.rds") %>% readr::read_rds()
+  expect_equal(actual, expected)
 })

@@ -10,15 +10,15 @@ import_dram(dram_raw_table)
 \item{dram_raw_table}{Dataframe with the raw DRAM table.
 Must contain at least the following columns:
 \itemize{
-\item genome: genome name
-\item gene:
-\item kegg_id: KEGG Ortholog IDs (KOs)
-\item kegg_hit: KEGG description with EC codes
-\item cazy_hits: CAZy family hits with EC codes
-\item peptidase_family: peptidase family
+\item \code{...1}: gene name (DRAM leaves this column empty)
+\item \code{fasta}: MAG identifier
+\item \code{ko_id}: KEGG Ortholog IDs (KOs)
+\item \code{kegg_hit}: KEGG description with EC codes
+\item \code{cazy_ids}: CAZy family hits with EC codes
+\item \code{peptidase_family}: peptidase family identifiers
 }
 
-From this table the KOs, EC and peptidase codes will be exracted for further
+From this table the KOs, EC and peptidase codes will be extracted for further
 analyses for distillR.}
 }
 \value{
@@ -33,5 +33,5 @@ Dataframe with the following columns:
 Import DRAM table
 }
 \examples{
-distillR::gene_annotations \%>\% import_dram()
+dram \%>\% import_dram()
 }

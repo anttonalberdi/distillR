@@ -1,10 +1,12 @@
-test_that("compute_shortest_paths with MAG1", {
+test_that("compute_shortest_paths with the first MAG", {
   actual <-
-    gene_annotations %>%
+    dram %>%
     import_dram() %>%
-    dplyr::filter(mag_id == "MAG1") %>%
+    dplyr::filter(mag_id == "GPB:bin_000004") %>%
     dplyr::pull(annotation_id) %>%
     compute_shortest_paths()
+
+  # write_rds(actual, test_path("fixtures", "compute_shortest_paths.rds"), compress = "xz", version = 2, compression = 9)  # nolint
 
   expected <-
     test_path("fixtures", "compute_shortest_paths.rds") %>%
@@ -15,7 +17,6 @@ test_that("compute_shortest_paths with MAG1", {
 
 
 test_that("compute_shortest_paths computes as complete an entire element", {
-
   # The Pathwar for B010101
   # K00764
   # (K01945,K11787,K11788,K13713)
@@ -44,7 +45,6 @@ test_that("compute_shortest_paths computes as complete an entire element", {
 
 
 test_that("compute_shortest_paths for a straight line", {
-
   # The Pathwar for B010101
   # K00764
   # (K01945,K11787,K11788,K13713)

@@ -101,7 +101,6 @@ plus_to_space <- function(definition) {
 #' "a (b c)" %>%
 #'   decouple_graph() %>%
 #'   dereplicate_graph()
-
 dereplicate_graph <- function(decoupled_graph) {
   decoupled_graph %>%
     tibble::as_tibble() %>%
