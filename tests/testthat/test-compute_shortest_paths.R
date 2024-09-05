@@ -42,3 +42,30 @@ test_that("compute_shortest_paths computes as complete an entire element", {
 
   expect_equal(observed_cost, 0)
 })
+
+
+test_that("compute_shortest_paths for a straight line", {
+
+  # The Pathwar for B010101
+  # K00764
+  # (K01945,K11787,K11788,K13713)
+  # (K00601,K11175,K08289,K11787,K01492)
+  # (K01952,(K23269+K23264+K23265),(K23270+K23265))
+  # (K01933,K11787,(K11788 (K01587,K11808,(K01589 K01588))))
+  # (K01923,K01587,K13713)
+  # K01756
+  # (K00602,(K01492,(K06863 K11176)))
+
+  annotations <- c(
+    "K00764", "K01945", "K00601", "K01952", "K01933", "K01923", "K01756",
+    "K00602"
+  )
+
+  observed_cost <-
+    annotations %>%
+    compute_shortest_paths() %>%
+    dplyr::filter(pathway_id == "B010101") %>%
+    dplyr::pull(cost)
+
+  expect_equal(observed_cost, 0)
+})
