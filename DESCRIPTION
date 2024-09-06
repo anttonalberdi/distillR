@@ -1,4 +1,4 @@
-Package: distillR
+Package: distillr
 Title: Distill bacterial and metagenome annotations
 Version: 0.0.0.9000
 Authors@R:
@@ -8,7 +8,7 @@ Description:R package for distilling functional annotations of bacterial
     genomes and metagenomes.
 License: MIT + file LICENSE
 URL: https://github.com/anttonalberdi/distillR
-BugReports: https://github.com/anttonalberdi/distillR/issues
+BugReports: https://github.com/anttonalberdi/distillr/issues
 Depends:
     R (>= 2.10)
 Imports:

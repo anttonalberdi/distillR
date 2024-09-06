@@ -1,19 +1,19 @@
-[![R-CMD-check](https://github.com/anttonalberdi/distillR/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/anttonalberdi/distillR/actions/workflows/R-CMD-check.yaml)
-[![Codecov test coverage](https://codecov.io/gh/anttonalberdi/distillR/graph/badge.svg)](https://app.codecov.io/gh/anttonalberdi/distillR)
+[![R-CMD-check](https://github.com/anttonalberdi/distillr/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/anttonalberdi/distillr/actions/workflows/R-CMD-check.yaml)
+[![Codecov test coverage](https://codecov.io/gh/anttonalberdi/distillr/graph/badge.svg)](https://app.codecov.io/gh/anttonalberdi/distillr)
 
-# distillR
+# distillr
 
-distillR is an R package for distilling functional annotations of bacterial genomes and metagenomes into meaningful quantitative metrics defined as Genome-Inferred Functional Traits (GIFT).
+distillr is an R package for distilling functional annotations of bacterial genomes and metagenomes into meaningful quantitative metrics defined as Genome-Inferred Functional Traits (GIFT).
 
 ## Quickstart
-The package distillR contains mock data and the GIFT database required to test all functions.
+The package distillr contains mock data and the GIFT database required to test all functions.
 
 ```
-#Install and load the package distillR
+#Install and load the package distillr
 install.packages("devtools")
 library(devtools)
-install_github("anttonalberdi/distillR")
-library(distillR)
+install_github("anttonalberdi/distillr")
+library(distillr)
 
 #Run distillation
 GIFTs <- distill(gene_annotations,GIFT_db,genomecol=2,annotcol=c(9,10,19))
@@ -34,7 +34,7 @@ GIFTs_domains_community <- to.community(GIFTs_domains,genome_counts,GIFT_db)
 ```
 
 ## Input data structure
-distillR can perform operations with four types of input data
+distillr can perform operations with four types of input data
 
 ### Gene annotations (mandatory)
 
@@ -98,7 +98,7 @@ qGIFTs_persample <- sweep_matrix_list(qGIFTs)
 ```
 
 ## Community GIFTs
-Using distillR, community GIFTs can be calculated using two contrasting approaches.
+Using distillr, community GIFTs can be calculated using two contrasting approaches.
 
 In the aggregative approach, the entire community is considered as a single genome and GIFTs are computed using all identifiers present in the community data. The main caveat of this approach is that it ignores gene bundles enabling different functions are encoded in individual genomes. Assuming that the annotation file contains all the gene annotations of a community, aggregative community GIFTs are calculated by simply avoiding specifying the genome identifier column in the function distill().
 
