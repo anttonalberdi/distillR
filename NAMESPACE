@@ -2,6 +2,7 @@
 
 export("%>%")
 export(compute_shortest_paths)
+export(distill)
 export(import_dram)
 export(to_domains)
 export(to_elements)

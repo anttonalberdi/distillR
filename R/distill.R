@@ -1,12 +1,12 @@
 #' Distill the annotations by computing the completeness of a pathway given
 #' present annotations
 #'
-#' @param dram_annotation Table containing the imported annotation from DRAM
+#' @param dram_annotations Table containing the imported annotation from DRAM
 #' @return A tibble with the completeness of a pathway given present annotations
 #' @export
 #'
 #' @examples
-#' gene_annotations %>%
+#' dram %>%
 #'   import_dram() %>%
 #'   distill()
 distill <- function(dram_annotations) {

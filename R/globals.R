@@ -5,5 +5,6 @@ utils::globalVariables(c(
   "length_shortest_path", "peptidase_family", "shortest_path", "to_annotation",
   "to_code", "to_level", "Code_bundle", "from", "to", "pathway_id", "mag_id",
   "gene_id", "function_id", "function_name", "domain_id", "domain_name",
-  "element_id", "element_name", "fasta", "...1", "ko_id", "cazy_ids"
+  "element_id", "element_name", "fasta", "...1", "ko_id", "cazy_ids",
+  "dram_annotations", "bundle_cost", "annotation_ids", "dram_annotation"
 ))
