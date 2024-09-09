@@ -52,7 +52,6 @@ compute_shortest_paths <- function(annotation_vector) {
       cost = cppRouting::get_distance_pair(
         Graph = graph, from = source, to = sink
       ),
-      # completeness = 1 - cost / length_shortest_path  # nolint
     ) %>%
     dplyr::ungroup() %>%
     dplyr::select(pathway_id, length_shortest_path, cost) %>%
