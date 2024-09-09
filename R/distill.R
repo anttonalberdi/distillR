@@ -17,6 +17,7 @@ distill <- function(dram_annotations) {
     dplyr::summarise(
       annotation_ids = list(annotation_id)
     ) %>%
+    dplyr::rowwise() %>%
     dplyr::mutate(
       bundle_cost = compute_shortest_paths(
         annotation_vector = annotation_ids # nolint: object_usage_linter
