@@ -10,7 +10,7 @@
 #'
 #' @examples
 #' compute_redundancy(c("S09X", "6.1.1.4"))
-compute_redundancy <- function(annotation_vector){
+compute_redundancy <- function(annotation_vector) {
 
   annotation_vector_clean <- annotation_vector %>% unique()
 
