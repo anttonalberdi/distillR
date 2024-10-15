@@ -6,23 +6,23 @@
 #' @export
 #'
 #' @examples
-#' dram %>%
-#'   import_dram() %>%
+#' dram |>
+#'   import_dram() |>
 #'   distill()
 distill <- function(dram_annotations) {
-  dram_annotations %>%
-    dplyr::select(mag_id, annotation_id) %>%
-    dplyr::distinct() %>%
-    dplyr::group_by(mag_id) %>%
+  dram_annotations |>
+    dplyr::select(mag_id, annotation_id) |>
+    dplyr::distinct() |>
+    dplyr::group_by(mag_id) |>
     dplyr::summarise(
       annotation_ids = list(annotation_id)
-    ) %>%
-    dplyr::rowwise() %>%
+    ) |>
+    dplyr::rowwise() |>
     dplyr::mutate(
       bundle_cost = compute_shortest_paths(
         annotation_vector = annotation_ids # nolint: object_usage_linter
-      ) %>% list()
-    ) %>%
-    dplyr::select(-annotation_ids) %>%
+      ) |> list()
+    ) |>
+    dplyr::select(-annotation_ids) |>
     tidyr::unnest(bundle_cost) # nolint: object_usage_linter
 }

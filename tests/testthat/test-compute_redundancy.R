@@ -1,9 +1,9 @@
 test_that("compute_redundancy returns the correct tibble", {
 
   annotation_vector <-
-    dram %>%
-    import_dram() %>%
-    dplyr::pull(annotation_id) %>%
+    dram |>
+    import_dram() |>
+    dplyr::pull(annotation_id) |>
     unique()
 
   actual <- compute_redundancy(annotation_vector)

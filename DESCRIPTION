@@ -14,7 +14,6 @@ Depends:
 Imports:
     cppRouting,
     dplyr,
-    magrittr,
     stringr,
     tibble,
     tidyr

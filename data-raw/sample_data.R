@@ -5,29 +5,29 @@
 # - the count data comes from MSEB0015
 
 # read the dereplicated bins
-bins <- read_tsv("bins.tsv", col_names = c("bin_id")) %>% pull(bin_id)
+bins <- read_tsv("bins.tsv", col_names = c("bin_id")) |> pull(bin_id)
 
 # read the entire checkm2 report and keep the 10 most complete and least
 # contaminated bins
 top10 <-
-  read_tsv("checkm2.quality_report.tsv.xz") %>%
-  filter(Name %in% bins) %>%
-  arrange(desc(Completeness), Contamination) %>%
-  slice(1:10) %>%
-  pull(Name) %>%
+  read_tsv("checkm2.quality_report.tsv.xz") |>
+  filter(Name %in% bins) |>
+  arrange(desc(Completeness), Contamination) |>
+  slice(1:10) |>
+  pull(Name) |>
   sort()
 
 # slice each annotation file
 checkm2 <-
-  read_tsv("checkm2.quality_report.tsv.xz") %>%
+  read_tsv("checkm2.quality_report.tsv.xz") |>
   filter(Name %in% top10)
 
 gtdbtk <-
-  read_tsv("gtdbtk.summary.tsv.xz") %>%
+  read_tsv("gtdbtk.summary.tsv.xz") |>
   filter(user_genome %in% top10)
 
 dram <-
-  read_tsv("dram.annotations.tsv.gz") %>%
+  read_tsv("dram.annotations.tsv.gz") |>
   filter(fasta %in% top10)
 
 # Slice the count table to get the top10 bins and the first 10 samples
@@ -38,8 +38,8 @@ colnames <- c(
 )
 
 counts <-
-  read_tsv("coverm_genome_REF0015-g_mg_hybrid.count.tsv.xz") %>%
-  filter(sequence_id %in% top10) %>%
+  read_tsv("coverm_genome_REF0015-g_mg_hybrid.count.tsv.xz") |>
+  filter(sequence_id %in% top10) |>
   select(sequence_id, all_of(colnames))
 
 rm(bins, colnames, top10)

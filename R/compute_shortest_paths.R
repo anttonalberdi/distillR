@@ -20,23 +20,23 @@ compute_shortest_paths <- function(annotation_vector) {
   #   "K23269", "K23270"
   # )
 
-  annotation_vector_clean <- c("root", "source", annotation_vector) %>% unique()
+  annotation_vector_clean <- c("root", "source", annotation_vector) |> unique()
 
   # clean gift_graph
-  gift_graph %>%
+  gift_graph |>
     tidyr::separate(
       col = from,
       into = c("from_code", "from_annotation", "from_level"),
       sep = "_",
       remove = FALSE
-    ) %>%
+    ) |>
     tidyr::separate(
       col = to,
       into = c("to_code", "to_annotation", "to_level"),
       sep = "_",
       remove = FALSE
-    ) %>%
-    dplyr::select(pathway_id, from, from_annotation, to, to_annotation) %>%
+    ) |>
+    dplyr::select(pathway_id, from, from_annotation, to, to_annotation) |>
     # add costs
     dplyr::mutate(
       cost = dplyr::if_else(
@@ -46,13 +46,13 @@ compute_shortest_paths <- function(annotation_vector) {
         true = 0,
         false = 1
       )
-    ) %>%
+    ) |>
     # compute shortest_paths
-    dplyr::select(pathway_id, from, to, cost) %>%
-    tidyr::nest(graph_df = c(from, to, cost)) %>%
-    dplyr::rowwise() %>%
+    dplyr::select(pathway_id, from, to, cost) |>
+    tidyr::nest(graph_df = c(from, to, cost)) |>
+    dplyr::rowwise() |>
     dplyr::mutate(
-      graph = cppRouting::makegraph(graph_df, directed = TRUE) %>% list(),
+      graph = cppRouting::makegraph(graph_df, directed = TRUE) |> list(),
       source = stringr::str_glue("{pathway_id}_root_source"),
       sink = stringr::str_glue("{pathway_id}_root_sink"),
       shortest_path = cppRouting::get_path_pair(
@@ -65,9 +65,9 @@ compute_shortest_paths <- function(annotation_vector) {
       cost = cppRouting::get_distance_pair(
         Graph = graph, from = source, to = sink
       ),
-    ) %>%
-    dplyr::ungroup() %>%
+    ) |>
+    dplyr::ungroup() |>
     # clean up
-    dplyr::select(pathway_id, length_shortest_path, cost) %>%
+    dplyr::select(pathway_id, length_shortest_path, cost) |>
     dplyr::arrange(pathway_id, length_shortest_path, cost)
 }

@@ -18,7 +18,7 @@ Distill the annotations by computing the completeness of a pathway given
 present annotations
 }
 \examples{
-dram \%>\%
-  import_dram() \%>\%
+dram |>
+  import_dram() |>
   distill()
 }

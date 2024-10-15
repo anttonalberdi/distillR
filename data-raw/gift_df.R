@@ -58,7 +58,7 @@ decouple_graph <- function(definition) {
     subgraph_name <- stringr::str_glue("subgraph_{length(graph)}")
 
     graph[[subgraph_name]] <-
-      subgraph_definition %>%
+      subgraph_definition |>
       stringr::str_remove_all("[\\(\\)]")
 
     processed_definition <- gsub(
@@ -84,7 +84,7 @@ decouple_graph <- function(definition) {
 #' @examples
 #' plus_to_space("a+b")
 plus_to_space <- function(definition) {
-  definition %>%
+  definition |>
     stringr::str_replace_all("\\+", " ")
 }
 
@@ -98,33 +98,33 @@ plus_to_space <- function(definition) {
 #' @export
 #'
 #' @examples
-#' "a (b c)" %>%
-#'   decouple_graph() %>%
+#' "a (b c)" |>
+#'   decouple_graph() |>
 #'   dereplicate_graph()
 dereplicate_graph <- function(decoupled_graph) {
-  decoupled_graph %>%
-    tibble::as_tibble() %>%
-    dplyr::bind_cols(subgraph_definition = "subgraph_definition") %>%
-    tibble::column_to_rownames("subgraph_definition") %>%
-    t() %>%
-    as.data.frame() %>%
-    tibble::rownames_to_column("subgraph_name") %>%
-    tibble::as_tibble() %>%
+  decoupled_graph |>
+    tibble::as_tibble() |>
+    dplyr::bind_cols(subgraph_definition = "subgraph_definition") |>
+    tibble::column_to_rownames("subgraph_definition") |>
+    t() |>
+    as.data.frame() |>
+    tibble::rownames_to_column("subgraph_name") |>
+    tibble::as_tibble() |>
     dplyr::mutate(
       level = dplyr::row_number() - 1,
       subgraph_definition_new =
-        subgraph_definition %>% # nolint: object_usage_linte
+        subgraph_definition |> # nolint: object_usage_linte
         stringr::str_replace_all(
           pattern = "([\\w\\.]+)",
           replacement = stringr::str_glue("\\1_{level}")
-        ) %>%
+        ) |>
         stringr::str_replace_all( # undo subgraph
           pattern = "(subgraph_\\d+)_\\d+",
           replacement = "\\1"
         )
-    ) %>%
-    dplyr::select(subgraph_name, subgraph_definition_new) %>% # nolint: object_usage_linte
-    tibble::deframe() %>%
+    ) |>
+    dplyr::select(subgraph_name, subgraph_definition_new) |> # nolint: object_usage_linte
+    tibble::deframe() |>
     as.list()
 }
 
@@ -143,8 +143,8 @@ dereplicate_graph <- function(decoupled_graph) {
 process_comma_subdefinition <-
   function(subgraph_definition, subgraph_id) {
     nodes <-
-      subgraph_definition %>%
-      stringr::str_split(",") %>%
+      subgraph_definition |>
+      stringr::str_split(",") |>
       unlist()
 
     edges <-
@@ -157,7 +157,7 @@ process_comma_subdefinition <-
           from = nodes,
           to = stringr::str_glue("{subgraph_id}_sink")
         )
-      ) %>%
+      ) |>
       dplyr::mutate(
         from = dplyr::if_else(
           stringr::str_detect(from, "^subgraph_\\d+$"),
@@ -188,24 +188,24 @@ process_comma_subdefinition <-
 process_space_subdefinition <-
   function(subgraph_definition, subgraph_id) {
     nodes <-
-      subgraph_definition %>%
-      stringr::str_split(" ") %>%
+      subgraph_definition |>
+      stringr::str_split(" ") |>
       unlist()
 
     edges <-
       tibble::tibble(
         from = stringr::str_glue("{subgraph_id}_source"),
         to = nodes[1]
-      ) %>%
+      ) |>
       dplyr::bind_rows(
-        tibble::tibble(from = nodes) %>%
+        tibble::tibble(from = nodes) |>
           dplyr::mutate(
             to = dplyr::lead(
               from,
               default = stringr::str_glue("{subgraph_id}_sink")
             )
           )
-      ) %>%
+      ) |>
       dplyr::mutate(
         from = dplyr::if_else(
           stringr::str_detect(from, "^subgraph_\\d+$"),
@@ -252,10 +252,10 @@ process_single_node_subdefinition <- # nolint: object_length_linter
 #' @export
 #'
 #' @examples
-#' "a (b,c) (c+d)" %>%
-#'   plus_to_space() %>%
-#'   distillR::decouple_graph() %>%
-#'   dereplicate_graph() %>%
+#' "a (b,c) (c+d)" |>
+#'   plus_to_space() |>
+#'   distillR::decouple_graph() |>
+#'   dereplicate_graph() |>
 #'   dereplicated_graph_to_adjacency_list()
 dereplicated_graph_to_adjacency_list <- # nolint: object_length_linter
   function(dereplicated_graph) {
@@ -293,36 +293,36 @@ dereplicated_graph_to_adjacency_list <- # nolint: object_length_linter
 #' @export
 #'
 #' @examples
-#' "a (b,c) (c+d)" %>%
-#'   plus_to_space() %>%
-#'   decouple_graph() %>%
-#'   dereplicate_graph() %>%
-#'   dereplicated_graph_to_adjacency_list() %>%
-#'   dplyr::bind_rows() %>%
+#' "a (b,c) (c+d)" |>
+#'   plus_to_space() |>
+#'   decouple_graph() |>
+#'   dereplicate_graph() |>
+#'   dereplicated_graph_to_adjacency_list() |>
+#'   dplyr::bind_rows() |>
 #'   trim_intermediate_sources_and_sinks_df()
 trim_intermediate_sources_and_sinks_df <- function(edge_df) { # nolint: object_length_linter
   nodes_to_delete <-
     c(
-      edge_df %>%
-        dplyr::filter(stringr::str_detect(from, "^subgraph_")) %>%
+      edge_df |>
+        dplyr::filter(stringr::str_detect(from, "^subgraph_")) |>
         dplyr::pull(from),
-      edge_df %>%
-        dplyr::filter(stringr::str_detect(to, "^subgraph_")) %>%
+      edge_df |>
+        dplyr::filter(stringr::str_detect(to, "^subgraph_")) |>
         dplyr::pull(to)
-    ) %>%
+    ) |>
     unique()
 
   edge_df_final <- edge_df
 
   for (node_to_delete in nodes_to_delete) {
     predecessors <-
-      edge_df_final %>%
-      dplyr::filter(to == node_to_delete) %>%
+      edge_df_final |>
+      dplyr::filter(to == node_to_delete) |>
       dplyr::pull(from)
 
     successors <-
-      edge_df_final %>%
-      dplyr::filter(from == node_to_delete) %>%
+      edge_df_final |>
+      dplyr::filter(from == node_to_delete) |>
       dplyr::pull(to)
 
     new_edges <-
@@ -333,8 +333,8 @@ trim_intermediate_sources_and_sinks_df <- function(edge_df) { # nolint: object_l
       )
 
     edge_df_final <-
-      edge_df_final %>%
-      dplyr::filter(!(from == node_to_delete | to == node_to_delete)) %>%
+      edge_df_final |>
+      dplyr::filter(!(from == node_to_delete | to == node_to_delete)) |>
       dplyr::bind_rows(new_edges)
   }
 
@@ -354,10 +354,10 @@ trim_intermediate_sources_and_sinks_df <- function(edge_df) { # nolint: object_l
 #' tibble::tibble(
 #'   from = c("root_source", "a"),
 #'   to = c("a", "sink")
-#' ) %>%
+#' ) |>
 #'   append_gift_id_to_df("tag")
 append_gift_id_to_df <- function(df, gift_id) {
-  df %>%
+  df |>
     dplyr::mutate(
       from = stringr::str_glue("{gift_id}_{from}"),
       to = stringr::str_glue("{gift_id}_{to}")
@@ -376,13 +376,13 @@ append_gift_id_to_df <- function(df, gift_id) {
 #' @examples
 #' definition_to_edge_df("a (b,c) (c+d)", "mygift")
 definition_to_edge_df <- function(definition, gift_id) {
-  definition %>%
-    plus_to_space() %>%
-    decouple_graph() %>%
-    dereplicate_graph() %>%
-    dereplicated_graph_to_adjacency_list() %>%
-    dplyr::bind_rows() %>%
-    trim_intermediate_sources_and_sinks_df() %>%
+  definition |>
+    plus_to_space() |>
+    decouple_graph() |>
+    dereplicate_graph() |>
+    dereplicated_graph_to_adjacency_list() |>
+    dplyr::bind_rows() |>
+    trim_intermediate_sources_and_sinks_df() |>
     append_gift_id_to_df(gift_id)
 }
 
@@ -395,7 +395,7 @@ definition_to_edge_df <- function(definition, gift_id) {
 #'
 #' @noRd
 clean_bad_definitions <- function(giftdb) {
-  giftdb %>%
+  giftdb |>
     dplyr::mutate(
       Definition = dplyr::if_else(
         Code_bundle == "B060213",
@@ -425,15 +425,15 @@ build_gift_df <- function() {
   load("data-raw/GIFT_db.rda")
 
   gift_df <-
-    GIFT_db %>% # nolint: object_usage_linte
-    clean_bad_definitions() %>%
-    tibble::as_tibble() %>%
-    dplyr::rowwise() %>%
+    GIFT_db |> # nolint: object_usage_linte
+    clean_bad_definitions() |>
+    tibble::as_tibble() |>
+    dplyr::rowwise() |>
     dplyr::mutate(
-      edge_df = definition_to_edge_df(Definition, Code_bundle) %>% list() # nolint: object_usage_linte
-    ) %>%
-    tidyr::unnest(edge_df) %>% # nolint: object_usage_linte
-    dplyr::select(-Definition) %>%
+      edge_df = definition_to_edge_df(Definition, Code_bundle) |> list() # nolint: object_usage_linte
+    ) |>
+    tidyr::unnest(edge_df) |> # nolint: object_usage_linte
+    dplyr::select(-Definition) |>
     dplyr::mutate(
       domain_id = dplyr::case_when(
         Domain == "Biosynthesis" ~ "B",
@@ -441,7 +441,7 @@ build_gift_df <- function() {
         Domain == "Structure" ~ "S",
         TRUE ~ NA
       )
-    ) %>%
+    ) |>
     dplyr::select(
       domain_id, # nolint: object_usage_linter
       domain_name = Domain, # nolint: object_usage_linter
@@ -459,8 +459,8 @@ build_gift_df <- function() {
 if (!interactive()) {
   gift_df <- build_gift_df()
 
-  gift_graph <- gift_df %>% select(pathway_id, from, to) %>% distinct()
-  gift_info <- gift_df %>% select(-from, -to) %>% distinct()
+  gift_graph <- gift_df |> select(pathway_id, from, to) %>% distinct()
+  gift_info <- gift_df |> select(-from, -to) %>% distinct()
 
   save(
     gift_graph,

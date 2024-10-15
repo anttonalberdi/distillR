@@ -39,10 +39,10 @@ test_that("Test plus_to_space", {
 # dereplicate_graph ----
 test_that("Test dereplicate_graph", {
   actual <-
-    "a (b c)" %>%
-    plus_to_space() %>%
-    decouple_graph() %>%
-    dplyr::bind_rows() %>%
+    "a (b c)" |>
+    plus_to_space() |>
+    decouple_graph() |>
+    dplyr::bind_rows() |>
     dereplicate_graph()
   expected <- list(
     subgraph_0 = "b_0 c_0",
@@ -57,10 +57,10 @@ test_that("Test dereplicate_graph with a EC definition", {
     "1.4.1.2 1.1.1.399 2.8.3.12 4.2.1.167 7.2.4.5 1.3.1.109 (2.8.3.1,2.8.3.8)"
 
   actual <-
-    definition %>%
-    plus_to_space() %>%
-    decouple_graph() %>%
-    dplyr::bind_rows() %>%
+    definition |>
+    plus_to_space() |>
+    decouple_graph() |>
+    dplyr::bind_rows() |>
     dereplicate_graph()
 
   expected <-
@@ -119,10 +119,10 @@ test_that("Test process_single_node_subdefinition", {
 # dereplicated_graph_to_adjacency_list ----
 test_that("Test dereplicated_graph_to_adjacency_list", {
   actual <-
-    "a (b,c)" %>%
-    plus_to_space() %>%
-    decouple_graph() %>%
-    dereplicate_graph() %>%
+    "a (b,c)" |>
+    plus_to_space() |>
+    decouple_graph() |>
+    dereplicate_graph() |>
     dereplicated_graph_to_adjacency_list()
 
   expected <- list(
@@ -144,10 +144,10 @@ test_that(
   "Test dereplicated_graph_to_adjacency_list with a single gene definition",
   {
     actual <-
-      "a" %>%
-      plus_to_space() %>%
-      decouple_graph() %>%
-      dereplicate_graph() %>%
+      "a" |>
+      plus_to_space() |>
+      decouple_graph() |>
+      dereplicate_graph() |>
       dereplicated_graph_to_adjacency_list()
 
     expected <- list(
@@ -164,12 +164,12 @@ test_that(
 # trim_intermediate_sources_and_sinks_df ----
 test_that("Test trim_intermediate_sources_and_sinks_df", {
   actual <-
-    "a (b,c) (c+d)" %>%
-    plus_to_space() %>%
-    decouple_graph() %>%
-    dereplicate_graph() %>%
-    dereplicated_graph_to_adjacency_list() %>%
-    dplyr::bind_rows() %>%
+    "a (b,c) (c+d)" |>
+    plus_to_space() |>
+    decouple_graph() |>
+    dereplicate_graph() |>
+    dereplicated_graph_to_adjacency_list() |>
+    dplyr::bind_rows() |>
     trim_intermediate_sources_and_sinks_df()
 
   expected <-
@@ -186,7 +186,7 @@ test_that("Test append_gift_id_to_df", {
   actual <- tibble::tibble(
     from = c("root", "a"),
     to = c("a", "sink")
-  ) %>%
+  ) |>
     append_gift_id_to_df("tag")
 
   expected <- tibble::tibble(
@@ -242,16 +242,16 @@ test_that("Test build_gift_df", {
   nrows <- nrow(actual)
 
   ngenes_plus_root <-
-    actual %>%
-    tidyr::pivot_longer(c(from, to)) %>%
-    dplyr::select(value) %>%
+    actual |>
+    tidyr::pivot_longer(c(from, to)) |>
+    dplyr::select(value) |>
     tidyr::separate(
       value,
       into = c("gift_id", "gene_id", "number"),
       sep = "_"
-    ) %>%
-    dplyr::pull(gene_id) %>%
-    unique() %>%
+    ) |>
+    dplyr::pull(gene_id) |>
+    unique() |>
     length()
 
   expect_equal(ncols, 9)

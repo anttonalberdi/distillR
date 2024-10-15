@@ -33,5 +33,5 @@ Dataframe with the following columns:
 Import DRAM table
 }
 \examples{
-dram \%>\% import_dram()
+dram |> import_dram()
 }

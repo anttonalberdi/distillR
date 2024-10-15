@@ -1,15 +1,15 @@
 test_that("compute_shortest_paths with the first MAG", {
   actual <-
-    dram %>%
-    import_dram() %>%
-    dplyr::filter(mag_id == "GPB:bin_000004") %>%
-    dplyr::pull(annotation_id) %>%
+    dram |>
+    import_dram() |>
+    dplyr::filter(mag_id == "GPB:bin_000004") |>
+    dplyr::pull(annotation_id) |>
     compute_shortest_paths()
 
   # write_rds(actual, test_path("fixtures", "compute_shortest_paths.rds"), compress = "xz", version = 2, compression = 9)  # nolint
 
   expected <-
-    test_path("fixtures", "compute_shortest_paths.rds") %>%
+    test_path("fixtures", "compute_shortest_paths.rds") |>
     readr::read_rds()
 
   expect_equal(actual, expected)
@@ -35,9 +35,9 @@ test_that("compute_shortest_paths computes as complete an entire element", {
   )
 
   observed_cost <-
-    annotations %>%
-    compute_shortest_paths() %>%
-    dplyr::filter(pathway_id == "B010101") %>%
+    annotations |>
+    compute_shortest_paths() |>
+    dplyr::filter(pathway_id == "B010101") |>
     dplyr::pull(cost)
 
   expect_equal(observed_cost, 0)
@@ -61,9 +61,9 @@ test_that("compute_shortest_paths for a straight line", {
   )
 
   observed_cost <-
-    annotations %>%
-    compute_shortest_paths() %>%
-    dplyr::filter(pathway_id == "B010101") %>%
+    annotations |>
+    compute_shortest_paths() |>
+    dplyr::filter(pathway_id == "B010101") |>
     dplyr::pull(cost)
 
   expect_equal(observed_cost, 0)
