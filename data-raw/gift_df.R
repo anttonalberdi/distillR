@@ -459,8 +459,28 @@ build_gift_df <- function() {
 if (!interactive()) {
   gift_df <- build_gift_df()
 
-  gift_graph <- gift_df |> select(pathway_id, from, to) %>% distinct()
-  gift_info <- gift_df |> select(-from, -to) %>% distinct()
+  gift_graph <-
+    gift_df |>
+    dplyr::select(pathway_id, from, to) |>
+    dplyr::distinct() |>
+    tidyr::separate(
+      col = from,
+      into = c("from_code", "from_annotation", "from_level"),
+      sep = "_",
+      remove = FALSE
+    ) |>
+    tidyr::separate(
+      col = to,
+      into = c("to_code", "to_annotation", "to_level"),
+      sep = "_",
+      remove = FALSE
+    ) |>
+    dplyr::select(pathway_id, from, from_annotation, to, to_annotation)
+
+  gift_info <-
+    gift_df |>
+    dplyr::select(-from, -to) |>
+    dplyr::distinct()
 
   save(
     gift_graph,
