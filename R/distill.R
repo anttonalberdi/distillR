@@ -24,5 +24,5 @@ distill <- function(dram_annotations) {
       ) %>% list()
     ) %>%
     dplyr::select(-annotation_ids) %>%
-    tidyr::unnest(bundle_cost) # nolint: object_usage_linte
+    tidyr::unnest(bundle_cost) # nolint: object_usage_linter
 }
