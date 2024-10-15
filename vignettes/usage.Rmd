@@ -26,7 +26,7 @@ Currently distillr is only available in GitHub
 #   remotes::install_github("anttonalberdi/distillr")
 # }
 library("distillr")
-library("magrittr", include.only = "%>%")
+library("magrittr", include.only = "|>")
 ```
 
 ## Quickstart
@@ -35,21 +35,21 @@ The package distillr contains mock data and the GIFT database required to test a
 
 `dram` contains the DRAM annotation of ten near-complete MAG assemblies.
 ```{r}
-dram %>% head()
+dram |> head()
 ```
 
 To prior to running `distillr` we need to use the `import_dram()` function to extract the KEGG ortholog identifiers, Enzymatic Codes, and MEROPS identifiers.
 
 ```{r}
-annotations <- dram %>% import_dram()
-annotations %>% head()
+annotations <- dram |> import_dram()
+annotations |> head()
 ```
 
 Now we are ready to run `distill()` to calculate the completeness of each GIFT.
 
 ```{r}
-gifts <- annotations %>%  distill()
-gifts %>% head()
+gifts <- annotations |>  distill()
+gifts |> head()
 ```
 
 And now we are ready to aggregate each GIFT by:
@@ -58,14 +58,14 @@ And now we are ready to aggregate each GIFT by:
 - domain
 
 ```{r}
-gift_elements <- gifts %>% to_elements()
-gift_elements %>% head()
+gift_elements <- gifts |> to_elements()
+gift_elements |> head()
 
-gift_functions <- gifts %>% to_functions()
-gift_functions %>% head()
+gift_functions <- gifts |> to_functions()
+gift_functions |> head()
 
-gift_domains <- gifts %>% to_domains()
-gift_domains %>% head()
+gift_domains <- gifts |> to_domains()
+gift_domains |> head()
 ```
 
 
@@ -75,12 +75,12 @@ Genome-specific Genome-Inferred Functional Trait (GIFT) profiles can be plotted 
 library(ggplot2)
 library(RColorBrewer)
 
-gift_elements %>%
+gift_elements |>
   dplyr::left_join(
-    distillr::gift_info %>%
-      dplyr::select(domain_id:element_id) %>%
+    distillr::gift_info |>
+      dplyr::select(domain_id:element_id) |>
       dplyr::distinct()
-  ) %>%
+  ) |>
   ggplot(aes(
     x = element_id, y = mag_id, fill = completeness, group = function_id
   )) +
