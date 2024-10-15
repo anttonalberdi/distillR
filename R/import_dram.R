@@ -23,8 +23,8 @@ import_dram <- function(dram_raw_table) {
   dram_raw_table |>
     tibble::as_tibble() |>
     dplyr::select(
-      mag_id = fasta, gene_id = `...1`, ko_id, kegg_hit, cazy_ids,  # nolint
-      peptidase_family  # nolint
+      mag_id = fasta, gene_id = `...1`, ko_id, kegg_hit, cazy_ids, # nolint
+      peptidase_family # nolint
     ) |>
     dplyr::group_by(mag_id) |>
     tidyr::pivot_longer(

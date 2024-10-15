@@ -7,7 +7,6 @@
 #'
 
 to_domains <- function(distilled) {
-
   distilled |>
     dplyr::left_join(gift_info, by = "pathway_id") |>
     dplyr::select(

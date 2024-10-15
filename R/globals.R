@@ -7,5 +7,6 @@ utils::globalVariables(c(
   "gene_id", "function_id", "function_name", "domain_id", "domain_name",
   "element_id", "element_name", "fasta", "...1", "ko_id", "cazy_ids",
   "dram_annotations", "bundle_cost", "annotation_ids", "dram_annotation",
-  "ko", "ko_ids", "present", "total", "value"
+  "ko", "ko_ids", "present", "total", "value", "mag_id", "gene_id",
+  "annotation", "annotation_type", "kegg_hits", "annotation_id"
 ))

@@ -1,5 +1,4 @@
 test_that("compute_shortest_paths", {
-
   expect_true(exists("compute_shortest_paths"))
 
   test_that("with the first MAG", {
@@ -71,5 +70,4 @@ test_that("compute_shortest_paths", {
 
     expect_equal(observed_cost, 0)
   })
-
 })

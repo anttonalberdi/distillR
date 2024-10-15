@@ -48,7 +48,7 @@ annotations |> head()
 Now we are ready to run `distill()` to calculate the completeness of each GIFT.
 
 ```{r}
-gifts <- annotations |>  distill()
+gifts <- annotations |> distill()
 gifts |> head()
 ```
 
@@ -87,11 +87,11 @@ gift_elements |>
   geom_tile() +
   scale_y_discrete(guide = guide_axis(check.overlap = TRUE)) +
   scale_x_discrete(guide = guide_axis(check.overlap = TRUE)) +
-  scale_fill_gradientn(limits = c(0,1), colours=brewer.pal(7, "YlGnBu")) +
+  scale_fill_gradientn(limits = c(0, 1), colours = brewer.pal(7, "YlGnBu")) +
   facet_grid(. ~ function_id, scales = "free", space = "free") +
-  theme_grey(base_size=8)+
+  theme_grey(base_size = 8) +
   theme(
-    axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1),
+    axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1),
     strip.text.x = element_text(angle = 90)
   )
 ```
