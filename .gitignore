@@ -16,3 +16,4 @@ renv/
 inst/doc
 
 renv.lock
+docs
