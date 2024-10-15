@@ -1,0 +1,97 @@
+---
+title: "Usage"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Usage}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+## Installing distillr
+
+Currently distillr is only available in GitHub
+
+```{r setup}
+# if (!require("remotes")) {
+#   install.packages("remotes")
+# }
+# if (!require("distillr")) {
+#   remotes::install_github("anttonalberdi/distillr")
+# }
+library("distillr")
+library("magrittr", include.only = "%>%")
+```
+
+## Quickstart
+
+The package distillr contains mock data and the GIFT database required to test all functions.
+
+`dram` contains the DRAM annotation of ten near-complete MAG assemblies.
+```{r}
+dram %>% head()
+```
+
+To prior to running `distillr` we need to use the `import_dram()` function to extract the KEGG ortholog identifiers, Enzymatic Codes, and MEROPS identifiers.
+
+```{r}
+annotations <- dram %>% import_dram()
+annotations %>% head()
+```
+
+Now we are ready to run `distill()` to calculate the completeness of each GIFT.
+
+```{r}
+gifts <- annotations %>%  distill()
+gifts %>% head()
+```
+
+And now we are ready to aggregate each GIFT by:
+- element
+- function
+- domain
+
+```{r}
+gift_elements <- gifts %>% to_elements()
+gift_elements %>% head()
+
+gift_functions <- gifts %>% to_functions()
+gift_functions %>% head()
+
+gift_domains <- gifts %>% to_domains()
+gift_domains %>% head()
+```
+
+
+## Chart plotting
+Genome-specific Genome-Inferred Functional Trait (GIFT) profiles can be plotted using ggplot2. The below example plots element-level genome-specific GIFTs.
+```{r}
+library(ggplot2)
+library(RColorBrewer)
+
+gift_elements %>%
+  dplyr::left_join(
+    distillr::gift_info %>%
+      dplyr::select(domain_id:element_id) %>%
+      dplyr::distinct()
+  ) %>%
+  ggplot(aes(
+    x = element_id, y = mag_id, fill = completeness, group = function_id
+  )) +
+  geom_tile() +
+  scale_y_discrete(guide = guide_axis(check.overlap = TRUE)) +
+  scale_x_discrete(guide = guide_axis(check.overlap = TRUE)) +
+  scale_fill_gradientn(limits = c(0,1), colours=brewer.pal(7, "YlGnBu")) +
+  facet_grid(. ~ function_id, scales = "free", space = "free") +
+  theme_grey(base_size=8)+
+  theme(
+    axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1),
+    strip.text.x = element_text(angle = 90)
+  )
+```
