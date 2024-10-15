@@ -1,0 +1,40 @@
+# See https://pre-commit.com for more information
+# See https://pre-commit.com/hooks.html for more hooks
+---
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v5.0.0
+    hooks:
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: check-yaml
+      - id: check-added-large-files
+  - repo: https://github.com/lorenzwalthert/precommit
+    rev: v0.4.3.9001
+    hooks:
+      # - id: lintr
+      #   args: [--warn-only, --key=value]
+      #   verbose: true
+      # - id: style-files
+      #   args: [--scope=spaces, --reindention=specify_reindention('#')]
+      - id: readme-rmd-rendered
+      - id: parsable-R
+      # - id: no-browser-statement
+      # - id: no-debug-statement
+      # - id: spell-check
+      - id: roxygenize
+        additional_dependencies:
+        - dplyr
+        - purrr
+        - readr
+        - stringr
+        - tidyr
+        - tibble
+        - tidyverse
+        - git2r
+        - cli
+        - cppRouting
+      - id: deps-in-desc
+        args: [--allow_private_imports]
+      - id: use-tidy-description
+      # - id: codemeta-description-update

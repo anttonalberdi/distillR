@@ -2,6 +2,7 @@
 .Rhistory
 .RData
 .Ruserdata
+.Rprofile
 
 # Package preparation
 bin
@@ -10,9 +11,9 @@ bin
 data/source
 
 # Functions in prep
-R/distill_expression.R
-R/distill_definition_expression.R
-R/compute_MCI_expression.R
-man/distill_expression.Rd
-man/distill_definition_expression.Rd
-man/compute_MCI_expression.Rd
+
+renv/
+inst/doc
+
+renv.lock
+docs

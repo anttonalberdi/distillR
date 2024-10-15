@@ -1,2 +1,19 @@
+^renv$
+^renv\.lock$
 ^.*\.Rproj$
 ^\.Rproj\.user$
+^\.pre-commit-config\.yaml$
+^LICENSE\.md$
+^\.github$
+^codecov\.yml$
+wip.R
+
+# distillr old code
+old/*
+
+# distillr old tests
+^data-raw$
+^_pkgdown\.yml$
+^docs$
+^pkgdown$
+^accel$

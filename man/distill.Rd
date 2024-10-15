@@ -2,34 +2,23 @@
 % Please edit documentation in R/distill.R
 \name{distill}
 \alias{distill}
-\title{Generates a gene presence-based Genome-Inferred Functional Trait (GIFT) table at the gene bundle level from a bacterial genome annotation table}
+\title{Distill the annotations by computing the completeness of a pathway given
+present annotations}
 \usage{
-distill(
-  annotation_table,
-  GIFT_db,
-  genomecol = 2,
-  annotcol = c(9, 10, 19),
-  stats = T
-)
+distill(dram_annotations)
 }
 \arguments{
-\item{annotation_table}{Table containing Genome identifiers and gene annotations}
-
-\item{GIFT_db}{Table containing definitions and metadata of GIFTs (default: database provided by distillR)}
-
-\item{genomecol}{Column index (number) of the annotation_table containing the genome identifiers}
-
-\item{annotcol}{Column index(es) of the annotation_table in which to search for gene identifiers (e.g., c(3,4,5))}
-
-\item{stats}{Whether to calculate and print distillation statistics}
+\item{dram_annotations}{Table containing the imported annotation from DRAM}
 }
 \value{
-A gene bundle-level GIFT table
+A tibble with the completeness of a pathway given present annotations
 }
 \description{
-Generates a gene presence-based Genome-Inferred Functional Trait (GIFT) table at the gene bundle level from a bacterial genome annotation table
+Distill the annotations by computing the completeness of a pathway given
+present annotations
 }
 \examples{
-distill(annotation_table,GIFT_db,genomecol,annotcol, stats)
-distill(annotation_table,GIFT_db,genomecol=2,annotcol=c(9,10,19),stats=T)
+dram |>
+  import_dram() |>
+  distill()
 }
