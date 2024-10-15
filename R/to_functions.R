@@ -8,7 +8,7 @@
 
 to_functions <- function(distilled) {
   distilled %>%
-    dplyr::left_join(gift_df, by = "pathway_id") %>%
+    dplyr::left_join(gift_info, by = "pathway_id") %>%
     dplyr::select(
       mag_id, function_id, function_name, pathway_id, length_shortest_path, cost
     ) %>%
@@ -18,6 +18,7 @@ to_functions <- function(distilled) {
       length_shortest_path = sum(length_shortest_path),
       cost = sum(cost)
     ) %>%
+    dplyr::ungroup() %>%
     dplyr::mutate(
       completeness = 1 - (cost / length_shortest_path),
     )

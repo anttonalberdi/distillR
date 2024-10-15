@@ -14,7 +14,7 @@ compute_redundancy <- function(annotation_vector) {
 
   annotation_vector_clean <- annotation_vector %>% unique()
 
-  gift_df %>%
+  gift_graph %>%
     dplyr::select(pathway_id, from, to) %>%
     tidyr::pivot_longer(-pathway_id) %>%
     tidyr::separate(value, into = c("module", "ko", "level"), sep = "_") %>%

@@ -8,7 +8,7 @@
 
 to_elements <- function(distilled) {
   distilled %>%
-    dplyr::left_join(gift_df, by = "pathway_id") %>%
+    dplyr::left_join(gift_info, by = "pathway_id") %>%
     dplyr::select(
       mag_id, element_id, element_name, pathway_id, length_shortest_path, cost # nolint object_usage_linter
     ) %>%

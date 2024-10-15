@@ -12,9 +12,18 @@
 #' @examples
 #' compute_shortest_paths(c("S09X", "6.1.1.4"))
 compute_shortest_paths <- function(annotation_vector) {
+
+  # annotation_vector <- c(
+  #   "K00601", "K00602", "K00764", "K01492", "K01587", "K01588", "K01589",
+  #   "K01756", "K01923", "K01933", "K01945", "K01952", "K06863", "K08289",
+  #   "K11176", "K11787", "K11788", "K11808", "K13713", "K23264", "K23265",
+  #   "K23269", "K23270"
+  # )
+
   annotation_vector_clean <- c("root", "source", annotation_vector) %>% unique()
 
-  gift_df %>%
+  # clean gift_graph
+  gift_graph %>%
     tidyr::separate(
       col = from,
       into = c("from_code", "from_annotation", "from_level"),
@@ -27,7 +36,8 @@ compute_shortest_paths <- function(annotation_vector) {
       sep = "_",
       remove = FALSE
     ) %>%
-    dplyr::select(-from_code, -from_level, -to_code, -to_level) %>%
+    dplyr::select(pathway_id, from, from_annotation, to, to_annotation) %>%
+    # add costs
     dplyr::mutate(
       cost = dplyr::if_else(
         condition =
@@ -37,6 +47,7 @@ compute_shortest_paths <- function(annotation_vector) {
         false = 1
       )
     ) %>%
+    # compute shortest_paths
     dplyr::select(pathway_id, from, to, cost) %>%
     tidyr::nest(graph_df = c(from, to, cost)) %>%
     dplyr::rowwise() %>%
@@ -45,7 +56,9 @@ compute_shortest_paths <- function(annotation_vector) {
       source = stringr::str_glue("{pathway_id}_root_source"),
       sink = stringr::str_glue("{pathway_id}_root_sink"),
       shortest_path = cppRouting::get_path_pair(
-        Graph = graph, from = source, to = sink
+        Graph = graph,
+        from = source,
+        to = sink
       ),
       # remove root and sink effect
       length_shortest_path = length(shortest_path) - 1,
@@ -54,6 +67,7 @@ compute_shortest_paths <- function(annotation_vector) {
       ),
     ) %>%
     dplyr::ungroup() %>%
+    # clean up
     dplyr::select(pathway_id, length_shortest_path, cost) %>%
     dplyr::arrange(pathway_id, length_shortest_path, cost)
 }

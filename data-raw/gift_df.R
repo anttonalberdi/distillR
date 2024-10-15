@@ -458,8 +458,13 @@ build_gift_df <- function() {
 
 if (!interactive()) {
   gift_df <- build_gift_df()
+
+  gift_graph <- gift_df %>% select(pathway_id, from, to) %>% distinct()
+  gift_info <- gift_df %>% select(-from, -to) %>% distinct()
+
   save(
-    gift_df,
+    gift_graph,
+    gift_info,
     file = "R/sysdata.rda",
     compress = "xz",
     compression_level = 9,
