@@ -24,9 +24,9 @@ Suggests:
     knitr,
     purrr,
     readr,
+    remotes,
     rmarkdown,
     testthat (>= 3.0.0),
-    remotes
 VignetteBuilder:
     knitr
 Config/testthat/edition: 3
