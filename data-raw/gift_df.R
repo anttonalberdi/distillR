@@ -114,14 +114,14 @@ dereplicate_graph <- function(decoupled_graph) {
       level = dplyr::row_number() - 1,
       subgraph_definition_new =
         subgraph_definition |> # nolint: object_usage_linte
-          stringr::str_replace_all(
-            pattern = "([\\w\\.]+)",
-            replacement = stringr::str_glue("\\1_{level}")
-          ) |>
-          stringr::str_replace_all( # undo subgraph
-            pattern = "(subgraph_\\d+)_\\d+",
-            replacement = "\\1"
-          )
+        stringr::str_replace_all(
+          pattern = "([\\w\\.]+)",
+          replacement = stringr::str_glue("\\1_{level}")
+        ) |>
+        stringr::str_replace_all( # undo subgraph
+          pattern = "(subgraph_\\d+)_\\d+",
+          replacement = "\\1"
+        )
     ) |>
     dplyr::select(subgraph_name, subgraph_definition_new) |> # nolint: object_usage_linte
     tibble::deframe() |>

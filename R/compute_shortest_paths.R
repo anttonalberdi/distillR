@@ -27,7 +27,7 @@ compute_shortest_paths <- function(annotation_vector) {
       cost = dplyr::if_else(
         condition =
           (from_annotation %in% annotation_vector_clean) &
-            (to_annotation %in% annotation_vector_clean),
+          (to_annotation %in% annotation_vector_clean),
         true = 0,
         false = 1
       )
